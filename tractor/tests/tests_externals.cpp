@@ -1,7 +1,10 @@
+// Google Test Framework
 #include <gtest/gtest.h>
 
+// Related header include
 #include <glm/glm.hpp>
 
+// Perform some vector arithmetic to test the library
 TEST(externals, glm_vec3_addition)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);

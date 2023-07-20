@@ -34,9 +34,6 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 
-include(CTest)
-enable_testing()
-
 add_subdirectory(externals/glm)
 add_subdirectory(externals/googletest)
 add_subdirectory(tests)

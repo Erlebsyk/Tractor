@@ -10,3 +10,4 @@ enable_testing()
 
 add_subdirectory(tractor)
 add_subdirectory(sandbox)
+add_subdirectory(docs)

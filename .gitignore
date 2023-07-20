@@ -4,3 +4,6 @@ build/
 # Ignore configuration files
 .vscode/
 .vs/
+
+# Ignore generated documentation
+docs/*/

@@ -29,6 +29,9 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 )
 
 target_link_libraries(${PROJECT_NAME}
-	gtest_main
 	tractor
+	GTest::gtest_main
 )
+
+include(GoogleTest)
+gtest_discover_tests(${PROJECT_NAME})
