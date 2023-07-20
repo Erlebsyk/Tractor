@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.1.0 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor_tests VERSION 0.1.0 DESCRIPTION "Tests for the Tractor game engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -11,13 +11,12 @@ endif()
 
 include(GNUInstallDirs)
 
+set(HeaderFiles)
 set(SourceFiles
-	src/tractor.cpp
+	tests_externals.cpp
+    tests_tractor.cpp
 )
-set(IncludeFiles
-	include/tractor.hpp
-)
-add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
+add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -25,26 +24,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	VERSION ${PROJECT_VERSION}
-	SOVERSION 1
 	CXX_STANDARD 17
 	C_STANDARD 17
 )
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glm)
-
-configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
-
-include(CTest)
-enable_testing()
-
-add_subdirectory(externals/glm)
-add_subdirectory(externals/googletest)
-add_subdirectory(tests)
-
-install(TARGETS ${PROJECT_NAME}
-	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-	RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+target_link_libraries(${PROJECT_NAME}
+	gtest_main
+	tractor
 )
-
-install(FILES ${CMAKE_BINARY_DIR}/${PROJECT_NAME}.pc DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
