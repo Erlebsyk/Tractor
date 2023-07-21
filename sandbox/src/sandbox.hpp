@@ -15,7 +15,7 @@
 #include <cstdint>
 
 // External libraries header includes
-
+#include <tractor.h>
 
 // Project header includes
 
@@ -23,13 +23,33 @@
 namespace app
 {
 	// Defines/macros, enums and variables	
-	#define SANDBOX_SUCCESS 0
 
 	// Funciton declarations
-	int32_t sandbox_run();
 
 	// Classes and structs
 
+	/**
+	 * @brief	The SandboxApp class is the main class for the tractor sandbox. The sandbox can be used to test and play around with the tractor game engine
+	 * 			library.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	class SandboxApp : public trac::App
+	{
+	public:
+		// Constructors and destructors
+		SandboxApp();
+		~SandboxApp();
+
+		// Public functions
+		void run();
+
+	private:
+		// Private functions
+
+		// Private variables
+
+	};
 
 	// Implementation
 

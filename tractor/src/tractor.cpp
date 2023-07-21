@@ -8,7 +8,7 @@
 */
 
 // Related header include
-#include "tractor.hpp"
+#include "tractor.h"
 
 // Standard library header includes
 #include <cstdint>
@@ -32,9 +32,32 @@ namespace trac
 
 
 	// Implementation
-	void tractor()
+
+	/**
+	 * @brief	Runs the provided application.
+	 * 
+	 * 	This function is the main entry point for the tractor game engine library. It will run the provided application, which must be derived from the
+	 * 	trac::App class.
+	 * 
+	 * @param	app		The application to run. Must be derived from the trac::App class.
+	 */
+	void run_application(std::shared_ptr<App> app)
 	{
-		std::cout << "We are in tractor!" << std::endl;
+		// Check that the application is not null
+		if (app == nullptr)
+		{
+			std::cout << "ERROR: The provided application is null." << std::endl;
+			return;
+		}
+
+		// Do required initialization here
+
+		// Run the application
+		app->run();
+
+		// Do required cleanup here
+
+		return;
 	}
 
 

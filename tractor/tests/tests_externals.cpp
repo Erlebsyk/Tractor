@@ -5,7 +5,7 @@
 #include <glm/glm.hpp>
 
 // Perform some vector arithmetic to test the library
-TEST(externals, glm_vec3_addition)
+GTEST_TEST(externals, glm_vec3_addition)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);
 	glm::vec3 b(1.0f, 2.0f, 3.0f);
@@ -15,7 +15,7 @@ TEST(externals, glm_vec3_addition)
 	EXPECT_EQ(c.z, 6.0f);
 }
 
-TEST(externals, glm_vec3_subtraction)
+GTEST_TEST(externals, glm_vec3_subtraction)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);
 	glm::vec3 b(1.0f, 2.0f, 3.0f);
@@ -25,7 +25,7 @@ TEST(externals, glm_vec3_subtraction)
 	EXPECT_EQ(c.z, 0.0f);
 }
 
-TEST(externals, glm_vec3_multiplication)
+GTEST_TEST(externals, glm_vec3_multiplication)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);
 	glm::vec3 b(1.0f, 2.0f, 3.0f);
@@ -35,7 +35,7 @@ TEST(externals, glm_vec3_multiplication)
 	EXPECT_EQ(c.z, 9.0f);
 }
 
-TEST(externals, glm_vec3_division)
+GTEST_TEST(externals, glm_vec3_division)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);
 	glm::vec3 b(1.0f, 2.0f, 3.0f);
@@ -45,7 +45,7 @@ TEST(externals, glm_vec3_division)
 	EXPECT_EQ(c.z, 1.0f);
 }
 
-TEST(externals, glm_vec3_dot)
+GTEST_TEST(externals, glm_vec3_dot)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);
 	glm::vec3 b(1.0f, 2.0f, 3.0f);
@@ -53,7 +53,7 @@ TEST(externals, glm_vec3_dot)
 	EXPECT_EQ(c, 14.0f);
 }
 
-TEST(externals, glm_vec3_cross)
+GTEST_TEST(externals, glm_vec3_cross)
 {
 	glm::vec3 a(1.0f, 2.0f, 3.0f);
 	glm::vec3 b(1.0f, 2.0f, 3.0f);

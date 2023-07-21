@@ -1,5 +1,5 @@
 /**
- * @file	tractor.hpp
+ * @file	tractor.h
  * @brief	Main header file for the tractor game engine library.
  * 
  * @author	Erlend Elias Isachsen
@@ -7,36 +7,26 @@
  * 
 */
 
-#ifndef TRACTOR_HPP_
-#define TRACTOR_HPP_
+#ifndef TRACTOR_H_
+#define TRACTOR_H_
 
 // Standard library header includes
 #include <cstdint>
+#include <memory>
 
 // External libraries header includes
 
 
 // Project header includes
-
+#include "tractor_app.hpp"
 
 namespace trac
 {
-	// Defines/macros, enums and variables	
+	void run_application(std::shared_ptr<App> app);
+}
 
 
-	// Funciton declarations
-	void tractor();
-
-	// Classes and structs
-
-
-	// Implementation
-
-
-} // Namespace trac
-
-
-#endif // TRACTOR_HPP_ 
+#endif // TRACTOR_H_ 
 
 /*
  * END OF FILE

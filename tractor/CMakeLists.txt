@@ -13,9 +13,11 @@ include(GNUInstallDirs)
 
 set(SourceFiles
 	src/tractor.cpp
+	src/tractor_app.cpp
 )
 set(IncludeFiles
-	include/tractor.hpp
+	include/tractor_app.hpp
+	include/tractor.h
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
 
