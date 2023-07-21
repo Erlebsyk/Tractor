@@ -6,8 +6,7 @@ set(CMAKE_CXX_FLAGS_DEBUG_INIT "-Wall")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
 
 include(CTest)
-enable_testing()
 
-add_subdirectory(tractor)
 add_subdirectory(sandbox)
+add_subdirectory(tractor)
 add_subdirectory(docs)
