@@ -29,7 +29,7 @@
  */
 int main(int argc, char** argv)
 {
-	std::cout << "Starting sandbox application." << std::endl;
+	std::cout << "In main()" << std::endl;
 
 	// Create the sandbox application
 	std::shared_ptr<app::SandboxApp> sandbox_app = std::make_shared<app::SandboxApp>();
@@ -82,7 +82,7 @@ namespace app
 	 */
 	void SandboxApp::run()
 	{
-		std::cout << "Running the sandbox application!" << std::endl;
+		std::cout << "In the sandbox app run function!" << std::endl;
 	}
 
 } // Namespace app
