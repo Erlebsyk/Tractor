@@ -46,6 +46,13 @@ namespace trac
 		~App();
 
 		// Public functions
+
+		/**
+		 * @brief	The run() function is the entry point for the application. This function must be overridden by the application and implemented according
+		 * 			to the application's functionality.
+		 * 
+		 * @author	Erlend Elias Isachsen
+		 */
 		virtual void run() = 0;
 
 	private:

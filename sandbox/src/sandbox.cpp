@@ -18,6 +18,15 @@
 
 // Project header includes
 
+/**
+ * @brief	The main function for the sandbox application.
+ * 
+ * @param argc	The number of command line arguments.
+ * @param argv	The command line argument vector.
+ * @return int	The exit code for the application.
+ * 
+ * @author	Erlend Elias Isachsen
+ */
 int main(int argc, char** argv)
 {
 	std::cout << "Starting sandbox application." << std::endl;
