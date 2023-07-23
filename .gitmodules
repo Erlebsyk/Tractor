@@ -8,3 +8,8 @@
 	url = https://github.com/g-truc/glm.git
 [submodule "glm"]
 	branch = 0.9.9.8
+[submodule "tractor/externals/spdlog"]
+	path = tractor/externals/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "spdlog"]
+	branch = v1.12.0
