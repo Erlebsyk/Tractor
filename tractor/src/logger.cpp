@@ -5,7 +5,6 @@
  * @author	Erlend Elias Isachsen
  * @date	23.07.2023
  * 
- * @todo	Create tests.
 */
 
 // Related header include
@@ -46,6 +45,55 @@ namespace trac
 
 
 	// Implementation
+
+	/**
+	 * @brief	Get the current log level of the engine logger.
+	 * 
+	 * @return LogLevel	The current log level of the engine logger.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	LogLevel log_engine_get_level()
+	{
+		return (LogLevel)(Logger::GetEngineLogger()->level());
+	}
+
+	/**
+	 * @brief	Set the log level of the engine logger.
+	 * 
+	 * @param lvl	The log level to set.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	void log_engine_set_level(const LogLevel lvl)
+	{
+		Logger::GetEngineLogger()->set_level((spdlog::level::level_enum)(lvl));
+	}
+
+	/**
+	 * @brief	Get the current log level of the client logger.
+	 * 
+	 * @return LogLevel	The current log level of the client logger.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	LogLevel log_client_get_level()
+	{
+		return (LogLevel)(Logger::GetClientLogger()->level());
+	}
+
+	/**
+	 * @brief	Set the log level of the client logger.
+	 * 
+	 * @param lvl	The log level to set.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	void log_client_set_level(const LogLevel lvl)
+	{
+		Logger::GetClientLogger()->set_level((spdlog::level::level_enum)(lvl));
+	}
+
 	/**
 	 * @brief	Construct a Logger object.
 	 * 

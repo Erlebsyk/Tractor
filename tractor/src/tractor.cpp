@@ -14,6 +14,7 @@
 // Standard library header includes
 #include <cstdint>
 #include <iostream>
+#include <exception>
 
 // External libraries header includes
 
@@ -24,10 +25,11 @@
 namespace trac
 {
 	// Defines/macros, enums and variables	
-	static bool is_initialized = false;
+	static bool engine_initialized = false;
+	static bool app_running = false;
 
 	// Funciton declarations
-	static void initialize_engine();
+	
 
 	// Classes and structs
 
@@ -41,12 +43,16 @@ namespace trac
 	 */
 	void initialize_engine()
 	{
-		is_initialized = true;
+		// Check if the tractor library is already initialized
+		if (engine_initialized)
+			return;
+		
+		engine_initialized = true;
 		Logger::Initialize();
 	}
 
 	/**
-	 * @brief	Runs the provided application.
+	 * @brief	Runs the provided application. Before running the application, the tractor library will be initialized using the initialize_engine() function.
 	 * 
 	 * 	This function is the main entry point for the tractor game engine library. It will run the provided application, which must be derived from the
 	 * 	trac::Application class.
@@ -55,9 +61,9 @@ namespace trac
 	 */
 	void run_application(std::shared_ptr<Application> app)
 	{
-		// Check if the tractor library is initialized
-		if (!is_initialized)
-			initialize_engine();
+		// Ensure that the tractor library is initialized
+		if(!engine_initialized)
+			throw(std::exception("The tractor library has not been initialized. Call the initialize_engine() function before running an application."));
 
 		// Check that the application is not null
 		if (app == nullptr)
@@ -66,16 +72,43 @@ namespace trac
 			return;
 		}
 
-		// Do required initialization here
-
 		// Run the application
+		app_running = true;
 		app->run();
 
-		// Do required cleanup here
+		// Do required cleanup
+		app_running = false;
 
 		return;
 	}
 
+	/**
+	 * @brief	Check if the tractor game engine library is initialized.
+	 * 
+	 * @return bool	True if the tractor library is initialized, false otherwise.
+	 * @retval true	The tractor library is initialized.
+	 * @retval false	The tractor library is not initialized.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	bool is_engine_initialized()
+	{
+		return engine_initialized;
+	}
+
+	/**
+	 * @brief	Check if an application is currently running.
+	 * 
+	 * @return bool	True if an application is running, false otherwise.
+	 * @retval true	An application is running.
+	 * @retval false	No application is running.
+	 * 
+	 * @author	Erlend Elias Isachsen
+	 */
+	bool is_app_running()
+	{
+		return app_running;
+	}
 
 } // Namespace trac
 

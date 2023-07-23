@@ -31,6 +31,9 @@ int main(int argc, char** argv)
 {
 	std::cout << "In main()" << std::endl;
 
+	// Initialize the tractor library
+	trac::initialize_engine();
+
 	// Create the sandbox application
 	std::shared_ptr<app::SandboxApp> sandbox_app = std::make_shared<app::SandboxApp>();
 
@@ -64,7 +67,7 @@ namespace app
 	SandboxApp::SandboxApp() : 
 		trac::Application()
 	{
-		
+		trac::log_client_trace("Creating sandbox application: [%s].", __FUNCTION__);
 	}
 
 	/**
@@ -82,8 +85,7 @@ namespace app
 	 */
 	void SandboxApp::run()
 	{
-		std::shared_ptr<spdlog::logger> logger = trac::Logger::GetClientLogger();
-		logger->info("In SandboxApp::run()");
+		trac::log_client_info("Hello from the sandbox application!");
 	}
 
 } // Namespace app

@@ -24,6 +24,10 @@
 namespace trac
 {
 	void run_application(std::shared_ptr<Application> app);
+	void initialize_engine();
+
+	bool is_engine_initialized();
+	bool is_app_running();
 }
 
 

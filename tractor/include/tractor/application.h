@@ -59,6 +59,8 @@ namespace trac
 		// Private functions
 
 		// Private variables
+
+
 	};
 
 	// Implementation
