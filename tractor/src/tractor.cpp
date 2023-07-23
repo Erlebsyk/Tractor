@@ -1,6 +1,6 @@
 /**
  * @file	tractor.cpp
- * @brief	Main source file for the tractor game engine library. See tractor.hpp for more information.
+ * @brief	Main source file for the tractor game engine library. See tractor.h for more information.
  * 
  * @author	Erlend Elias Isachsen
  * @date	20.07.2023
@@ -9,7 +9,7 @@
 
 // Related header include
 #include "tractor.h"
-#include "logger.hpp"
+#include "logger.h"
 
 // Standard library header includes
 #include <cstdint>

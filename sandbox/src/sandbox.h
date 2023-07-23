@@ -1,5 +1,5 @@
 /**
- * @file	sandbox.hpp
+ * @file	sandbox.h
  * @brief	Main header file for the tractor sandbox. The sandbox can be used to test and play around with the tractor game engine library. The sandbox is not
  * 			part of the core tractor library, though it provides example use cases for how the tractor library can be used.
  * 
@@ -8,8 +8,8 @@
  * 
 */
 
-#ifndef SANDBOX_HPP_
-#define SANDBOX_HPP_
+#ifndef SANDBOX_H_
+#define SANDBOX_H_
 
 // Standard library header includes
 #include <cstdint>
@@ -57,7 +57,7 @@ namespace app
 } // Namespace app
 
 
-#endif // SANDBOX_HPP_ 
+#endif // SANDBOX_H_ 
 
 /*
  * END OF FILE

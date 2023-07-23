@@ -18,8 +18,8 @@
 
 
 // Project header includes
-#include "tractor/application.hpp"
-#include "tractor/logger.hpp"
+#include "tractor/application.h"
+#include "tractor/logger.h"
 
 namespace trac
 {

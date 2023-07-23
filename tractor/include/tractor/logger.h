@@ -1,5 +1,5 @@
 /**
- * @file	logger.hpp
+ * @file	logger.h
  * @brief	Logger module for the tractor game engine library. The logger builds upon the spdlog library, and provides one logger for the engine, and one for
  * 			the client.
  * 	
@@ -13,8 +13,8 @@
  * 
 */
 
-#ifndef LOGGER_HPP
-#define LOGGER_HPP
+#ifndef LOGGER_H_
+#define LOGGER_H_
 
 // Standard library header includes
 #include <cstdint>
@@ -62,7 +62,7 @@ namespace trac
 		 * 
 		 * @author	Erlend Elias Isachsen
 		 */
-		inline static std::shared_ptr<spdlog::logger>& GetEngineLogger() { return engine_logger_s; }
+		inline static std::shared_ptr<spdlog::logger>& GetEngineLogger() { return engine_logger_s_; }
 
 		/**
 		 * @brief	Get the global client Logger object
@@ -71,14 +71,14 @@ namespace trac
 		 * 
 		 * @author	Erlend Elias Isachsen
 		 */
-		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return client_logger_s; }
+		inline static std::shared_ptr<spdlog::logger>& GetClientLogger() { return client_logger_s_; }
 	
 	private:
 		//Private functions
 	
 		//Private variables
-		static std::shared_ptr<spdlog::logger> engine_logger_s;
-		static std::shared_ptr<spdlog::logger> client_logger_s;
+		static std::shared_ptr<spdlog::logger> engine_logger_s_;
+		static std::shared_ptr<spdlog::logger> client_logger_s_;
 	};
 
 	// Implementation
@@ -87,7 +87,7 @@ namespace trac
 } // Namespace trac
 
 
-#endif // LOGGER_HPP 
+#endif // LOGGER_H_ 
 
 /*
  * END OF FILE

@@ -1,5 +1,5 @@
 /**
- * @file	application.hpp
+ * @file	application.h
  * @brief	The tractor application creates a structure for creating applications that use the tractor game engine library.
  * 
  * @author	Erlend Elias Isachsen
@@ -7,8 +7,8 @@
  * 
 */
 
-#ifndef APPLICATION_HPP_
-#define APPLICATION_HPP_
+#ifndef APPLICATION_H_
+#define APPLICATION_H_
 
 // Standard library header includes
 #include <cstdint>
@@ -67,7 +67,7 @@ namespace trac
 } // Namespace trac
 
 
-#endif // APPLICATION_HPP_ 
+#endif // APPLICATION_H_ 
 
 /*
  * END OF FILE

@@ -17,9 +17,15 @@ set(SourceFiles
 	src/logger.cpp
 )
 set(IncludeFiles
-	include/tractor/application.hpp
-	include/tractor/logger.hpp
 	include/tractor.h
+
+	include/tractor/application.h
+	include/tractor/logger.h
+
+	include/tractor/events/event.h
+	include/tractor/events/event_application.h
+	include/tractor/events/event_key.h
+	include/tractor/events/event_mouse.h
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
 

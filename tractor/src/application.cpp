@@ -8,7 +8,7 @@
 */
 
 // Related header include
-#include "application.hpp"
+#include "application.h"
 
 // Standard library header includes
 #include <cstdint>

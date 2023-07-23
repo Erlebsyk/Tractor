@@ -1,6 +1,6 @@
 /**
  * @file	sandbox.cpp
- * @brief	Source file for the tractor sandbox. See sandbox.hpp for more information.
+ * @brief	Source file for the tractor sandbox. See sandbox.h for more information.
  * 
  * @author	Erlend Elias Isachsen
  * @date	20.07.2023
@@ -8,7 +8,7 @@
 */
 
 // Related header include
-#include "sandbox.hpp"
+#include "sandbox.h"
 
 // Standard library header includes
 #include <iostream>
