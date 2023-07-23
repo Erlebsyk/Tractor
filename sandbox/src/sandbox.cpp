@@ -62,7 +62,7 @@ namespace app
 	 * @author	Erlend Elias Isachsen
 	 */
 	SandboxApp::SandboxApp() : 
-		trac::App()
+		trac::Application()
 	{
 		
 	}
@@ -82,7 +82,8 @@ namespace app
 	 */
 	void SandboxApp::run()
 	{
-		std::cout << "In the sandbox app run function!" << std::endl;
+		std::shared_ptr<spdlog::logger> logger = trac::Logger::GetClientLogger();
+		logger->info("In SandboxApp::run()");
 	}
 
 } // Namespace app

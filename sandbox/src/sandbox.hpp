@@ -34,7 +34,7 @@ namespace app
 	 * 
 	 * @author	Erlend Elias Isachsen
 	 */
-	class SandboxApp : public trac::App
+	class SandboxApp : public trac::Application
 	{
 	public:
 		// Constructors and destructors

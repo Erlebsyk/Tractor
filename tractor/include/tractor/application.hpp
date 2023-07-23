@@ -1,14 +1,14 @@
 /**
- * @file	tractor_app.hpp
- * @brief	The tractor app creates a structure for craeting applications that use the tractor game engine library.
+ * @file	application.hpp
+ * @brief	The tractor application creates a structure for creating applications that use the tractor game engine library.
  * 
  * @author	Erlend Elias Isachsen
  * @date	21.07.2023
  * 
 */
 
-#ifndef TRACTOR_APP_HPP_
-#define TRACTOR_APP_HPP_
+#ifndef APPLICATION_HPP_
+#define APPLICATION_HPP_
 
 // Standard library header includes
 #include <cstdint>
@@ -38,12 +38,12 @@ namespace trac
 	 * 
 	 * @author	Erlend Elias Isachsen
 	 */
-	class App
+	class Application
 	{
 	public:
 		// Constructors and destructors
-		App();
-		~App();
+		Application();
+		~Application();
 
 		// Public functions
 
@@ -67,7 +67,7 @@ namespace trac
 } // Namespace trac
 
 
-#endif // TRACTOR_APP_HPP_ 
+#endif // APPLICATION_HPP_ 
 
 /*
  * END OF FILE

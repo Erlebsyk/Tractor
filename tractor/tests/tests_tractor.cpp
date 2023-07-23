@@ -16,12 +16,12 @@ namespace test
 	 * 
 	 * @author	Erlend Elias Isachsen
 	 */
-	class TestApp : public trac::App
+	class TestApp : public trac::Application
 	{
 	public:
 		int8_t value_;
 
-		TestApp() : trac::App(), value_{0} {}
+		TestApp() : trac::Application(), value_{0} {}
 		~TestApp() {}
 		void run() { value_ = 1; }
 	};

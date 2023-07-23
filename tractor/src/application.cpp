@@ -1,5 +1,5 @@
 /**
- * @file	tractor_app.cpp
+ * @file	application.cpp
  * @brief	
  * 
  * @author	Erlend Elias Isachsen
@@ -8,7 +8,7 @@
 */
 
 // Related header include
-#include "tractor_app.hpp"
+#include "application.hpp"
 
 // Standard library header includes
 #include <cstdint>
@@ -40,7 +40,7 @@ namespace trac
 	 * 
 	 * @author	Erlend Elias Isachsen
 	 */
-	App::App()
+	Application::Application()
 	{}
 
 	/**
@@ -48,7 +48,7 @@ namespace trac
 	 * 
 	 * @author	Erlend Elias Isachsen
 	 */
-	App::~App()
+	Application::~Application()
 	{}
 
 

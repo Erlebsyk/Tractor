@@ -13,10 +13,12 @@ include(GNUInstallDirs)
 
 set(SourceFiles
 	src/tractor.cpp
-	src/tractor_app.cpp
+	src/application.cpp
+	src/logger.cpp
 )
 set(IncludeFiles
-	include/tractor_app.hpp
+	include/tractor/application.hpp
+	include/tractor/logger.hpp
 	include/tractor.h
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
@@ -24,6 +26,11 @@ add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
 target_include_directories(${PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:include>
+)
+
+## Include the include directory to simplify the include paths (i.e. removes the need to specify '<tractor/...>' inside the library)
+target_include_directories(${PROJECT_NAME} PRIVATE
+	include/tractor
 )
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	VERSION ${PROJECT_VERSION}

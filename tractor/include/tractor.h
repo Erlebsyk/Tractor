@@ -18,11 +18,12 @@
 
 
 // Project header includes
-#include "tractor_app.hpp"
+#include "tractor/application.hpp"
+#include "tractor/logger.hpp"
 
 namespace trac
 {
-	void run_application(std::shared_ptr<App> app);
+	void run_application(std::shared_ptr<Application> app);
 }
 
 
