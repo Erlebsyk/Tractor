@@ -47,14 +47,15 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)
+target_link_libraries(${PROJECT_NAME} PUBLIC eventpp)
+target_link_libraries(${PROJECT_NAME} PUBLIC SDL3::SDL3)
 
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
-
-target_link_libraries(${PROJECT_NAME} PUBLIC eventpp)
 
 add_subdirectory(externals/eventpp)
 add_subdirectory(externals/glm)
 add_subdirectory(externals/spdlog)
+add_subdirectory(externals/SDL EXCLUDE_FROM_ALL)
 add_subdirectory(externals/googletest)
 add_subdirectory(tests)
 

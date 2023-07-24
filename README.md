@@ -104,8 +104,9 @@ Some of the main planned features of the engine:
 * [![googletest][googletest]][googletest-url]
 * [![OpenGL][opengl]][opengl-url]
 * [![glm][glm]][glm-url]
+* [![sdl][sdl]][sdl-url]
 * [![doxygen][doxygen]][doxygen-url]
-
+* [![graphviz][graphviz]][graphviz-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -125,8 +126,12 @@ This project is a C++ project that uses CMake as a make file. To build the proje
 - [*GCC*](http://gcc.gnu.org/)
 - [*Intel C++ Compose*](https://software.intel.com/en-us/intel-compilers)
 
-To generate the build files you need to have CMake installed. CMake can be downloaded from [here](https://cmake.org/download/).
-Additionally, to generate the documentation you need to have Doxygen installed (optional). Doxygen can be downloaded from [here](https://www.doxygen.nl/download.html).
+Additionally, you will need the following tools to build the project:
+- [*CMake*](https://cmake.org/download/) - To generate the build files you need to have CMake installed.
+- [*Doxygen*](https://www.doxygen.nl/download.html) - To generate the documentation you need to have Doxygen installed.
+- [*Graphviz*](https://graphviz.org/download/) - To generate the visualization for the documentation you need to have Graphviz installed.
+
+Additional library dependencies are automatically included via. git submodules, and included in the project through CMake.
 
 <div id="installation"></div>
 
@@ -164,6 +169,7 @@ To run tests, the google tests are integrated into the CMake build system and ca
 ## Roadmap
 
 - [x] Structured project setup with build system, tests and documentation
+- [x] Logging module
 - [ ] Input/Event system
 - [ ] Renderer
 	- [ ] OpenGL
@@ -236,6 +242,7 @@ Project Link: [https://github.com/Erlebsyk/Tractor](https://github.com/Erlebsyk/
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+<!-- Simple icons can be found at https://simpleicons.org/ --> 
 [contributors-shield]: https://img.shields.io/github/contributors/Erlebsyk/Tractor.svg?style=for-the-badge
 [contributors-url]: https://github.com/Erlebsyk/Tractor/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/Erlebsyk/Tractor.svg?style=for-the-badge
@@ -254,5 +261,9 @@ Project Link: [https://github.com/Erlebsyk/Tractor](https://github.com/Erlebsyk/
 [opengl-url]: https://www.opengl.org/
 [glm]: https://img.shields.io/badge/glm-F36633?style=for-the-badge&logo=glm
 [glm-url]: https://github.com/g-truc/glm
+[sdl]: https://img.shields.io/badge/sdl-113155?style=for-the-badge&logo=sdl
+[sdl-url]: https://github.com/libsdl-org/SDL
 [doxygen]: https://img.shields.io/badge/doxygen-4285F4?style=for-the-badge&logo=doxygen
 [doxygen-url]: https://www.doxygen.nl/
+[graphviz]: https://img.shields.io/badge/graphviz-00005F?style=for-the-badge&logo=graphviz
+[graphviz-url]: https://graphviz.org/

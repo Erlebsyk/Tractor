@@ -21,3 +21,5 @@
 [submodule "tractor/externals/SDL"]
 	path = tractor/externals/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "SDL"]
+	branch = release-2.28.1
