@@ -13,3 +13,8 @@
 	url = https://github.com/gabime/spdlog.git
 [submodule "spdlog"]
 	branch = v1.12.0
+[submodule "tractor/externals/eventpp"]
+	path = tractor/externals/eventpp
+	url = https://github.com/wqking/eventpp.git
+[submodule "eventpp"]
+	branch = v0.1.2-for-hunter-pm

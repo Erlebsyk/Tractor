@@ -20,7 +20,7 @@
 
 
 // Project header includes
-
+#include "events/event.h"
 
 namespace trac
 {
@@ -49,6 +49,7 @@ namespace trac
 		
 		engine_initialized = true;
 		Logger::Initialize();
+		EventDispatcher::Initialize();
 	}
 
 	/**

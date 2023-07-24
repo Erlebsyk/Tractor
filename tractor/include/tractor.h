@@ -21,6 +21,11 @@
 #include "tractor/application.h"
 #include "tractor/logger.h"
 
+#include "tractor/events/event.h"
+#include "tractor/events/event_application.h"
+#include "tractor/events/event_key.h"
+#include "tractor/events/event_mouse.h"
+
 namespace trac
 {
 	void run_application(std::shared_ptr<Application> app);

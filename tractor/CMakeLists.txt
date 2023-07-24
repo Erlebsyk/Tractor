@@ -50,6 +50,9 @@ target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)
 
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 
+target_link_libraries(${PROJECT_NAME} PUBLIC eventpp)
+
+add_subdirectory(externals/eventpp)
 add_subdirectory(externals/glm)
 add_subdirectory(externals/spdlog)
 add_subdirectory(externals/googletest)

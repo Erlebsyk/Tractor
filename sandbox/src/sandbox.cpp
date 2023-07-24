@@ -67,7 +67,7 @@ namespace app
 	SandboxApp::SandboxApp() : 
 		trac::Application()
 	{
-		trac::log_client_trace("Creating sandbox application: [%s].", __FUNCTION__);
+		trac::log_client_trace("Creating sandbox application: [Var={0}].", __FUNCTION__);
 	}
 
 	/**
