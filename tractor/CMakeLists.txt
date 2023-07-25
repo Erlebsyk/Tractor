@@ -15,6 +15,7 @@ set(SourceFiles
 	src/tractor.cpp
 	src/application.cpp
 	src/logger.cpp
+	src/tractor_pch.cpp
 )
 set(IncludeFiles
 	include/tractor.h
@@ -28,6 +29,8 @@ set(IncludeFiles
 	include/tractor/events/event_mouse.h
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
+
+target_precompile_headers(${PROJECT_NAME} PRIVATE src/tractor_pch.h)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
@@ -44,6 +47,10 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_STANDARD 17
 	C_STANDARD 17
 )
+
+set(SDL_SHARED ON)
+set(SDL_STATIC OFF)
+set(SDL_STATIC_LIBS OFF)
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)

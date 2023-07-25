@@ -15,11 +15,6 @@
 #define EVENT_H_
 
 // Standard library header includes
-#include <cstdint>
-#include <string>
-#include <vector>
-#include <ostream>
-#include <memory>
 
 // External libraries header includes
 #include "eventpp/eventdispatcher.h"
