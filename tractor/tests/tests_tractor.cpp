@@ -13,8 +13,6 @@ namespace test
 	/**
 	 * @brief	Create the simplest possible application class for testing. When constructed, the value_ variable is set to 0. When run, the value_ variable is
 	 * 			set to 1.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	class TestApp : public trac::Application
 	{

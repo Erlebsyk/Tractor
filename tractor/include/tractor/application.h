@@ -10,25 +10,8 @@
 #ifndef APPLICATION_H_
 #define APPLICATION_H_
 
-// Standard library header includes
-#include <cstdint>
-
-// External libraries header includes
-
-
-// Project header includes
-
-
 namespace trac
 {
-	// Defines/macros, enums and variables	
-
-
-	// Funciton declarations
-
-
-	// Classes and structs
-
 	/**
 	 * @brief	The base application class that all applications that use the tractor game engine library must inherit from.
 	 * 
@@ -42,35 +25,29 @@ namespace trac
 	{
 	public:
 		// Constructors and destructors
-		Application();
-		~Application();
+
+		/// @brief Default constructor.
+		Application() = default;
+		/// @brief Virtual default destructor.
+		virtual ~Application() = default;
+
+		/// @brief Explicitly defined default copy constructor.
+		Application(const Application& other) = default;
+		/// @brief Explicitly defined default move constructor.
+		Application(Application&& other) = default;
+		/// @brief Explicitly defined default copy assignment operator.
+		Application& operator=(const Application& other) = default;
+		/// @brief Explicitly defined default move assignment operator.
+		Application& operator=(Application&& other) = default;
 
 		// Public functions
 
 		/**
 		 * @brief	The run() function is the entry point for the application. This function must be overridden by the application and implemented according
 		 * 			to the application's functionality.
-		 * 
-		 * @author	Erlend Elias Isachsen
 		 */
 		virtual void run() = 0;
-
-	private:
-		// Private functions
-
-		// Private variables
-
-
 	};
-
-	// Implementation
-
-
 } // Namespace trac
 
-
 #endif // APPLICATION_H_ 
-
-/*
- * END OF FILE
- */

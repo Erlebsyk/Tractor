@@ -17,30 +17,18 @@
 // Standard library header includes
 #include <exception>
 
-// External libraries header includes
-
-
 // Project header includes
 #include "events/event.h"
 
 namespace trac
 {
-	// Defines/macros, enums and variables	
+	/// Flag indicating if the tractor library is initialized.
 	static bool engine_initialized = false;
+	/// Flag indicating if an application is running.
 	static bool app_running = false;
-
-	// Funciton declarations
-	
-
-	// Classes and structs
-
-
-	// Implementation
 
 	/**
 	 * @brief	Initializes the tractor game engine library. This function is called automatically when the first application is run.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	void initialize_engine()
 	{
@@ -90,8 +78,6 @@ namespace trac
 	 * @return bool	True if the tractor library is initialized, false otherwise.
 	 * @retval true	The tractor library is initialized.
 	 * @retval false	The tractor library is not initialized.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	bool is_engine_initialized()
 	{
@@ -104,8 +90,6 @@ namespace trac
 	 * @return bool	True if an application is running, false otherwise.
 	 * @retval true	An application is running.
 	 * @retval false	No application is running.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	bool is_app_running()
 	{
@@ -113,10 +97,5 @@ namespace trac
 	}
 
 } // Namespace trac
-
-/*
- * END OF FILE
- */
-
 
 

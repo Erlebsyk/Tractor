@@ -1,8 +1,6 @@
 // Google Test Framework
 #include <gtest/gtest.h>
 
-// Related header include
-
 // GLM (maths)
 #include <glm/glm.hpp>
 
@@ -70,7 +68,6 @@ GTEST_TEST(externals, glm_vec3_cross)
 }
 
 // Test logging (These are not really unit tests, but they are useful for debugging if checked by used manually.)
-
 // Test direct logging
 GTEST_TEST(externals, spdlog_output_direct)
 {

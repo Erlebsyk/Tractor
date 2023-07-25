@@ -22,8 +22,6 @@
 
 namespace trac
 {
-	// Defines/macros, enums and variables	
-
 	/**
 	 * @brief	Enumeration of mouse buttons, imported from SDL.
 	 * 
@@ -38,11 +36,6 @@ namespace trac
 		kX2 = SDL_BUTTON_X2,
 		kCount = SDL_BUTTON_X2 + 1
 	};
-
-	// Funciton declarations
-
-
-	// Classes and structs
 
 	/**
 	 * @brief	Mouse movement event class. The class stores information about the mouse's position when the event was triggered.
@@ -60,9 +53,8 @@ namespace trac
 		 * @param y	The y position of the mouse cursor.
 		 */
 		EventMouseMovement(const float x, const float y) : Event(), x_(x), y_(y) {}
-		~EventMouseMovement() = default;
 	
-		//Public functions
+		// Public functions
 		const char* GetName() const	{ return "EventMouseMovement"; };
 		const EventType GetType() const { return EventType::kMouseMoved; }
 		event_category_t GetCategoryFlags() const { return (EventCategory::kMouse) | (EventCategory::kInput); }
@@ -86,14 +78,11 @@ namespace trac
 		 * @return float	The y position of the mouse cursor.
 		 */
 		float GetY() const { return y_; }
-
-		//Public variables
 	
 	private:
-		//Private functions
-	
-		//Private variables
+		/// The x position of the mouse cursor.
 		const float x_;
+		/// The y position of the mouse cursor.
 		const float y_;
 	};
 
@@ -113,7 +102,6 @@ namespace trac
 		 * @param offset_y	The y offset of the mouse scrolled event.
 		 */
 		EventMouseScrolled(const float offset_x, const float offset_y) : Event(), offset_x_{offset_x}, offset_y_{offset_y}{}
-		~EventMouseScrolled() = default;
 	
 		//Public functions
 		const char* GetName() const { return "EventMouseScrolled";}
@@ -139,13 +127,7 @@ namespace trac
 		 */
 		float GetOffsetY() const { return offset_y_; }
 
-
-		//Public variables
-	
 	private:
-		//Private functions
-	
-		//Private variables
 		/// The x offset of the mouse scroll wheel.
 		const float offset_x_;
 		/// The y offset of the mouse scroll wheel.
@@ -160,9 +142,6 @@ namespace trac
 	class EventMouseButton : public Event
 	{
 	public:
-		// Constructors and destructors
-		~EventMouseButton() = default;
-	
 		//Public functions
 		event_category_t GetCategoryFlags() const { return (EventCategory::kMouse) | (EventCategory::kInput) | EventCategory::kMouseButton; }
 
@@ -179,11 +158,7 @@ namespace trac
 		 */
 		MouseCode GetButton() const { return button_; }
 
-		//Public variables
-	
 	protected:
-		// Constructors and destructors
-
 		/**
 		 * @brief	Construct a new mouse button event.
 		 * 
@@ -191,17 +166,9 @@ namespace trac
 		 */
 		EventMouseButton(const MouseCode button) : Event(), button_(button) {}
 	
-		//Protected functions
-	
-		//Protected variables
-	
 	private:
-		//Private functions
-	
-		//Private variables
 		/// The mouse button that triggered the event.
 		const MouseCode button_;
-
 	};
 
 	/**
@@ -219,19 +186,10 @@ namespace trac
 		 * @param button	The mouse button that triggered the event.
 		 */
 		EventMouseButtonPress(const MouseCode button) : EventMouseButton(button) {};
-		~EventMouseButtonPress() = default;
 	
 		//Public functions
 		const char* GetName() const { return "EventMouseButtonPress"; }
 		const EventType GetType() const { return EventType::kMouseButtonPressed; }
-	
-		//Public variables
-	
-	private:
-		//Private functions
-	
-		//Private variables
-	
 	};
 
 	/**
@@ -249,29 +207,11 @@ namespace trac
 		 * @param button	The mouse button that triggered the event.
 		 */
 		EventMouseButtonRelease(const MouseCode button) : EventMouseButton(button) {};
-		~EventMouseButtonRelease() = default;
 	
 		//Public functions
 		const char* GetName() const { return "EventMouseButtonRelease"; }
 		const EventType GetType() const { return EventType::kMouseButtonReleased; }
-
-		//Public variables
-	
-	private:
-		//Private functions
-	
-		//Private variables
-	
 	};
-
-	// Implementation
-
-
 } // Namespace trac
 
-
 #endif // EVENT_MOUSE_H_ 
-
-/*
- * END OF FILE
- */

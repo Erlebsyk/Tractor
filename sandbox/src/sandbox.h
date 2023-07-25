@@ -11,23 +11,11 @@
 #ifndef SANDBOX_H_
 #define SANDBOX_H_
 
-// Standard library header includes
-#include <cstdint>
-
 // External libraries header includes
 #include <tractor.h>
 
-// Project header includes
-
-
 namespace app
 {
-	// Defines/macros, enums and variables	
-
-	// Funciton declarations
-
-	// Classes and structs
-
 	/**
 	 * @brief	The SandboxApp class is the main class for the tractor sandbox. The sandbox can be used to test and play around with the tractor game engine
 	 * 			library.
@@ -39,26 +27,10 @@ namespace app
 	public:
 		// Constructors and destructors
 		SandboxApp();
-		~SandboxApp();
 
 		// Public functions
 		void run();
-
-	private:
-		// Private functions
-
-		// Private variables
-
 	};
-
-	// Implementation
-
-
 } // Namespace app
 
-
-#endif // SANDBOX_H_ 
-
-/*
- * END OF FILE
- */
+#endif // SANDBOX_H_

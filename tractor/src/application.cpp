@@ -13,50 +13,8 @@
 // Related header include
 #include "application.h"
 
-// Standard library header includes
-
-
-// External libraries header includes
-
-
-// Project header includes
-
-
 namespace trac
 {
-	// Defines/macros, enums and variables	
-
-
-	// Funciton declarations
-
-
-	// Classes and structs
-
-
-	// Public functions
-
-
-	// Implementation
-
-	/**
-	 * @brief	Default constructor for the tractor application class.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
-	Application::Application()
-	{}
-
-	/**
-	 * @brief	Destroys the tractor application instance.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
-	Application::~Application()
-	{}
-
+	// Future code goes here
 
 } // Namespace trac
-
-/*
- * END OF FILE
- */

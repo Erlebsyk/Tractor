@@ -14,13 +14,9 @@
 #include <cstdint>
 #include <memory>
 
-// External libraries header includes
-
-
 // Project header includes
 #include "tractor/application.h"
 #include "tractor/logger.h"
-
 #include "tractor/events/event.h"
 #include "tractor/events/event_application.h"
 #include "tractor/events/event_key.h"
@@ -35,9 +31,4 @@ namespace trac
 	bool is_app_running();
 }
 
-
-#endif // TRACTOR_H_ 
-
-/*
- * END OF FILE
- */
+#endif // TRACTOR_H_

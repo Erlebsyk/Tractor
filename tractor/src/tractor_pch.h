@@ -25,14 +25,4 @@
 #include <set>
 #include <unordered_set>
 
-// External libraries header includes
-
-
-// Project header includes
-
-
 #endif // TRACTOR_PHC_H_ 
-
-/*
- * END OF FILE
- */

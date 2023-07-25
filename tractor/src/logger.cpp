@@ -13,23 +13,17 @@
 // Related header include
 #include "logger.h"
 
-// Standard library header includes
-
-
-// External libraries header includes
-
-
-// Project header includes
-
-
 namespace trac
 {
-	// Defines/macros, enums and variables
-
+	/// The name of the engine logger.
+	static const char kEngineName[] = "ENGINE";
+	/// The name of the client logger.
+	static const char kClientName[] = "CLIENT";
 	/// The format string for the engine logger.
 	static const char kEngineFormat[] = "[%T:%e] [%n] [%^%L%$] %v";
 	/// The format string for the client logger.
 	static const char kClientFormat[] = "[%T:%e] [%n] [%^%L%$] %v";
+
 	/// The log level for the engine logger.
 	#define ENGINE_LOG_LEVEL spdlog::level::debug
 	/// The log level for the client logger.
@@ -40,20 +34,10 @@ namespace trac
 	/// The global client logger instance.
 	std::shared_ptr<spdlog::logger> Logger::client_logger_s_ = nullptr;
 
-	// Funciton declarations
-
-
-	// Classes and structs
-
-
-	// Implementation
-
 	/**
 	 * @brief	Get the current log level of the engine logger.
 	 * 
 	 * @return LogLevel	The current log level of the engine logger.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	LogLevel log_engine_get_level()
 	{
@@ -64,8 +48,6 @@ namespace trac
 	 * @brief	Set the log level of the engine logger.
 	 * 
 	 * @param lvl	The log level to set.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	void log_engine_set_level(const LogLevel lvl)
 	{
@@ -76,8 +58,6 @@ namespace trac
 	 * @brief	Get the current log level of the client logger.
 	 * 
 	 * @return LogLevel	The current log level of the client logger.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	LogLevel log_client_get_level()
 	{
@@ -88,36 +68,14 @@ namespace trac
 	 * @brief	Set the log level of the client logger.
 	 * 
 	 * @param lvl	The log level to set.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	void log_client_set_level(const LogLevel lvl)
 	{
 		Logger::GetClientLogger()->set_level((spdlog::level::level_enum)(lvl));
 	}
-
-	/**
-	 * @brief	Construct a Logger object.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
-	Logger::Logger()
-	{
-		
-	}
-	
-	/**
-	 * @brief	Destroy the Logger object.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
-	Logger::~Logger()
-	{}
 	
 	/**
 	 * @brief	Initializes the default loggers, one for the engine and one for the client.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	void Logger::Initialize()
 	{
@@ -137,9 +95,4 @@ namespace trac
 			client_logger_s_->debug("Client logger initialized.");
 		}
 	}
-
 } // Namespace trac
-
-/*
- * END OF FILE
- */

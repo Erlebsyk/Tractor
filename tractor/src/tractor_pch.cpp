@@ -9,8 +9,3 @@
 
 // Related header include
 #include "tractor_pch.h"
-
-
-/*
- * END OF FILE
- */
