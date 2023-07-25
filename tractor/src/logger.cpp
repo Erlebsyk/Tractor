@@ -7,14 +7,14 @@
  * 
 */
 
+// Precompiled header include
 #include "tractor_pch.h"
 
 // Related header include
 #include "logger.h"
 
 // Standard library header includes
-#include <cstdint>
-#include <string>
+
 
 // External libraries header includes
 
