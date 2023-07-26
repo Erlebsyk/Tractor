@@ -1,5 +1,5 @@
 /**
- * @file	tractor.h
+ * @file	tractor.hpp
  * @brief	Main header file for the tractor game engine library.
  * 
  * @author	Erlend Elias Isachsen
@@ -7,20 +7,20 @@
  * 
 */
 
-#ifndef TRACTOR_H_
-#define TRACTOR_H_
+#ifndef TRACTOR_HPP_
+#define TRACTOR_HPP_
 
 // Standard library header includes
 #include <cstdint>
 #include <memory>
 
 // Project header includes
-#include "tractor/application.h"
-#include "tractor/logger.h"
-#include "tractor/events/event.h"
-#include "tractor/events/event_application.h"
-#include "tractor/events/event_key.h"
-#include "tractor/events/event_mouse.h"
+#include "tractor/application.hpp"
+#include "tractor/logger.hpp"
+#include "tractor/events/event.hpp"
+#include "tractor/events/event_application.hpp"
+#include "tractor/events/event_key.hpp"
+#include "tractor/events/event_mouse.hpp"
 
 namespace trac
 {
@@ -31,4 +31,4 @@ namespace trac
 	bool is_app_running();
 }
 
-#endif // TRACTOR_H_
+#endif // TRACTOR_HPP_

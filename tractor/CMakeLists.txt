@@ -16,31 +16,39 @@ set(SourceFiles
 	src/application.cpp
 	src/logger.cpp
 	src/tractor_pch.cpp
+
+	src/events/event.cpp
+	src/events/event_application.cpp
+	src/events/event_key.cpp
+	src/events/event_mouse.cpp
 )
 set(IncludeFiles
-	include/tractor.h
+	include/tractor.hpp
 
-	include/tractor/application.h
-	include/tractor/logger.h
+	include/tractor/application.hpp
+	include/tractor/logger.hpp
+	include/tractor/logger.inl
 
-	include/tractor/events/event.h
-	include/tractor/events/event_application.h
-	include/tractor/events/event_key.h
-	include/tractor/events/event_mouse.h
+	include/tractor/events/event.hpp
+	include/tractor/events/event_application.hpp
+	include/tractor/events/event_key.hpp
+	include/tractor/events/event_mouse.hpp
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
 
-target_precompile_headers(${PROJECT_NAME} PRIVATE src/tractor_pch.h)
+target_precompile_headers(${PROJECT_NAME} PRIVATE src/tractor_pch.hpp)
 
-target_include_directories(${PROJECT_NAME} PUBLIC
+target_include_directories(${PROJECT_NAME}
+PUBLIC
 	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 	$<INSTALL_INTERFACE:include>
+PRIVATE
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include/tractor>
+	$<INSTALL_INTERFACE:include/tractor>
+	$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>
+	$<INSTALL_INTERFACE:src>
 )
 
-## Include the include directory to simplify the include paths (i.e. removes the need to specify '<tractor/...>' inside the library)
-target_include_directories(${PROJECT_NAME} PRIVATE
-	include/tractor
-)
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	VERSION ${PROJECT_VERSION}
 	SOVERSION 1

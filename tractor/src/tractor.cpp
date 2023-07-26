@@ -1,6 +1,6 @@
 /**
  * @file	tractor.cpp
- * @brief	Main source file for the tractor game engine library. See tractor.h for more information.
+ * @brief	Main source file for the tractor game engine library. See tractor.hpp for more information.
  * 
  * @author	Erlend Elias Isachsen
  * @date	20.07.2023
@@ -8,17 +8,17 @@
 */
 
 // Precompiled header include
-#include "tractor_pch.h"
+#include "tractor_pch.hpp"
 
 // Related header include
-#include "tractor.h"
-#include "logger.h"
+#include "tractor.hpp"
+#include "logger.hpp"
 
 // Standard library header includes
 #include <exception>
 
 // Project header includes
-#include "events/event.h"
+#include "events/event.hpp"
 
 namespace trac
 {

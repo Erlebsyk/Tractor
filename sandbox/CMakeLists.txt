@@ -12,7 +12,7 @@ endif()
 include(GNUInstallDirs)
 
 set(HeaderFiles
-    src/sandbox.h
+    src/sandbox.hpp
 )
 set(SourceFiles
     src/sandbox.cpp

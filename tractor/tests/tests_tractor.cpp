@@ -2,7 +2,7 @@
 #include <gtest/gtest.h>
 
 // Related header include
-#include <tractor.h>
+#include <tractor.hpp>
 
 // Tractor application tests
 

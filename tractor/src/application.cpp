@@ -8,10 +8,10 @@
 */
 
 // Precompiled header include
-#include "tractor_pch.h"
+#include "tractor_pch.hpp"
 
 // Related header include
-#include "application.h"
+#include "application.hpp"
 
 namespace trac
 {

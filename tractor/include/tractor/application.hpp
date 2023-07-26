@@ -1,5 +1,5 @@
 /**
- * @file	application.h
+ * @file	application.hpp
  * @brief	The tractor application creates a structure for creating applications that use the tractor game engine library.
  * 
  * @author	Erlend Elias Isachsen
@@ -7,8 +7,8 @@
  * 
 */
 
-#ifndef APPLICATION_H_
-#define APPLICATION_H_
+#ifndef APPLICATION_HPP_
+#define APPLICATION_HPP_
 
 namespace trac
 {
@@ -17,7 +17,7 @@ namespace trac
 	 * 
 	 * 	This app class defines the structure for all apps that use the tractor game engine library. The app class is an abstract class, and must be
 	 * 	overridden by the application by creating a derived application class. The derived application class must implement the run() function, which
-	 * 	is the entry point for the application. The run() function is called by calling the run_application() function declared in tractor.h.
+	 * 	is the entry point for the application. The run() function is called by calling the run_application() function declared in tractor.hpp.
 	 * 
 	 * @author	Erlend Elias Isachsen
 	 */
@@ -50,4 +50,4 @@ namespace trac
 	};
 } // Namespace trac
 
-#endif // APPLICATION_H_ 
+#endif // APPLICATION_HPP_ 

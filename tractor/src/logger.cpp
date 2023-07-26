@@ -1,6 +1,6 @@
 /**
  * @file	logger.cpp
- * @brief	Source file for the logging module. See logger.h for more information.
+ * @brief	Source file for the logging module. See logger.hpp for more information.
  * 
  * @author	Erlend Elias Isachsen
  * @date	23.07.2023
@@ -8,10 +8,10 @@
 */
 
 // Precompiled header include
-#include "tractor_pch.h"
+#include "tractor_pch.hpp"
 
 // Related header include
-#include "logger.h"
+#include "logger.hpp"
 
 namespace trac
 {
@@ -74,9 +74,8 @@ namespace trac
 		Logger::GetClientLogger()->set_level((spdlog::level::level_enum)(lvl));
 	}
 	
-	/**
-	 * @brief	Initializes the default loggers, one for the engine and one for the client.
-	 */
+	
+	/// @brief	Initializes the default loggers, one for the engine and one for the client.
 	void Logger::Initialize()
 	{
 		if(engine_logger_s_ == nullptr)
@@ -94,5 +93,25 @@ namespace trac
 			client_logger_s_->set_level(CLIENT_LOG_LEVEL);
 			client_logger_s_->debug("Client logger initialized.");
 		}
+	}
+
+	/**
+	 * @brief	Get the global engine logger instance.
+	 * 
+	 * @return std::shared_ptr<spdlog::logger>&	A reference pointer to the global engine logger instance.
+	 */
+	std::shared_ptr<spdlog::logger>& Logger::GetEngineLogger()
+	{
+		return engine_logger_s_;
+	}
+
+	/**
+	 * @brief	Get the global client Logger object
+	 * 
+	 * @return std::shared_ptr<spdlog::logger>& A reference pointer to the global client logger instance.
+	 */
+	std::shared_ptr<spdlog::logger>& Logger::GetClientLogger()
+	{
+		return client_logger_s_;
 	}
 } // Namespace trac

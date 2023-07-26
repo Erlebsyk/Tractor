@@ -1,5 +1,5 @@
 /**
- * @file	tractor_pch.h
+ * @file	tractor_pch.hpp
  * @brief	Precompiled header file.
  * 
  * @author	Erlend Elias Isachsen
@@ -7,8 +7,8 @@
  * 
 */
 
-#ifndef TRACTOR_PHC_H_
-#define TRACTOR_PHC_H_
+#ifndef TRACTOR_PCH_HPP_
+#define TRACTOR_PCH_HPP_
 
 // Standard library header includes
 #include <iostream>
@@ -25,4 +25,4 @@
 #include <set>
 #include <unordered_set>
 
-#endif // TRACTOR_PHC_H_ 
+#endif // TRACTOR_PCH_HPP_ 
