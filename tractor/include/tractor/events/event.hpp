@@ -9,6 +9,8 @@
  * @author	Erlend Elias Isachsen
  * @date	23.07.2023
  * 
+ * @todo	Implement tests for the event system.
+ * 
 */
 
 #ifndef EVENT_HPP_

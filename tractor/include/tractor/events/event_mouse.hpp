@@ -10,9 +10,6 @@
 #ifndef EVENT_MOUSE_HPP_
 #define EVENT_MOUSE_HPP_
 
-// Standard library header includes
-#include <cstdint>
-
 // External libraries header includes
 #include <SDL_mouse.h>
 
@@ -96,6 +93,18 @@ namespace trac
 	class EventMouseButton : public Event
 	{
 	public:
+		/// @brief Virtual default destructor.
+		virtual ~EventMouseButton() = default;
+
+		/// @brief Explicitly defined default copy constructor.
+		EventMouseButton(const EventMouseButton& other) = default;
+		/// @brief Explicitly defined default move constructor.
+		EventMouseButton(EventMouseButton&& other) = default;
+		/// @brief Explicitly defined default copy assignment operator.
+		EventMouseButton& operator=(const EventMouseButton& other) = default;
+		/// @brief Explicitly defined default move assignment operator.
+		EventMouseButton& operator=(EventMouseButton&& other) = default;
+
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
 

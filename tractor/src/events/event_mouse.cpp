@@ -13,10 +13,6 @@
 // Related header include
 #include "events/event_mouse.hpp"
 
-// Standard library header includes
-#include <string>
-#include <sstream>
-
 namespace trac
 {
 	/**

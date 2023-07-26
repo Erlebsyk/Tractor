@@ -18,6 +18,7 @@
 
 #include <cstdint>
 #include <string>
+#include <sstream>
 #include <array>
 #include <vector>
 #include <map>
