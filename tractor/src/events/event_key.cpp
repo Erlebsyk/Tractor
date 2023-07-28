@@ -178,6 +178,4 @@ namespace trac
 		ss << GetName() << ": " << key_code_;
 		return ss.str();
 	}
-
-
 } // Namespace trac

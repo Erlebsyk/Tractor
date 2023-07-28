@@ -16,19 +16,16 @@
 
 namespace app
 {
-	/**
-	 * @brief	The SandboxApp class is the main class for the tractor sandbox. The sandbox can be used to test and play around with the tractor game engine
-	 * 			library.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	The SandboxApp class is the main class for the tractor sandbox. The sandbox can be used to test and play around with the tractor library.
 	class SandboxApp : public trac::Application
 	{
 	public:
 		// Constructors and destructors
+
 		SandboxApp();
 
 		// Public functions
+		
 		void run();
 	};
 } // Namespace app

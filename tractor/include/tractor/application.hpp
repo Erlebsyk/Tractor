@@ -18,8 +18,6 @@ namespace trac
 	 * 	This app class defines the structure for all apps that use the tractor game engine library. The app class is an abstract class, and must be
 	 * 	overridden by the application by creating a derived application class. The derived application class must implement the run() function, which
 	 * 	is the entry point for the application. The run() function is called by calling the run_application() function declared in tractor.hpp.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	class Application
 	{

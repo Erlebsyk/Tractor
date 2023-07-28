@@ -27,9 +27,7 @@ namespace trac
 	/// Flag indicating if an application is running.
 	static bool app_running = false;
 
-	/**
-	 * @brief	Initializes the tractor game engine library. This function is called automatically when the first application is run.
-	 */
+	/// @brief	Initializes the tractor game engine library. This function is called automatically when the first application is run.
 	void initialize_engine()
 	{
 		// Check if the tractor library is already initialized
@@ -95,7 +93,6 @@ namespace trac
 	{
 		return app_running;
 	}
-
 } // Namespace trac
 
 

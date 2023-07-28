@@ -262,5 +262,4 @@ namespace trac
 	{
 		return EventType::kMouseButtonReleased;
 	}
-
 } // Namespace trac

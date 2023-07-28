@@ -26,11 +26,7 @@
 
 namespace trac
 {
-	/**
-	 * @brief	The log level enum defines the different log levels that can be used in the tractor game engine library.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	The log level enum defines the different log levels that can be used in the tractor game engine library.
 	enum class LogLevel
 	{
 		kTrace		= spdlog::level::trace,
@@ -44,6 +40,7 @@ namespace trac
 	};
 
 	// Declare interface for logging through the engine.
+
 	template<typename... Args>
 	inline void log_engine_log(spdlog::level::level_enum lvl, spdlog::format_string_t<Args...> fmt, Args &&...args);
 	template<typename... Args>
@@ -75,16 +72,13 @@ namespace trac
 	inline void log_client_critical(spdlog::format_string_t<Args...> fmt, Args &&...args);
 
 	// Functions for modifying the loggers.
+
 	LogLevel log_engine_get_level();
 	void log_engine_set_level(LogLevel lvl);
 	LogLevel log_client_get_level();
 	void log_client_set_level(LogLevel lvl);
 
-	/**
-	 * @brief	Logging class for simplifying logging in the tractor game engine library, both for the engine and the client.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Logging class for simplifying logging in the tractor game engine library, both for the engine and the client.
 	class Logger
 	{
 	public:

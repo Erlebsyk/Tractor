@@ -10,9 +10,9 @@
 #ifndef LOGGER_INL_
 #define LOGGER_INL_
 
-// Ensure that this file is only included from the logger.hpp file
+// Ensure that this file is only directly included from the logger.hpp file. Other files should include the logger.hpp file instead.
 #ifndef LOGGER_HPP_
-#error "Do not include this file directly. Include logger.hpp instead."
+#error "Do not include this file directly. Include logger.hpp instead, through which this file is included indirectly."
 #endif // LOGGER_HPP_
 
 namespace trac
