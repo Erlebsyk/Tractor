@@ -21,11 +21,7 @@ namespace trac
 	/// Defines a key code type for the SDL key codes. This is used to ensure that the key codes used by the tractor engine is constant even if 
 	typedef SDL_KeyCode KeyCode;
 
-	/**
-	 * @brief	Key event class. This event is triggered when a key is pressed or released.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Key event class. This event is triggered when a key is pressed or released.
 	class EventKey : public Event
 	{
 	public:
@@ -54,16 +50,16 @@ namespace trac
 	/**
 	 * @brief	Key pressed event class. The class stores information about the key that triggered the event and whether or not the key press is a repeat type
 	 * 			key press.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	class EventKeyPressed : public EventKey
 	{
 	public:
 		// Constructors and destructors
+
 		EventKeyPressed(KeyCode key_code, bool is_repeat = false);
 	
 		//Public functions
+		
 		const char* GetName() const override;
 		const EventType GetType() const override;
 		std::string ToString() const override;
@@ -75,35 +71,31 @@ namespace trac
 		const bool is_repeat_;
 	};
 
-	/**
-	 * @brief	Key released event class. The class stores information about the key that triggered the event.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Key released event class. The class stores information about the key that triggered the event.
 	class EventKeyReleased : public EventKey
 	{
 	public:
 		// Constructors and destructors
+
 		EventKeyReleased(KeyCode key_code);
 	
 		//Public functions
+		
 		const char* GetName() const override;
 		const EventType GetType() const override;
 		std::string ToString() const override;
 	};
 
-	/**
-	 * @brief	Key typed event class. The class stores information about the key that triggered the event.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Key typed event class. The class stores information about the key that triggered the event.
 	class EventKeyTyped : public EventKey
 	{
 	public:
 		// Constructors and destructors
+
 		EventKeyTyped(KeyCode key_code);
 	
 		//Public functions
+
 		const char* GetName() const override;
 		const EventType GetType() const override;
 		std::string ToString() const override;

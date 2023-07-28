@@ -18,11 +18,7 @@
 
 namespace trac
 {
-	/**
-	 * @brief	Enumeration of mouse buttons, imported from SDL.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Enumeration of mouse buttons, imported from SDL.
 	enum class MouseCode : uint16_t
 	{
 		kLeft = SDL_BUTTON_LEFT,
@@ -33,17 +29,16 @@ namespace trac
 		kCount = SDL_BUTTON_X2 + 1
 	};
 
-	/**
-	 * @brief	Mouse movement event class. The class stores information about the mouse's position when the event was triggered.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Mouse movement event class. The class stores information about the mouse's position when the event was triggered.
 	class EventMouseMovement : public Event
 	{
 	public:
+		// Constructors and destructors
+
 		EventMouseMovement(float x, float y);
 	
 		// Public functions
+
 		const char* GetName() const override;
 		const EventType GetType() const override;
 		event_category_t GetCategoryFlags() const override;
@@ -59,11 +54,7 @@ namespace trac
 		const float y_;
 	};
 
-	/**
-	 * @brief	Mouse scroll event class. The class stores information about the mouse's scroll wheel when the event was triggered.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Mouse scroll event class. The class stores information about the mouse's scroll wheel when the event was triggered.
 	class EventMouseScrolled : public Event
 	{
 	public:
@@ -85,14 +76,12 @@ namespace trac
 		const float offset_y_;
 	};
 
-	/**
-	 * @brief	Mouse button event class. The class stores information about the mouse button that triggered the event.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Mouse button event class. The class stores information about the mouse button that triggered the event.
 	class EventMouseButton : public Event
 	{
 	public:
+		// Constructors and destructors
+
 		/// @brief Virtual default destructor.
 		virtual ~EventMouseButton() = default;
 
@@ -104,6 +93,8 @@ namespace trac
 		EventMouseButton& operator=(const EventMouseButton& other) = default;
 		/// @brief Explicitly defined default move assignment operator.
 		EventMouseButton& operator=(EventMouseButton&& other) = default;
+
+		// Public functions
 
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
@@ -118,34 +109,30 @@ namespace trac
 		const MouseCode button_;
 	};
 
-	/**
-	 * @brief	Mouse button pressed event class. The class stores information about the mouse button that triggered the event.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Mouse button pressed event class. The class stores information about the mouse button that triggered the event.
 	class EventMouseButtonPress : public EventMouseButton
 	{
 	public:
 		// Constructors and destructors
+
 		EventMouseButtonPress(MouseCode button);
 	
 		//Public functions
+		
 		const char* GetName() const override;
 		const EventType GetType() const override;
 	};
 
-	/**
-	 * @brief	Mouse button released event class. The class stores information about the mouse button that triggered the event.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Mouse button released event class. The class stores information about the mouse button that triggered the event.
 	class EventMouseButtonRelease : public EventMouseButton
 	{
 	public:
 		// Constructors and destructors
+
 		EventMouseButtonRelease(MouseCode button);
 	
 		//Public functions
+
 		const char* GetName() const override;
 		const EventType GetType() const override;
 	};

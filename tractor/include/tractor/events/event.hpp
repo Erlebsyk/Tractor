@@ -30,11 +30,7 @@ namespace trac
 	struct EventPolicyNb;
 	class EventDispatcher;
 
-	/**
-	 * @brief	The EventType enum defines the different types of events that can be handled by the tractor game engine library.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	The EventType enum defines the different types of events that can be handled by the tractor game engine library.
 	enum class EventType
 	{
 		kNone = 0,
@@ -48,8 +44,6 @@ namespace trac
 	/**
 	 * @brief	The EventCategory enum defines the different categories of events that can be handled by the tractor game engine library. Multiple categories
 	 * 			can be used for a single event, hence the use of bit flags.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	enum EventCategory
 	{
@@ -89,9 +83,7 @@ namespace trac
 	 * 	The event class is an abstract base class, and must be overridden by the event by creating a derived event. The derived event class must implement the
 	 * 	pure virtual functions GetName(), GetType() and GetCategoryFlags(). For better representation of the event data, the ToString() function can be
 	 * 	overridden to provide a string representation of the event data, as the default implementation of the ToString() function only returns the name of
-	 * 	event. S
-	 * 
-	 * @author	Erlend Elias Isachsen
+	 * 	event.
 	 */
 	class Event
 	{
@@ -151,8 +143,6 @@ namespace trac
 	/**
 	 * @brief	Defines a policy for the blocking event dispatcher. This policy is used to get the event type from the event, allowing events to be dispatched
 	 * 			directly without having to explicitly specify the event type.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	struct EventPolicyB
 	{
@@ -162,19 +152,13 @@ namespace trac
 	/**
 	 * @brief	Defines a policy for the non-blocking event dispatcher. This policy is used to get the event type from the event, allowing events to be
 	 * 			dispatched directly without having to explicitly specify the event type.
-	 * 
-	 * @author	Erlend Elias Isachsen
 	 */
 	struct EventPolicyNb
 	{
 		static EventType GetEventType(const std::shared_ptr<Event>& e);
 	};
 
-	/**
-	 * @brief	The EventDispatcher class is used to dispatch events to the event listeners.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	The EventDispatcher class is used to dispatch events to the event listeners.
 	class EventDispatcher
 	{
 	public:

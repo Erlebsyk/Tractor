@@ -17,6 +17,36 @@ namespace trac
 {
 
 	/**
+	 * @brief	Get the name of the event.
+	 * 
+	 * @return const char*	The name of the event.
+	 */
+	const char* EventWindowClose::GetName() const
+	{
+		return "EventWindowClose";
+	}
+
+	/**
+	 * @brief	Get the type of the event.
+	 * 
+	 * @return const EventType	The type of the event.
+	 */
+	const EventType EventWindowClose::GetType() const
+	{
+		return EventType::kWindowClose;
+	}
+
+	/**
+	 * @brief	Get the category flags of the event.
+	 * 
+	 * @return event_category_t	The category flags of the event.
+	 */
+	event_category_t EventWindowClose::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+
+	/**
 	 * @brief	Construct a window resize event with a given width and height.
 	 * 
 	 * @param width	The new width of the window.
@@ -95,9 +125,9 @@ namespace trac
 	 * 
 	 * @return const char*	The name of the event.
 	 */
-	const char* EventWindowClose::GetName() const
+	const char* EventWindowFocus::GetName() const
 	{
-		return "EventWindowClose";
+		return "EventWindowFocus";
 	}
 
 	/**
@@ -105,9 +135,9 @@ namespace trac
 	 * 
 	 * @return const EventType	The type of the event.
 	 */
-	const EventType EventWindowClose::GetType() const
+	const EventType EventWindowFocus::GetType() const
 	{
-		return EventType::kWindowClose;
+		return EventType::kWindowFocus;
 	}
 
 	/**
@@ -115,10 +145,118 @@ namespace trac
 	 * 
 	 * @return event_category_t	The category flags of the event.
 	 */
-	event_category_t EventWindowClose::GetCategoryFlags() const
+	event_category_t EventWindowFocus::GetCategoryFlags() const
 	{
 		return EventCategory::kApplication;
 	}
+	
+	/**
+	 * @brief	Get the name of the event.
+	 * 
+	 * @return const char*	The name of the event.
+	 */
+	const char* EventWindowLostFocus::GetName() const
+	{
+		return "EventWindowLostFocus";
+	}
+
+	/**
+	 * @brief	Get the type of the event.
+	 * 
+	 * @return const EventType	The type of the event.
+	 */
+	const EventType EventWindowLostFocus::GetType() const
+	{
+		return EventType::kWindowLostFocus;	
+	}
+
+	/**
+	 * @brief	Get the category flags of the event.
+	 * 
+	 * @return event_category_t	The category flags of the event.
+	 */
+	event_category_t EventWindowLostFocus::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+	
+	/**
+	 * @brief	Construct a window moved event with a given x and y position.
+	 * 
+	 * @param x	The new horizontal position of the top left corner of the window.
+	 * @param y	The new vertical position of the top left corner of the window.
+	 * 
+	 */
+	EventWindowMoved::EventWindowMoved(const int32_t x, const int32_t y) : 
+		Event(),
+		x_	{ x },
+		y_	{ y }
+	{}
+
+	/**
+	 * @brief	Get the name of the event.
+	 * 
+	 * @return const char*	The name of the event.
+	 * 
+	 */
+	const char* EventWindowMoved::GetName() const
+	{
+		return "EventWindowMoved";
+	}
+
+	/**
+	 * @brief	Get the type of the event.
+	 * 
+	 * @return const EventType	The type of the event.
+	 * 
+	 */
+	const EventType EventWindowMoved::GetType() const
+	{
+		return EventType::kWindowMoved;
+	}
+
+	/**
+	 * @brief	Get the category flags of the event.
+	 * 
+	 * @return event_category_t	The category flags of the event.
+	 */
+	event_category_t EventWindowMoved::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+
+	/**
+	 * @brief	Get a string representation of the event, including the name and the new x and y position of the window.
+	 * 
+	 * @return std::string	The string representation of the event.
+	 */
+	std::string EventWindowMoved::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName() << ": [" << x_ << ", " << y_ << "]";
+		return ss.str();
+	}
+
+	/**
+	 * @brief	Get the x position of the top left corner of the window.
+	 * 
+	 * @return uint32_t	The x position of the top left corner of the window.
+	 */
+	uint32_t EventWindowMoved::GetX() const
+	{
+		return x_;
+	}
+
+	/**
+	 * @brief	Get the y position of the top left corner of the window.
+	 * 
+	 * @return uint32_t	The y position of the top left corner of the window.
+	 */
+	uint32_t EventWindowMoved::GetY() const
+	{
+		return y_;
+	}
+
 
 	/**
 	 * @brief	Get the name of the event.

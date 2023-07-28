@@ -16,11 +16,18 @@
 
 namespace trac
 {
-	/**
-	 * @brief	Window resize event class. This event is triggered when the window is resized.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+
+	
+	/// @brief	Window closed event class. This event is triggered when the window is closed.
+	class EventWindowClose : public Event
+	{
+	public:
+		const char* GetName() const override;
+		const EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+	};
+
+	/// @brief	Window resize event class. This event is triggered when the window is resized.
 	class EventWindowResize : public Event
 	{
 	public:
@@ -40,17 +47,13 @@ namespace trac
 
 	private:
 		/// The width of the window.
-		uint32_t width_;
+		const uint32_t width_;
 		/// The height of the window.
-		uint32_t height_;
+		const uint32_t height_;
 	};
 
-	/**
-	 * @brief	Window closed event class. This event is triggered when the window is closed.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
-	class EventWindowClose : public Event
+	/// @brief	Window focus event.
+	class EventWindowFocus : public Event
 	{
 	public:
 		const char* GetName() const override;
@@ -58,11 +61,41 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 	};
 
-	/**
-	 * @brief	Application tick event class. This event is triggered every frame.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Window lost focus event.
+	class EventWindowLostFocus : public Event
+	{
+	public:
+		const char* GetName() const override;
+		const EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+	};
+
+	/// @brief	Window moved event.
+	class EventWindowMoved : public Event
+	{
+	public:
+		// Constructors and destructors
+		
+		EventWindowMoved(int32_t x, int32_t y);
+
+		// Public functions
+
+		const char* GetName() const override;
+		const EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
+
+		uint32_t GetX() const;
+		uint32_t GetY() const;
+
+	private:
+		/// The x position of the window.
+		const int32_t x_;
+		/// The y position of the window.
+		const int32_t y_;
+	};
+
+	/// @brief	Application tick event class. This event is triggered every frame.
 	class EventAppTick : public Event
 	{
 	public:
@@ -71,11 +104,7 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 	};
 
-	/**
-	 * @brief	Application update event class.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Application update event class.
 	class EventAppUpdate : public Event
 	{
 	public:
@@ -84,11 +113,7 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 	};
 
-	/**
-	 * @brief	Application render event class.
-	 * 
-	 * @author	Erlend Elias Isachsen
-	 */
+	/// @brief	Application render event class.
 	class EventAppRender : public Event
 	{
 	public:
