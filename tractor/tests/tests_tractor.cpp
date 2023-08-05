@@ -4,6 +4,8 @@
 // Related header include
 #include <tractor.hpp>
 
+
+
 // Tractor application tests
 
 // Application tests
@@ -159,5 +161,4 @@ namespace test
 		trac::log_client_error("THIS SHOULD NOT BE VISIBLE!");
 		trac::log_client_critical("THIS SHOULD NOT BE VISIBLE!");
 	}
-
-}
+} // namespace test

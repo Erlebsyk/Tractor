@@ -15,6 +15,7 @@ set(HeaderFiles)
 set(SourceFiles
 	tests_externals.cpp
     tests_tractor.cpp
+	testS_tractor_events.cpp
 )
 add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
 

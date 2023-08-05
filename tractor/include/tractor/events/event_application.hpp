@@ -76,7 +76,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 		
-		EventWindowMoved(int32_t x, int32_t y);
+		EventWindowMoved(uint32_t x, uint32_t y);
 
 		// Public functions
 
@@ -90,9 +90,9 @@ namespace trac
 
 	private:
 		/// The x position of the window.
-		const int32_t x_;
+		const uint32_t x_;
 		/// The y position of the window.
-		const int32_t y_;
+		const uint32_t y_;
 	};
 
 	/// @brief	Application tick event class. This event is triggered every frame.

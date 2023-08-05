@@ -187,7 +187,7 @@ namespace trac
 	 * @param y	The new vertical position of the top left corner of the window.
 	 * 
 	 */
-	EventWindowMoved::EventWindowMoved(const int32_t x, const int32_t y) : 
+	EventWindowMoved::EventWindowMoved(const uint32_t x, const uint32_t y) : 
 		Event(),
 		x_	{ x },
 		y_	{ y }

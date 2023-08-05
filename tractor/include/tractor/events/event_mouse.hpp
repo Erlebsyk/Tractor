@@ -21,6 +21,7 @@ namespace trac
 	/// @brief	Enumeration of mouse buttons, imported from SDL.
 	enum class MouseCode : uint16_t
 	{
+		kUnknown = 0,
 		kLeft = SDL_BUTTON_LEFT,
 		kMiddle = SDL_BUTTON_MIDDLE,
 		kRight = SDL_BUTTON_RIGHT,
