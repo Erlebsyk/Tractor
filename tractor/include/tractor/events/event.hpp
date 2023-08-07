@@ -19,7 +19,6 @@
 // External libraries header includes
 #include "eventpp/eventdispatcher.h"
 #include "eventpp/eventqueue.h"
-
 namespace trac
 {
 	enum class EventType;
@@ -67,13 +66,24 @@ namespace trac
 	typedef eventpp::EventDispatcher<EventType, event_cb_b_fn, EventPolicyB> event_dispatcher_t;
 	/// Defines the type for the event queue.
 	typedef eventpp::EventQueue<EventType, event_cb_nb_fn, EventPolicyNb> event_queue_t;
+	/// Defines the listener id type.
+	typedef uint64_t listener_id_t;
 
 	void event_queue_process();
+	void event_queue_process_one();
+
 	void event_dispatch(std::shared_ptr<Event> e);
 	void event_dispatch_b(Event& e);
 	void event_dispatch_nb(std::shared_ptr<Event> e);
-	void event_add_listener_b(const EventType type, event_cb_b_fn callback);
-	void event_add_listener_nb(const EventType type, event_cb_nb_fn callback);
+
+	listener_id_t event_listener_add_b(const EventType type, event_cb_b_fn callback);
+	listener_id_t event_listener_add_nb(const EventType type, event_cb_nb_fn callback);
+
+	void event_listener_remove_b(listener_id_t id);
+	void event_listener_remove_nb(listener_id_t id);
+	void event_listener_remove_all_b();
+	void event_listener_remove_all_nb();
+	void event_listener_remove_all();
 
 	std::ostream& operator<<(std::ostream& os, const Event& e);
 
