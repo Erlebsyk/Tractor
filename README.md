@@ -107,6 +107,7 @@ Some of the main planned features of the engine:
 * [![sdl][sdl]][sdl-url]
 * [![doxygen][doxygen]][doxygen-url]
 * [![graphviz][graphviz]][graphviz-url]
+* [![eventpp][eventpp]][eventpp-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -121,7 +122,7 @@ Some of the main planned features of the engine:
 
 ### Prerequisites
 
-This project is a C++ project that uses CMake as a make file. To build the project you need to have a C/C++ compiler that support C++17 and higher. For instance:
+This project is a C++ project that uses CMake as its build system. To build the project you need to have a C/C++ compiler that support C++17 or higher. For instance:
 - [*Visual C++*](http://www.visualstudio.com/)
 - [*GCC*](http://gcc.gnu.org/)
 - [*Intel C++ Compose*](https://software.intel.com/en-us/intel-compilers)
@@ -268,3 +269,5 @@ Project Link: [https://github.com/Erlebsyk/Tractor](https://github.com/Erlebsyk/
 [doxygen-url]: https://www.doxygen.nl/
 [graphviz]: https://img.shields.io/badge/graphviz-00005F?style=for-the-badge&logo=graphviz
 [graphviz-url]: https://graphviz.org/
+[eventpp]: https://img.shields.io/badge/eventpp-EF2D5E?style=for-the-badge&logo=eventpp
+[eventpp-url]: https://github.com/wqking/eventpp
