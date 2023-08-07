@@ -235,10 +235,10 @@ namespace test
 	GTEST_TEST(tractor, events_application_blocking)
 	{
 		trac::initialize_engine();
-		KeyEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		ApplicationEventTests::reset();
 		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
@@ -333,40 +333,52 @@ namespace test
 		trac::event_listener_remove_b(id_update);
 		trac::event_listener_remove_b(id_render);
 
+		ApplicationEventTests::reset();
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
+
 		trac::event_dispatch_b(e_window_close);
-		EXPECT_EQ(1, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 
 		trac::event_dispatch_b(e_window_focus);
-		EXPECT_EQ(1, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 
 		trac::event_dispatch_b(e_window_lost_focus);
-		EXPECT_EQ(1, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
 
 		trac::event_dispatch_b(e_window_resize);
-		EXPECT_EQ(1920, ApplicationEventTests::window_width);
-		EXPECT_EQ(1080, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
 
 		trac::event_dispatch_b(e_window_moved);
-		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
-		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
 
 		trac::event_dispatch_b(e_app_tick);
-		EXPECT_EQ(1, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
 
 		trac::event_dispatch_b(e_app_update);
-		EXPECT_EQ(1, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
 
 		trac::event_dispatch_b(e_app_render);
-		EXPECT_EQ(1, ApplicationEventTests::renders_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 	}
 
 	GTEST_TEST(tractor, events_application_non_blocking)
 	{
 		trac::initialize_engine();
-		ApplicationEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		ApplicationEventTests::reset();
 		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
@@ -486,52 +498,64 @@ namespace test
 		trac::event_listener_remove_nb(id_update);
 		trac::event_listener_remove_nb(id_render);
 
+		ApplicationEventTests::reset();
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
+
 		trac::event_dispatch_nb(e_window_close);
-		EXPECT_EQ(1, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 
 		trac::event_dispatch_nb(e_window_focus);
-		EXPECT_EQ(1, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 
 		trac::event_dispatch_nb(e_window_lost_focus);
-		EXPECT_EQ(1, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
 
 		trac::event_dispatch_nb(e_window_resize);
-		EXPECT_EQ(1920, ApplicationEventTests::window_width);
-		EXPECT_EQ(1080, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
 
 		trac::event_dispatch_nb(e_window_moved);
-		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
-		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
 
 		trac::event_dispatch_nb(e_app_tick);
-		EXPECT_EQ(1, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
 
 		trac::event_dispatch_nb(e_app_update);
-		EXPECT_EQ(1, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
 
 		trac::event_dispatch_nb(e_app_render);
-		EXPECT_EQ(1, ApplicationEventTests::renders_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 
 		trac::event_queue_process();
-		EXPECT_EQ(1, ApplicationEventTests::window_close_n);
-		EXPECT_EQ(1, ApplicationEventTests::window_focus_n);
-		EXPECT_EQ(1, ApplicationEventTests::window_lost_focus_n);
-		EXPECT_EQ(1920, ApplicationEventTests::window_width);
-		EXPECT_EQ(1080, ApplicationEventTests::window_height);
-		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
-		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
-		EXPECT_EQ(1, ApplicationEventTests::ticks_n);
-		EXPECT_EQ(1, ApplicationEventTests::updates_n);
-		EXPECT_EQ(1, ApplicationEventTests::renders_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 	}
 
 	GTEST_TEST(tractor, events_application_generic)
 	{
 		trac::initialize_engine();
-		ApplicationEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		ApplicationEventTests::reset();
 		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
@@ -658,43 +682,55 @@ namespace test
 		trac::event_listener_remove_b(id_update_b);
 		trac::event_listener_remove_b(id_render_b);
 
+		ApplicationEventTests::reset();
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
+
 		trac::event_dispatch(e_window_close);
-		EXPECT_EQ(2, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 
 		trac::event_dispatch(e_window_focus);
-		EXPECT_EQ(2, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 
 		trac::event_dispatch(e_window_lost_focus);
-		EXPECT_EQ(2, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
 
 		trac::event_dispatch(e_window_resize);
-		EXPECT_EQ(1920, ApplicationEventTests::window_width);
-		EXPECT_EQ(1080, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
 
 		trac::event_dispatch(e_window_moved);
-		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
-		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
 
 		trac::event_dispatch(e_app_tick);
-		EXPECT_EQ(2, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
 
 		trac::event_dispatch(e_app_update);
-		EXPECT_EQ(2, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
 
 		trac::event_dispatch(e_app_render);
-		EXPECT_EQ(2, ApplicationEventTests::renders_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 
 		trac::event_queue_process();
-		EXPECT_EQ(3, ApplicationEventTests::window_close_n);
-		EXPECT_EQ(3, ApplicationEventTests::window_focus_n);
-		EXPECT_EQ(3, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(1, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(1, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(1, ApplicationEventTests::window_lost_focus_n);
 		EXPECT_EQ(1920, ApplicationEventTests::window_width);
 		EXPECT_EQ(1080, ApplicationEventTests::window_height);
 		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
 		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
-		EXPECT_EQ(3, ApplicationEventTests::ticks_n);
-		EXPECT_EQ(3, ApplicationEventTests::updates_n);
-		EXPECT_EQ(3, ApplicationEventTests::renders_n);
+		EXPECT_EQ(1, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(1, ApplicationEventTests::updates_n);
+		EXPECT_EQ(1, ApplicationEventTests::renders_n);
 
 		// Remove non-blocking listeners and dispatch events
 		trac::event_listener_remove_nb(id_close_nb);
@@ -706,52 +742,64 @@ namespace test
 		trac::event_listener_remove_nb(id_update_nb);
 		trac::event_listener_remove_nb(id_render_nb);
 
+		ApplicationEventTests::reset();
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
+
 		trac::event_dispatch(e_window_close);
-		EXPECT_EQ(3, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
 
 		trac::event_dispatch(e_window_focus);
-		EXPECT_EQ(3, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
 
 		trac::event_dispatch(e_window_lost_focus);
-		EXPECT_EQ(3, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
 
 		trac::event_dispatch(e_window_resize);
-		EXPECT_EQ(1920, ApplicationEventTests::window_width);
-		EXPECT_EQ(1080, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
 
 		trac::event_dispatch(e_window_moved);
-		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
-		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
 
 		trac::event_dispatch(e_app_tick);
-		EXPECT_EQ(3, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
 
 		trac::event_dispatch(e_app_update);
-		EXPECT_EQ(3, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
 
 		trac::event_dispatch(e_app_render);
-		EXPECT_EQ(3, ApplicationEventTests::renders_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 
 		trac::event_queue_process();
-		EXPECT_EQ(3, ApplicationEventTests::window_close_n);
-		EXPECT_EQ(3, ApplicationEventTests::window_focus_n);
-		EXPECT_EQ(3, ApplicationEventTests::window_lost_focus_n);
-		EXPECT_EQ(1920, ApplicationEventTests::window_width);
-		EXPECT_EQ(1080, ApplicationEventTests::window_height);
-		EXPECT_EQ(10, ApplicationEventTests::window_pos_x);
-		EXPECT_EQ(20, ApplicationEventTests::window_pos_y);
-		EXPECT_EQ(3, ApplicationEventTests::ticks_n);
-		EXPECT_EQ(3, ApplicationEventTests::updates_n);
-		EXPECT_EQ(3, ApplicationEventTests::renders_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_close_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_lost_focus_n);
+		EXPECT_EQ(0, ApplicationEventTests::window_width);
+		EXPECT_EQ(0, ApplicationEventTests::window_height);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_x);
+		EXPECT_EQ(0, ApplicationEventTests::window_pos_y);
+		EXPECT_EQ(0, ApplicationEventTests::ticks_n);
+		EXPECT_EQ(0, ApplicationEventTests::updates_n);
+		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 	}
 
 	GTEST_TEST(tractor, events_key_blocking)
 	{
 		trac::initialize_engine();
-		KeyEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		KeyEventTests::reset();
 		EXPECT_EQ(0, KeyEventTests::presses_n);
 		EXPECT_EQ(0, KeyEventTests::releases_n);
 		EXPECT_EQ(0, KeyEventTests::typed_n);
@@ -797,26 +845,32 @@ namespace test
 		trac::event_listener_remove_b(id_released);
 		trac::event_listener_remove_b(id_typed);
 
+		KeyEventTests::reset();
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
+
 		trac::event_dispatch_b(e_key_press);
-		EXPECT_EQ(1, KeyEventTests::presses_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch_b(e_key_release);
-		EXPECT_EQ(1, KeyEventTests::releases_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch_b(e_key_type);
-		EXPECT_EQ(1, KeyEventTests::typed_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 	}
 
 	GTEST_TEST(tractor, events_key_non_blocking)
 	{
 		trac::initialize_engine();
-		KeyEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		KeyEventTests::reset();
 		EXPECT_EQ(0, KeyEventTests::presses_n);
 		EXPECT_EQ(0, KeyEventTests::releases_n);
 		EXPECT_EQ(0, KeyEventTests::typed_n);
@@ -873,32 +927,38 @@ namespace test
 		trac::event_listener_remove_nb(id_released);
 		trac::event_listener_remove_nb(id_typed);
 
+		KeyEventTests::reset();
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
+
 		trac::event_dispatch_nb(e_key_press);
-		EXPECT_EQ(1, KeyEventTests::presses_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch_nb(e_key_release);
-		EXPECT_EQ(1, KeyEventTests::releases_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch_nb(e_key_type);
-		EXPECT_EQ(1, KeyEventTests::typed_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_queue_process();
-		EXPECT_EQ(1, KeyEventTests::presses_n);
-		EXPECT_EQ(1, KeyEventTests::releases_n);
-		EXPECT_EQ(1, KeyEventTests::typed_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 	}
 
 	GTEST_TEST(tractor, events_key_generic)
 	{
 		trac::initialize_engine();
-		KeyEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		KeyEventTests::reset();
 		EXPECT_EQ(0, KeyEventTests::presses_n);
 		EXPECT_EQ(0, KeyEventTests::releases_n);
 		EXPECT_EQ(0, KeyEventTests::typed_n);
@@ -958,22 +1018,28 @@ namespace test
 		trac::event_listener_remove_b(id_released_b);
 		trac::event_listener_remove_b(id_typed_b);
 
+		KeyEventTests::reset();
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
+
 		trac::event_dispatch(e_key_press);
-		EXPECT_EQ(2, KeyEventTests::presses_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch(e_key_release);
-		EXPECT_EQ(2, KeyEventTests::releases_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch(e_key_type);
-		EXPECT_EQ(2, KeyEventTests::typed_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_queue_process();
-		EXPECT_EQ(3, KeyEventTests::presses_n);
-		EXPECT_EQ(3, KeyEventTests::releases_n);
-		EXPECT_EQ(3, KeyEventTests::typed_n);
+		EXPECT_EQ(1, KeyEventTests::presses_n);
+		EXPECT_EQ(1, KeyEventTests::releases_n);
+		EXPECT_EQ(1, KeyEventTests::typed_n);
 		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
 
 		// Remove non-blocking listeners and dispatch events
@@ -981,32 +1047,38 @@ namespace test
 		trac::event_listener_remove_nb(id_released_nb);
 		trac::event_listener_remove_nb(id_typed_nb);
 
+		KeyEventTests::reset();
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
+
 		trac::event_dispatch(e_key_press);
-		EXPECT_EQ(3, KeyEventTests::presses_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch(e_key_release);
-		EXPECT_EQ(3, KeyEventTests::releases_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_dispatch(e_key_type);
-		EXPECT_EQ(3, KeyEventTests::typed_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		trac::event_queue_process();
-		EXPECT_EQ(3, KeyEventTests::presses_n);
-		EXPECT_EQ(3, KeyEventTests::releases_n);
-		EXPECT_EQ(3, KeyEventTests::typed_n);
-		EXPECT_EQ(trac::KeyCode::SDLK_c, KeyEventTests::last_key);
+		EXPECT_EQ(0, KeyEventTests::presses_n);
+		EXPECT_EQ(0, KeyEventTests::releases_n);
+		EXPECT_EQ(0, KeyEventTests::typed_n);
+		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 	}
 
 	GTEST_TEST(tractor, events_mouse_blocking)
 	{
 		trac::initialize_engine();
-		MouseEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		MouseEventTests::reset();
 		EXPECT_EQ(0, MouseEventTests::presses_n);
 		EXPECT_EQ(0, MouseEventTests::releases_n);
 		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
@@ -1066,30 +1138,39 @@ namespace test
 		trac::event_listener_remove_b(id_moved);
 		trac::event_listener_remove_b(id_scrollled);
 
+		MouseEventTests::reset();
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
+
 		trac::event_dispatch_b(e_mouse_press);
-		EXPECT_EQ(1, MouseEventTests::presses_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch_b(e_mouse_release);
-		EXPECT_EQ(1, MouseEventTests::releases_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch_b(e_mouse_move);
-		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
-		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
 
 		trac::event_dispatch_b(e_mouse_scroll);
-		EXPECT_FLOAT_EQ(1.0f, MouseEventTests::scroll_x);
-		EXPECT_FLOAT_EQ(2.0f, MouseEventTests::scroll_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 	}
 
 	GTEST_TEST(tractor, events_mouse_non_blocking)
 	{
 		trac::initialize_engine();
-		MouseEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		MouseEventTests::reset();
 		EXPECT_EQ(0, MouseEventTests::presses_n);
 		EXPECT_EQ(0, MouseEventTests::releases_n);
 		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
@@ -1172,39 +1253,48 @@ namespace test
 		trac::event_listener_remove_nb(id_moved);
 		trac::event_listener_remove_nb(id_scrolled);
 
+		MouseEventTests::reset();
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
+
 		trac::event_dispatch_nb(e_mouse_press);
-		EXPECT_EQ(1, MouseEventTests::presses_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch_nb(e_mouse_release);
-		EXPECT_EQ(1, MouseEventTests::releases_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch_nb(e_mouse_move);
-		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
-		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
 
 		trac::event_dispatch_nb(e_mouse_scroll);
-		EXPECT_FLOAT_EQ(1.0f, MouseEventTests::scroll_x);
-		EXPECT_FLOAT_EQ(2.0f, MouseEventTests::scroll_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 
 		trac::event_queue_process();
-		EXPECT_EQ(1, MouseEventTests::presses_n);
-		EXPECT_EQ(1, MouseEventTests::releases_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
-		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
-		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
-		EXPECT_FLOAT_EQ(1.0f, MouseEventTests::scroll_x);
-		EXPECT_FLOAT_EQ(2.0f, MouseEventTests::scroll_y);
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 	}
 
 	GTEST_TEST(tractor, events_mouse_generic)
 	{
 		trac::initialize_engine();
-		MouseEventTests::reset();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
+		MouseEventTests::reset();
 		EXPECT_EQ(0, MouseEventTests::presses_n);
 		EXPECT_EQ(0, MouseEventTests::releases_n);
 		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
@@ -1285,25 +1375,34 @@ namespace test
 		trac::event_listener_remove_b(id_moved_b);
 		trac::event_listener_remove_b(id_scrolled_b);
 
+		MouseEventTests::reset();
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
+
 		trac::event_dispatch(e_mouse_press);
-		EXPECT_EQ(2, MouseEventTests::presses_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch(e_mouse_release);
-		EXPECT_EQ(2, MouseEventTests::releases_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch(e_mouse_move);
-		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
-		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
 
 		trac::event_dispatch(e_mouse_scroll);
-		EXPECT_FLOAT_EQ(1.0f, MouseEventTests::scroll_x);
-		EXPECT_FLOAT_EQ(2.0f, MouseEventTests::scroll_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 
 		trac::event_queue_process();
-		EXPECT_EQ(3, MouseEventTests::presses_n);
-		EXPECT_EQ(3, MouseEventTests::releases_n);
+		EXPECT_EQ(1, MouseEventTests::presses_n);
+		EXPECT_EQ(1, MouseEventTests::releases_n);
 		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
 		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
 		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
@@ -1316,29 +1415,38 @@ namespace test
 		trac::event_listener_remove_nb(id_moved_nb);
 		trac::event_listener_remove_nb(id_scrolled_nb);
 
+		MouseEventTests::reset();
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
+
 		trac::event_dispatch(e_mouse_press);
-		EXPECT_EQ(3, MouseEventTests::presses_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 		
 		trac::event_dispatch(e_mouse_release);
-		EXPECT_EQ(3, MouseEventTests::releases_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
 
 		trac::event_dispatch(e_mouse_move);
-		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
-		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
 
 		trac::event_dispatch(e_mouse_scroll);
-		EXPECT_FLOAT_EQ(1.0f, MouseEventTests::scroll_x);
-		EXPECT_FLOAT_EQ(2.0f, MouseEventTests::scroll_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 
 		trac::event_queue_process();
-		EXPECT_EQ(3, MouseEventTests::presses_n);
-		EXPECT_EQ(3, MouseEventTests::releases_n);
-		EXPECT_EQ(trac::MouseCode::kRight, MouseEventTests::last_button);
-		EXPECT_FLOAT_EQ(10.0f, MouseEventTests::pos_x);
-		EXPECT_FLOAT_EQ(20.0f, MouseEventTests::pos_y);
-		EXPECT_FLOAT_EQ(1.0f, MouseEventTests::scroll_x);
-		EXPECT_FLOAT_EQ(2.0f, MouseEventTests::scroll_y);
+		EXPECT_EQ(0, MouseEventTests::presses_n);
+		EXPECT_EQ(0, MouseEventTests::releases_n);
+		EXPECT_EQ(trac::MouseCode::kUnknown, MouseEventTests::last_button);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::pos_y);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_x);
+		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 	}
 } // namespace test
