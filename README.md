@@ -172,7 +172,7 @@ To run tests, the google tests are integrated into the CMake build system and ca
 - [x] Structured project setup with build system, tests and documentation
 - [x] Logging module
 - [x] Input/Event system
-- [ ] Window
+- [x] Window
 - [ ] Renderer
 	- [ ] OpenGL
 	- [ ] API

@@ -11,6 +11,7 @@
 #define TRACTOR_PCH_HPP_
 
 // Standard library header includes
+#include <stdio.h>
 #include <iostream>
 #include <memory>
 #include <algorithm>

@@ -234,7 +234,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_application_blocking)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -374,7 +373,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_application_non_blocking)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -551,7 +549,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_application_generic)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -795,7 +792,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_key_blocking)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -866,7 +862,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_key_non_blocking)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -954,7 +949,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_key_generic)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -1074,7 +1068,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_mouse_blocking)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -1166,7 +1159,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_mouse_non_blocking)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0
@@ -1290,7 +1282,6 @@ namespace test
 
 	GTEST_TEST(tractor, events_mouse_generic)
 	{
-		trac::initialize_engine();
 		trac::event_listener_remove_all();
 
 		// Initial values should be 0

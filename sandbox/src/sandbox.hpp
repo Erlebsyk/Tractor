@@ -26,7 +26,7 @@ namespace app
 
 		// Public functions
 		
-		void run();
+		int run() override;
 	};
 } // Namespace app
 

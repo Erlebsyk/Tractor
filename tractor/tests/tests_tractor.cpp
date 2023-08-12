@@ -1,39 +1,55 @@
-// Google Test Framework
-#include <gtest/gtest.h>
 
 // Related header include
 #include <tractor.hpp>
+//#include <tractor/entry_point.hpp>
 
 
+#define ENTRY_POINT_TEST
+#include <tractor/entry_point.hpp>
 
-// Tractor application tests
 
 // Application tests
 
+class TestApp;
+
+/**
+ * @brief	Create the simplest possible application class for testing. When constructed, the value_ variable is set to 0. When run, the value_ variable is
+ * 			set to 1.
+ */
+class TestApp : public trac::Application
+{
+public:
+	TestApp() : trac::Application(), value_{0} {}
+	int run() override
+	{
+		value_++;
+		return 0;
+	}
+
+	/// A simple variable that counts the number of times the run() function has been called.
+	int8_t value_;
+};
+
+/**
+ * @brief	Create the simplest possible application class for testing. When constructed, the value_ variable is set to 0. When run, the value_ variable is
+ * 			incremented by 1.
+ * 
+ * @return std::shared_ptr<trac::Application>	A shared pointer to the test application.
+ */
+std::shared_ptr<trac::Application> trac::create_application()
+{
+	return std::make_shared<TestApp>();
+}
+
+
 namespace test
 {
-	/**
-	 * @brief	Create the simplest possible application class for testing. When constructed, the value_ variable is set to 0. When run, the value_ variable is
-	 * 			set to 1.
-	 */
-	class TestApp : public trac::Application
-	{
-	public:
-		int8_t value_;
 
-		TestApp() : trac::Application(), value_{0} {}
-		~TestApp() {}
-		void run() { value_ = 1; }
-	};
-
-	GTEST_TEST(tractor, engine_initialize)
+	GTEST_TEST(tractor, tractor_initialize)
 	{
-		EXPECT_FALSE(trac::is_engine_initialized());
-		EXPECT_FALSE(trac::is_app_running());
-		trac::initialize_engine();
 		EXPECT_TRUE(trac::is_engine_initialized());
-		EXPECT_FALSE(trac::is_app_running());
 	}
+
 
 	// Check that the test application can be created, and that it is not a nullptr.
 	GTEST_TEST(tractor, app_create)
@@ -51,18 +67,19 @@ namespace test
 		EXPECT_EQ(0, test_app->value_);
 
 		// Run the test application.
-		trac::run_application(test_app);
+		int32_t status = test_app->run();
+		EXPECT_EQ(0, status);
 		EXPECT_EQ(1, test_app->value_);
 
-		// Run the test application again, the value_ variable should still be 1.
-		trac::run_application(test_app);
-		EXPECT_EQ(1, test_app->value_);
+		// Run the test application again, the value_ variable should now be 2.
+		status = test_app->run();
+		EXPECT_EQ(0, status);
+		EXPECT_EQ(2, test_app->value_);
 	}
 
 	// The logging through the tractor logging module.
 	GTEST_TEST(tractor, logging_level)
 	{
-		trac::initialize_engine();
 		trac::log_engine_set_level(trac::LogLevel::kTrace);
 		EXPECT_EQ(trac::LogLevel::kTrace, trac::log_engine_get_level());
 		trac::log_engine_set_level(trac::LogLevel::kDebug);
@@ -108,7 +125,6 @@ namespace test
 
 	GTEST_TEST(tractor, logging_out)
 	{
-		trac::initialize_engine();
 		trac::log_engine_set_level(trac::LogLevel::kTrace);
 		trac::log_engine_trace("This is an engine trace test message.");
 		trac::log_engine_debug("This is an engine debug test message.");
@@ -128,7 +144,6 @@ namespace test
 
 	GTEST_TEST(tractor, logging_out_levels)
 	{
-		trac::initialize_engine();
 		trac::log_engine_set_level(trac::LogLevel::kWarn);
 		trac::log_engine_trace("THIS SHOULD NOT BE VISIBLE!");
 		trac::log_engine_debug("THIS SHOULD NOT BE VISIBLE!");
@@ -161,4 +176,10 @@ namespace test
 		trac::log_client_error("THIS SHOULD NOT BE VISIBLE!");
 		trac::log_client_critical("THIS SHOULD NOT BE VISIBLE!");
 	}
+
+	//GTEST_TEST(tractor, window)
+	//{
+	//	std::shared_ptr<trac::Window> window = trac::Window::Create();
+	//}
+
 } // namespace test

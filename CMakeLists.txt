@@ -7,6 +7,8 @@ set(CMAKE_CXX_FLAGS_RELEASE_INIT "-Wall")
 
 include(CTest)
 
-add_subdirectory(sandbox)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
 add_subdirectory(tractor)
+add_subdirectory(sandbox)
 add_subdirectory(docs)

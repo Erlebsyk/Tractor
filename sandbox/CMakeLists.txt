@@ -29,4 +29,4 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	C_STANDARD 17
 )
 
-target_link_libraries(${PROJECT_NAME} tractor)
+target_link_libraries(${PROJECT_NAME} PUBLIC tractor)

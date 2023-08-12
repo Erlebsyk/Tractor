@@ -43,8 +43,11 @@ namespace trac
 		/**
 		 * @brief	The run() function is the entry point for the application. This function must be overridden by the application and implemented according
 		 * 			to the application's functionality.
+		 * 
+		 * @return int	The exit code for the application. 0 is returned if the application exits successfully, and a negative value is returned if the
+		 * 				application exits with an error.
 		 */
-		virtual void run() = 0;
+		virtual int run() = 0;
 	};
 } // Namespace trac
 

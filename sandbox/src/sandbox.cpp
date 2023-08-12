@@ -10,29 +10,19 @@
 // Related header include
 #include "sandbox.hpp"
 
-// Standard library header includes
-#include <iostream>
-
 // External libraries header includes
-#include <tractor.hpp>
+#include <tractor/entry_point.hpp>
 
 /**
- * @brief	The main function for the sandbox application.
+ * @brief	Creates a sandbox application instance. This function is called automatically by the tractor game engine library's main() function.
  * 
- * @param argc	The number of command line arguments.
- * @param argv	The command line argument vector.
- * @return int	The exit code for the application.
+ * @return std::shared_ptr<trac::Application>	A shared pointer to the sandbox application instance.
  */
-int main(int argc, char** argv)
+std::shared_ptr<trac::Application> trac::create_application()
 {
-	std::cout << "In main()" << std::endl;
-
-	trac::initialize_engine();
-	std::shared_ptr<app::SandboxApp> sandbox_app = std::make_shared<app::SandboxApp>();
-	trac::run_application(sandbox_app);
-
-	return 0;
+	return std::make_shared<app::SandboxApp>();
 }
+
 
 namespace app
 {
@@ -45,10 +35,30 @@ namespace app
 	}
 
 	
-	/// @brief	The main application function. This will be executed through the tractor game engine library's run_application() function.
-	void SandboxApp::run()
+	/// @brief	The main application function. This will be executed through the tractor game engine library's main function in "entry_point.hpp".
+	int SandboxApp::run()
 	{
 		trac::log_client_info("Hello from the sandbox application!");
+
+		trac::log_client_debug("Creating a window...");
+		trac::WindowProperties window_properties("Sandbox", 1280, 720);
+		std::shared_ptr<trac::Window> window = trac::Window::Create(window_properties);
+
+		bool quit = false;
+		SDL_Event e;
+		while( quit == false )
+		{
+			while( SDL_PollEvent( &e ) != 0 )
+			{
+				//User requests quit
+				if( e.type == SDL_QUIT )
+				{
+					quit = true;
+				}
+			}
+		}
+
+		return 0;
 	}
 
 } // Namespace app

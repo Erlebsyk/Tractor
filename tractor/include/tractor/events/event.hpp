@@ -21,9 +21,6 @@
 #include "eventpp/eventqueue.h"
 namespace trac
 {
-	enum class EventType;
-	enum EventCategory;
-
 	class Event;
 	struct EventPolicyB;
 	struct EventPolicyNb;

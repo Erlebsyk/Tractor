@@ -32,7 +32,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 # For Windows: Prevent overriding the parent project's compiler/linker settings
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 
-target_link_libraries(${PROJECT_NAME}
+target_link_libraries(${PROJECT_NAME} PUBLIC
 	tractor
 	GTest::gtest_main
 )

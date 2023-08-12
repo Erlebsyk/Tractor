@@ -14,9 +14,11 @@
 #include <cstdint>
 #include <memory>
 
+
 // Project header includes
 #include "tractor/application.hpp"
 #include "tractor/logger.hpp"
+#include "tractor/window.hpp"
 #include "tractor/events/event.hpp"
 #include "tractor/events/event_application.hpp"
 #include "tractor/events/event_key.hpp"
@@ -24,11 +26,8 @@
 
 namespace trac
 {
-	void run_application(std::shared_ptr<Application> app);
 	void initialize_engine();
-
 	bool is_engine_initialized();
-	bool is_app_running();
 }
 
 #endif // TRACTOR_HPP_

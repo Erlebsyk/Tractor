@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.1.3 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.2.0 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -16,18 +16,24 @@ set(SourceFiles
 	src/application.cpp
 	src/logger.cpp
 	src/tractor_pch.cpp
+	src/window.cpp
 
 	src/events/event.cpp
 	src/events/event_application.cpp
 	src/events/event_key.cpp
 	src/events/event_mouse.cpp
+
+	src/entry_point_app.hpp
+	src/entry_point_test.hpp
 )
 set(IncludeFiles
 	include/tractor.hpp
 
 	include/tractor/application.hpp
+	include/tractor/entry_point.hpp
 	include/tractor/logger.hpp
 	include/tractor/logger.inl
+	include/tractor/window.hpp
 
 	include/tractor/events/event.hpp
 	include/tractor/events/event_application.hpp
@@ -56,6 +62,7 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	C_STANDARD 17
 )
 
+set(SDL_TEST OFF)
 set(SDL_SHARED ON)
 set(SDL_STATIC OFF)
 set(SDL_STATIC_LIBS OFF)
@@ -63,7 +70,7 @@ set(SDL_STATIC_LIBS OFF)
 target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)
 target_link_libraries(${PROJECT_NAME} PUBLIC eventpp)
-target_link_libraries(${PROJECT_NAME} PUBLIC SDL3::SDL3)
+target_link_libraries(${PROJECT_NAME} PUBLIC SDL3::SDL3 SDL3::SDL3main)
 
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 
