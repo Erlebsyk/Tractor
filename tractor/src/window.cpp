@@ -98,7 +98,6 @@ namespace trac
 	/// @brief	Function called whenever the window is updated.
 	void WindowBasic::OnUpdate()
 	{
-		
 	}
 
 	/**
@@ -198,14 +197,17 @@ namespace trac
 		SDL_Surface* screenSurface = SDL_GetWindowSurface( window_ );
 		
 		//Update the surface
-		//SDL_UpdateWindowSurface( window_ );
+		SDL_UpdateWindowSurface( window_ );
 	}
 
+	/**
+	 * @brief	Shuts down the window.
+	 * 
+	 * 	Destroys the window and deletes the OpenGL context.
+	 */
 	void WindowBasic::Shutdown()
 	{
 		SDL_GL_DeleteContext(context_);
 		SDL_DestroyWindow(window_);
 	}
-
-
 } // Namespace trac

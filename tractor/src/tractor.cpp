@@ -12,19 +12,21 @@
 
 // Related header include
 #include "tractor.hpp"
-#include "logger.hpp"
 
 // Standard library header includes
 #include <exception>
 
 // Project header includes
+#include "logger.hpp"
+#include "sdl_hook.hpp"
 #include "events/event.hpp"
+#include "events/event_sdl.hpp"
 
 namespace trac
 {
 	/// Flag indicating if the tractor library is initialized.
 	static bool engine_initialized = false;
-	
+
 	/// @brief	Initializes the tractor game engine library. This function is called automatically when the first application is run.
 	void initialize_engine()
 	{
@@ -35,6 +37,7 @@ namespace trac
 		engine_initialized = true;
 		Logger::Initialize();
 		EventDispatcher::Initialize();
+		sdl_link_events();
 	}
 
 	/**

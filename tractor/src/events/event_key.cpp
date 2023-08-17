@@ -72,7 +72,7 @@ namespace trac
 	 */
 	const EventType EventKeyPressed::GetType() const
 	{
-		return EventType::kKeyPressed;
+		return EventType::kKeyDown;
 	}
 
 	/**
@@ -123,7 +123,7 @@ namespace trac
 	 */
 	const EventType EventKeyReleased::GetType() const
 	{
-		return EventType::kKeyReleased;
+		return EventType::kKeyUp;
 	}
 
 	/**

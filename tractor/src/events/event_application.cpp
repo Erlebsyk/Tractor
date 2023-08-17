@@ -33,7 +33,7 @@ namespace trac
 	 */
 	const EventType EventWindowClose::GetType() const
 	{
-		return EventType::kWindowClose;
+		return EventType::kWindowClosed;
 	}
 
 	/**
@@ -75,7 +75,7 @@ namespace trac
 	 */
 	const EventType EventWindowResize::GetType() const
 	{
-		return EventType::kWindowResize;
+		return EventType::kWindowResized;
 	}
 
 	/**
@@ -137,7 +137,7 @@ namespace trac
 	 */
 	const EventType EventWindowFocus::GetType() const
 	{
-		return EventType::kWindowFocus;
+		return EventType::kWindowFocused;
 	}
 
 	/**

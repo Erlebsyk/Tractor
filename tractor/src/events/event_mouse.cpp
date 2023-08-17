@@ -44,7 +44,7 @@ namespace trac
 	 */
 	const EventType EventMouseMovement::GetType() const
 	{
-		return EventType::kMouseMoved;
+		return EventType::kMouseMotion;
 	}
 
 	/**
@@ -118,7 +118,7 @@ namespace trac
 	 */
 	const EventType EventMouseScrolled::GetType() const
 	{
-		return EventType::kMouseScrolled;
+		return EventType::kMouseWheel;
 	}
 	
 	/**
@@ -231,7 +231,7 @@ namespace trac
 	 */
 	const EventType EventMouseButtonPress::GetType() const
 	{
-		return EventType::kMouseButtonPressed;
+		return EventType::kMouseButtonUp;
 	}
 
 	/**
@@ -260,6 +260,6 @@ namespace trac
 	 */
 	const EventType EventMouseButtonRelease::GetType() const
 	{
-		return EventType::kMouseButtonReleased;
+		return EventType::kMouseButtonDown;
 	}
 } // Namespace trac

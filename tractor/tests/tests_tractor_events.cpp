@@ -287,10 +287,10 @@ namespace test
 		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 
 		// Add listeners and dispatch events
-		const trac::listener_id_t id_close = trac::event_listener_add_b(trac::EventType::kWindowClose, ApplicationEventTests::window_close_cb_b);
-		const trac::listener_id_t id_focus = trac::event_listener_add_b(trac::EventType::kWindowFocus, ApplicationEventTests::window_focus_cb_b);
+		const trac::listener_id_t id_close = trac::event_listener_add_b(trac::EventType::kWindowClosed, ApplicationEventTests::window_close_cb_b);
+		const trac::listener_id_t id_focus = trac::event_listener_add_b(trac::EventType::kWindowFocused, ApplicationEventTests::window_focus_cb_b);
 		const trac::listener_id_t id_lost_focus = trac::event_listener_add_b(trac::EventType::kWindowLostFocus, ApplicationEventTests::window_lost_focus_cb_b);
-		const trac::listener_id_t id_resize = trac::event_listener_add_b(trac::EventType::kWindowResize, ApplicationEventTests::window_resize_cb_b);
+		const trac::listener_id_t id_resize = trac::event_listener_add_b(trac::EventType::kWindowResized, ApplicationEventTests::window_resize_cb_b);
 		const trac::listener_id_t id_moved = trac::event_listener_add_b(trac::EventType::kWindowMoved, ApplicationEventTests::window_moved_cb_b);
 		const trac::listener_id_t id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, ApplicationEventTests::tick_cb_b);
 		const trac::listener_id_t id_update = trac::event_listener_add_b(trac::EventType::kAppUpdate, ApplicationEventTests::update_cb_b);
@@ -438,11 +438,11 @@ namespace test
 		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 
 		// Add listeners and dispatch events
-		const trac::listener_id_t id_close = trac::event_listener_add_nb(trac::EventType::kWindowClose, ApplicationEventTests::window_close_cb_nb);
-		const trac::listener_id_t id_focus = trac::event_listener_add_nb(trac::EventType::kWindowFocus, ApplicationEventTests::window_focus_cb_nb);
+		const trac::listener_id_t id_close = trac::event_listener_add_nb(trac::EventType::kWindowClosed, ApplicationEventTests::window_close_cb_nb);
+		const trac::listener_id_t id_focus = trac::event_listener_add_nb(trac::EventType::kWindowFocused, ApplicationEventTests::window_focus_cb_nb);
 		const trac::listener_id_t id_lost_focus =
 			trac::event_listener_add_nb(trac::EventType::kWindowLostFocus, ApplicationEventTests::window_lost_focus_cb_nb);
-		const trac::listener_id_t id_resize = trac::event_listener_add_nb(trac::EventType::kWindowResize, ApplicationEventTests::window_resize_cb_nb);
+		const trac::listener_id_t id_resize = trac::event_listener_add_nb(trac::EventType::kWindowResized, ApplicationEventTests::window_resize_cb_nb);
 		const trac::listener_id_t id_moved = trac::event_listener_add_nb(trac::EventType::kWindowMoved, ApplicationEventTests::window_moved_cb_nb);
 		const trac::listener_id_t id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, ApplicationEventTests::tick_cb_nb);
 		const trac::listener_id_t id_update = trac::event_listener_add_nb(trac::EventType::kAppUpdate, ApplicationEventTests::update_cb_nb);
@@ -612,16 +612,16 @@ namespace test
 		EXPECT_EQ(0, ApplicationEventTests::renders_n);
 
 		// Add listeners and dispatch events again
-		const trac::listener_id_t id_close_b = trac::event_listener_add_b(trac::EventType::kWindowClose, ApplicationEventTests::window_close_cb_b);
-		const trac::listener_id_t id_close_nb = trac::event_listener_add_nb(trac::EventType::kWindowClose, ApplicationEventTests::window_close_cb_nb);
-		const trac::listener_id_t id_focus_b = trac::event_listener_add_b(trac::EventType::kWindowFocus, ApplicationEventTests::window_focus_cb_b);
-		const trac::listener_id_t id_focus_nb = trac::event_listener_add_nb(trac::EventType::kWindowFocus, ApplicationEventTests::window_focus_cb_nb);
+		const trac::listener_id_t id_close_b = trac::event_listener_add_b(trac::EventType::kWindowClosed, ApplicationEventTests::window_close_cb_b);
+		const trac::listener_id_t id_close_nb = trac::event_listener_add_nb(trac::EventType::kWindowClosed, ApplicationEventTests::window_close_cb_nb);
+		const trac::listener_id_t id_focus_b = trac::event_listener_add_b(trac::EventType::kWindowFocused, ApplicationEventTests::window_focus_cb_b);
+		const trac::listener_id_t id_focus_nb = trac::event_listener_add_nb(trac::EventType::kWindowFocused, ApplicationEventTests::window_focus_cb_nb);
 		const trac::listener_id_t id_lost_focus_b =
 			trac::event_listener_add_b(trac::EventType::kWindowLostFocus, ApplicationEventTests::window_lost_focus_cb_b);
 		const trac::listener_id_t id_lost_focus_nb =
 			trac::event_listener_add_nb(trac::EventType::kWindowLostFocus, ApplicationEventTests::window_lost_focus_cb_nb);
-		const trac::listener_id_t id_resize_b = trac::event_listener_add_b(trac::EventType::kWindowResize, ApplicationEventTests::window_resize_cb_b);
-		const trac::listener_id_t id_resize_nb = trac::event_listener_add_nb(trac::EventType::kWindowResize, ApplicationEventTests::window_resize_cb_nb);
+		const trac::listener_id_t id_resize_b = trac::event_listener_add_b(trac::EventType::kWindowResized, ApplicationEventTests::window_resize_cb_b);
+		const trac::listener_id_t id_resize_nb = trac::event_listener_add_nb(trac::EventType::kWindowResized, ApplicationEventTests::window_resize_cb_nb);
 		const trac::listener_id_t id_moved_b = trac::event_listener_add_b(trac::EventType::kWindowMoved, ApplicationEventTests::window_moved_cb_b);
 		const trac::listener_id_t id_moved_nb = trac::event_listener_add_nb(trac::EventType::kWindowMoved, ApplicationEventTests::window_moved_cb_nb);
 		const trac::listener_id_t id_tick_b = trac::event_listener_add_b(trac::EventType::kAppTick, ApplicationEventTests::tick_cb_b);
@@ -820,8 +820,8 @@ namespace test
 		EXPECT_EQ(trac::KeyCode::SDLK_UNKNOWN, KeyEventTests::last_key);
 
 		// Add listeners and dispatch events
-		const trac::listener_id_t id_pressed = trac::event_listener_add_b(trac::EventType::kKeyPressed, KeyEventTests::press_cb_b);
-		const trac::listener_id_t id_released = trac::event_listener_add_b(trac::EventType::kKeyReleased, KeyEventTests::release_cb_b);
+		const trac::listener_id_t id_pressed = trac::event_listener_add_b(trac::EventType::kKeyDown, KeyEventTests::press_cb_b);
+		const trac::listener_id_t id_released = trac::event_listener_add_b(trac::EventType::kKeyUp, KeyEventTests::release_cb_b);
 		const trac::listener_id_t id_typed = trac::event_listener_add_b(trac::EventType::kKeyTyped, KeyEventTests::typed_cb_b);
 
 		trac::event_dispatch_b(e_key_press);
@@ -895,8 +895,8 @@ namespace test
 		EXPECT_EQ(0, KeyEventTests::typed_n);
 
 		// Add listeners and dispatch events
-		const trac::listener_id_t id_pressed = trac::event_listener_add_nb(trac::EventType::kKeyPressed, KeyEventTests::press_cb_nb);
-		const trac::listener_id_t id_released = trac::event_listener_add_nb(trac::EventType::kKeyReleased, KeyEventTests::release_cb_nb);
+		const trac::listener_id_t id_pressed = trac::event_listener_add_nb(trac::EventType::kKeyDown, KeyEventTests::press_cb_nb);
+		const trac::listener_id_t id_released = trac::event_listener_add_nb(trac::EventType::kKeyUp, KeyEventTests::release_cb_nb);
 		const trac::listener_id_t id_typed = trac::event_listener_add_nb(trac::EventType::kKeyTyped, KeyEventTests::typed_cb_nb);
 
 		trac::event_dispatch_nb(e_key_press);
@@ -982,10 +982,10 @@ namespace test
 		EXPECT_EQ(0, KeyEventTests::typed_n);
 
 		// Add listeners and dispatch events
-		const trac::listener_id_t id_pressed_b = trac::event_listener_add_b(trac::EventType::kKeyPressed, KeyEventTests::press_cb_b);
-		const trac::listener_id_t id_pressed_nb = trac::event_listener_add_nb(trac::EventType::kKeyPressed, KeyEventTests::press_cb_nb);
-		const trac::listener_id_t id_released_b = trac::event_listener_add_b(trac::EventType::kKeyReleased, KeyEventTests::release_cb_b);
-		const trac::listener_id_t id_released_nb = trac::event_listener_add_nb(trac::EventType::kKeyReleased, KeyEventTests::release_cb_nb);
+		const trac::listener_id_t id_pressed_b = trac::event_listener_add_b(trac::EventType::kKeyDown, KeyEventTests::press_cb_b);
+		const trac::listener_id_t id_pressed_nb = trac::event_listener_add_nb(trac::EventType::kKeyDown, KeyEventTests::press_cb_nb);
+		const trac::listener_id_t id_released_b = trac::event_listener_add_b(trac::EventType::kKeyUp, KeyEventTests::release_cb_b);
+		const trac::listener_id_t id_released_nb = trac::event_listener_add_nb(trac::EventType::kKeyUp, KeyEventTests::release_cb_nb);
 		const trac::listener_id_t id_typed_b = trac::event_listener_add_b(trac::EventType::kKeyTyped, KeyEventTests::typed_cb_b);
 		const trac::listener_id_t id_typed_nb = trac::event_listener_add_nb(trac::EventType::kKeyTyped, KeyEventTests::typed_cb_nb);
 
@@ -1104,10 +1104,10 @@ namespace test
 		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 
 		// Add listeners and dispatch events
-		const trac::listener_id_t id_pressed = trac::event_listener_add_b(trac::EventType::kMouseButtonPressed, MouseEventTests::press_cb_b);
-		const trac::listener_id_t id_released = trac::event_listener_add_b(trac::EventType::kMouseButtonReleased, MouseEventTests::release_cb_b);
-		const trac::listener_id_t id_moved = trac::event_listener_add_b(trac::EventType::kMouseMoved, MouseEventTests::move_cb_b);
-		const trac::listener_id_t id_scrollled = trac::event_listener_add_b(trac::EventType::kMouseScrolled, MouseEventTests::scroll_cb_b);
+		const trac::listener_id_t id_pressed = trac::event_listener_add_b(trac::EventType::kMouseButtonUp, MouseEventTests::press_cb_b);
+		const trac::listener_id_t id_released = trac::event_listener_add_b(trac::EventType::kMouseButtonDown, MouseEventTests::release_cb_b);
+		const trac::listener_id_t id_moved = trac::event_listener_add_b(trac::EventType::kMouseMotion, MouseEventTests::move_cb_b);
+		const trac::listener_id_t id_scrollled = trac::event_listener_add_b(trac::EventType::kMouseWheel, MouseEventTests::scroll_cb_b);
 
 		trac::event_dispatch_b(e_mouse_press);
 		EXPECT_EQ(1, MouseEventTests::presses_n);
@@ -1205,10 +1205,10 @@ namespace test
 		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 
 		// Add listeners
-		const trac::listener_id_t id_pressed = trac::event_listener_add_nb(trac::EventType::kMouseButtonPressed, MouseEventTests::press_cb_nb);
-		const trac::listener_id_t id_released = trac::event_listener_add_nb(trac::EventType::kMouseButtonReleased, MouseEventTests::release_cb_nb);
-		const trac::listener_id_t id_moved = trac::event_listener_add_nb(trac::EventType::kMouseMoved, MouseEventTests::move_cb_nb);
-		const trac::listener_id_t id_scrolled = trac::event_listener_add_nb(trac::EventType::kMouseScrolled, MouseEventTests::scroll_cb_nb);
+		const trac::listener_id_t id_pressed = trac::event_listener_add_nb(trac::EventType::kMouseButtonUp, MouseEventTests::press_cb_nb);
+		const trac::listener_id_t id_released = trac::event_listener_add_nb(trac::EventType::kMouseButtonDown, MouseEventTests::release_cb_nb);
+		const trac::listener_id_t id_moved = trac::event_listener_add_nb(trac::EventType::kMouseMotion, MouseEventTests::move_cb_nb);
+		const trac::listener_id_t id_scrolled = trac::event_listener_add_nb(trac::EventType::kMouseWheel, MouseEventTests::scroll_cb_nb);
 
 		// Dispatch events, since they are non-blocking, they should not do anything before processed.
 		trac::event_dispatch_nb(e_mouse_press);
@@ -1326,14 +1326,14 @@ namespace test
 		EXPECT_FLOAT_EQ(0.0f, MouseEventTests::scroll_y);
 
 		// Add listeners and dispatch events again
-		const trac::listener_id_t id_pressed_b = trac::event_listener_add_b(trac::EventType::kMouseButtonPressed, MouseEventTests::press_cb_b);
-		const trac::listener_id_t id_pressed_nb = trac::event_listener_add_nb(trac::EventType::kMouseButtonPressed, MouseEventTests::press_cb_nb);
-		const trac::listener_id_t id_released_b = trac::event_listener_add_b(trac::EventType::kMouseButtonReleased, MouseEventTests::release_cb_b);
-		const trac::listener_id_t id_released_nb = trac::event_listener_add_nb(trac::EventType::kMouseButtonReleased, MouseEventTests::release_cb_nb);
-		const trac::listener_id_t id_moved_b = trac::event_listener_add_b(trac::EventType::kMouseMoved, MouseEventTests::move_cb_b);
-		const trac::listener_id_t id_moved_nb = trac::event_listener_add_nb(trac::EventType::kMouseMoved, MouseEventTests::move_cb_nb);
-		const trac::listener_id_t id_scrolled_b = trac::event_listener_add_b(trac::EventType::kMouseScrolled, MouseEventTests::scroll_cb_b);
-		const trac::listener_id_t id_scrolled_nb = trac::event_listener_add_nb(trac::EventType::kMouseScrolled, MouseEventTests::scroll_cb_nb);
+		const trac::listener_id_t id_pressed_b = trac::event_listener_add_b(trac::EventType::kMouseButtonUp, MouseEventTests::press_cb_b);
+		const trac::listener_id_t id_pressed_nb = trac::event_listener_add_nb(trac::EventType::kMouseButtonUp, MouseEventTests::press_cb_nb);
+		const trac::listener_id_t id_released_b = trac::event_listener_add_b(trac::EventType::kMouseButtonDown, MouseEventTests::release_cb_b);
+		const trac::listener_id_t id_released_nb = trac::event_listener_add_nb(trac::EventType::kMouseButtonDown, MouseEventTests::release_cb_nb);
+		const trac::listener_id_t id_moved_b = trac::event_listener_add_b(trac::EventType::kMouseMotion, MouseEventTests::move_cb_b);
+		const trac::listener_id_t id_moved_nb = trac::event_listener_add_nb(trac::EventType::kMouseMotion, MouseEventTests::move_cb_nb);
+		const trac::listener_id_t id_scrolled_b = trac::event_listener_add_b(trac::EventType::kMouseWheel, MouseEventTests::scroll_cb_b);
+		const trac::listener_id_t id_scrolled_nb = trac::event_listener_add_nb(trac::EventType::kMouseWheel, MouseEventTests::scroll_cb_nb);
 
 		trac::event_dispatch(e_mouse_press);
 		EXPECT_EQ(1, MouseEventTests::presses_n);

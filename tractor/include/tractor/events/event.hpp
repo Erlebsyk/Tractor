@@ -29,12 +29,24 @@ namespace trac
 	/// @brief	The EventType enum defines the different types of events that can be handled by the tractor game engine library.
 	enum class EventType
 	{
-		kNone = 0,
-		kWindowClose, kWindowResize, kWindowFocus, kWindowLostFocus, kWindowMoved,
-		kAppTick, kAppUpdate, kAppRender,
-		kKeyPressed, kKeyReleased, kKeyTyped,
-		kMouseButtonPressed, kMouseButtonReleased, kMouseMoved, kMouseScrolled,
-		kEngineEventCount
+		kNone = 0, // The default event type. This is used for events that are not handled by the tractor game engine library.
+		kWindowClosed, // The window close event type. This is used for window close events.
+		kWindowResized, // The window resize event type. This is used for window resize events.
+		kWindowFocused, // The window focus event type. This is used for window focus events.
+		kWindowLostFocus, // The window lost focus event type. This is used for window lost focus events.
+		kWindowMoved, // The window moved event type. This is used for window moved events.
+		kAppTick, // The application tick event type. This is used for application tick events.
+		kAppUpdate, // The application update event type. This is used for application update events.
+		kAppRender, // The application render event type. This is used for application render events.
+		kKeyDown, // The key pressed event type. This is used for key pressed events.
+		kKeyUp, // The key released event type. This is used for key released events.
+		kKeyTyped, // The key typed event type. This is used for key typed events.
+		kMouseButtonUp, // The mouse button pressed event type. This is used for mouse button pressed events.
+		kMouseButtonDown, // The mouse button released event type. This is used for mouse button released events.
+		kMouseMotion, // The mouse moved event type. This is used for mouse moved events.
+		kMouseWheel, // The mouse scrolled event type. This is used for mouse scrolled events.
+		kSdl, // The SDL event type. This is used for SDL events.
+		kEngineEventCount // The number of event types in the tractor game engine library. This is used to determine the number of event types in the library.
 	};
 
 	/**
@@ -49,7 +61,8 @@ namespace trac
 		kKeyboard		= (1 << 2),
 		kMouse			= (1 << 3),
 		kMouseButton	= (1 << 4),
-		kEngineFinal	= (1 << 5) // This is the last category in the engine. All categories with values below this are reserved for the engine.
+		kSdl			= (1 << 5),
+		kEngineFinal	= (1 << 6) // This is the last category in the engine. All categories with values below this are reserved for the engine.
 	};
 
 	/// Defines the type for the event category bitfield.

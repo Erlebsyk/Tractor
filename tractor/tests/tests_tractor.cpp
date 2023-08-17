@@ -14,12 +14,18 @@ class TestApp;
 
 /**
  * @brief	Create the simplest possible application class for testing. When constructed, the value_ variable is set to 0. When run, the value_ variable is
- * 			set to 1.
+ * 			incremented by 1.
  */
 class TestApp : public trac::Application
 {
 public:
 	TestApp() : trac::Application(), value_{0} {}
+
+	/**
+	 * @brief	Runs the application. Increments the value_ variable by 1 each time it's called.
+	 * 
+	 * @return int	The exit code for the application. 0 is returned if the application exits successfully.
+	 */
 	int run() override
 	{
 		value_++;
