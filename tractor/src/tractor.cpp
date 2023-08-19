@@ -20,7 +20,6 @@
 #include "logger.hpp"
 #include "sdl_hook.hpp"
 #include "events/event.hpp"
-#include "events/event_sdl.hpp"
 
 namespace trac
 {

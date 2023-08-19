@@ -18,9 +18,9 @@
 
 // Project header includes
 #include "events/event_application.hpp"
-#include "events/event_key.hpp"
+//#include "events/event_key.hpp"
 #include "events/event_mouse.hpp"
-#include "events/event_sdl.hpp"
+//#include "events/event_sdl.hpp"
 #include "events/event.hpp"
 
 namespace trac
@@ -76,14 +76,14 @@ namespace trac
 		//	event_dispatch(std::make_shared<EventMouseButtonPress>(event->button.button));
 		//else if(event->type == SDL_MOUSEBUTTONUP)
 		//	event_dispatch(std::make_shared<EventMouseButtonRelease>(event->button.button));
-		else if(event->type == SDL_MOUSEMOTION)
-			event_dispatch(std::make_shared<EventMouseMovement>((float)event->motion.x, (float)event->motion.y));
-		else if(event->type == SDL_MOUSEWHEEL)
-			event_dispatch(std::make_shared<EventMouseScrolled>((float)event->wheel.x, (float)event->wheel.y));
+		//else if(event->type == SDL_MOUSEMOTION)
+		//	event_dispatch(std::make_shared<EventMouseMovement>((float)event->motion.x, (float)event->motion.y));
+		//else if(event->type == SDL_MOUSEWHEEL)
+		//	event_dispatch(std::make_shared<EventMouseScrolled>((float)event->wheel.x, (float)event->wheel.y));
 
 		// Dispatch the SDL event
-		std::shared_ptr<EventSdl> sdl_event = std::make_shared<EventSdl>(event);
-		event_dispatch(sdl_event);
+		//std::shared_ptr<EventSdl> sdl_event = std::make_shared<EventSdl>(event);
+		//event_dispatch(sdl_event);
 
 		return 0;
 	}
@@ -95,16 +95,16 @@ namespace trac
 	 */
 	void sdl_dispatch_window_event(SDL_Event* event)
 	{
-		if(event->window.event == SDL_WINDOWEVENT_CLOSE)
-			event_dispatch(std::make_shared<EventWindowClose>());
-		else if(event->window.event == SDL_WINDOWEVENT_RESIZED)
-			event_dispatch(std::make_shared<EventWindowResize>((uint32_t)event->window.data1, (uint32_t)event->window.data2));
-		else if(event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-			event_dispatch(std::make_shared<EventWindowFocus>());
-		else if(event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
-			event_dispatch(std::make_shared<EventWindowLostFocus>());
-		else if(event->window.event == SDL_WINDOWEVENT_MOVED)
-			event_dispatch(std::make_shared<EventWindowMoved>((uint32_t)event->window.data1, (uint32_t)event->window.data2));
+		//if(event->window.event == SDL_WINDOWEVENT_CLOSE)
+		//	event_dispatch(std::make_shared<EventWindowClose>());
+		//else if(event->window.event == SDL_WINDOWEVENT_RESIZED)
+		//	event_dispatch(std::make_shared<EventWindowResize>((uint32_t)event->window.data1, (uint32_t)event->window.data2));
+		//else if(event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
+		//	event_dispatch(std::make_shared<EventWindowFocus>());
+		//else if(event->window.event == SDL_WINDOWEVENT_FOCUS_LOST)
+		//	event_dispatch(std::make_shared<EventWindowLostFocus>());
+		//else if(event->window.event == SDL_WINDOWEVENT_MOVED)
+		//	event_dispatch(std::make_shared<EventWindowMoved>((uint32_t)event->window.data1, (uint32_t)event->window.data2));
 	}
 
 	/// @brief	Links the SDL window events to the the event dispatcher.

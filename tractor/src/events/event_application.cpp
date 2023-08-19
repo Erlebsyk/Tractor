@@ -3,349 +3,457 @@
  * @brief	Source file for application events. See event_application.hpp for more information.
  * 
  * @author	Erlend Elias Isachsen
- * @date	26.07.2023
+ * @date	18.08.2023
  * 
 */
 
 // Precompiled header include
 #include "tractor_pch.hpp"
 
+// External libraries header includes
+#include "SDL_timer.h" // Used to get the timestamp of the event
+
 // Related header include
 #include "events/event_application.hpp"
 
 namespace trac
 {
-
-	/**
-	 * @brief	Get the name of the event.
-	 * 
-	 * @return const char*	The name of the event.
-	 */
-	const char* EventWindowClose::GetName() const
-	{
-		return "EventWindowClose";
-	}
-
-	/**
-	 * @brief	Get the type of the event.
-	 * 
-	 * @return const EventType	The type of the event.
-	 */
-	const EventType EventWindowClose::GetType() const
-	{
-		return EventType::kWindowClosed;
-	}
-
-	/**
-	 * @brief	Get the category flags of the event.
-	 * 
-	 * @return event_category_t	The category flags of the event.
-	 */
-	event_category_t EventWindowClose::GetCategoryFlags() const
-	{
-		return EventCategory::kApplication;
-	}
-
-	/**
-	 * @brief	Construct a window resize event with a given width and height.
-	 * 
-	 * @param width	The new width of the window.
-	 * @param height	The new height of the window.
-	 */
-	EventWindowResize::EventWindowResize(const uint32_t width, const uint32_t height) :
+	/// @brief Constructs a new App event.
+	EventApp::EventApp() : 
 		Event(),
-		width_	{ width		},
-		height_	{ height	}
+		timestamp_ms_{ SDL_GetTicks64() }
 	{}
 
 	/**
-	 * @brief	Get the name of the event.
+	 * @brief	Get the timestamp of the event in milliseconds.
 	 * 
-	 * @return const char*	The name of the event.
+	 * @return uint64_t	The timestamp of the event in milliseconds.
 	 */
-	const char* EventWindowResize::GetName() const
+	uint64_t EventApp::GetTimestampMs() const
 	{
-		return "EventWindowResize";
+		return timestamp_ms_;
 	}
 
-	/**
-	 * @brief	Get the type of the event.
-	 * 
-	 * @return const EventType	The type of the event.
-	 */
-	const EventType EventWindowResize::GetType() const
-	{
-		return EventType::kWindowResized;
-	}
-
-	/**
-	 * @brief	Get the category flags of the event.
-	 * 
-	 * @return event_category_t	The category flags of the event.
-	 */
-	event_category_t EventWindowResize::GetCategoryFlags() const
-	{
-		return EventCategory::kApplication;
-	}
-	
-	/**
-	 * @brief	Get a string representation of the event, including the name and the width and height of the window.
-	 * 
-	 * @return std::string	The string representation of the event.
-	 */
-	std::string EventWindowResize::ToString() const
-	{
-		std::stringstream ss;
-		ss << GetName() << ": [" << width_ << ", " << height_ << "]";
-		return ss.str();
-	}
-
-	/**
-	 * @brief	Get the width of the window.
-	 * 
-	 * @return uint32_t	The width of the window.
-	 */
-	uint32_t EventWindowResize::GetWidth() const
-	{
-		return width_;
-	}
-
-	/**
-	 * @brief	Get the height of the window.
-	 * 
-	 * @return uint32_t	The height of the window.
-	 */
-	uint32_t EventWindowResize::GetHeight() const
-	{
-		return height_;
-	}
-
-	/**
-	 * @brief	Get the name of the event.
-	 * 
-	 * @return const char*	The name of the event.
-	 */
-	const char* EventWindowFocus::GetName() const
-	{
-		return "EventWindowFocus";
-	}
-
-	/**
-	 * @brief	Get the type of the event.
-	 * 
-	 * @return const EventType	The type of the event.
-	 */
-	const EventType EventWindowFocus::GetType() const
-	{
-		return EventType::kWindowFocused;
-	}
-
-	/**
-	 * @brief	Get the category flags of the event.
-	 * 
-	 * @return event_category_t	The category flags of the event.
-	 */
-	event_category_t EventWindowFocus::GetCategoryFlags() const
-	{
-		return EventCategory::kApplication;
-	}
-	
-	/**
-	 * @brief	Get the name of the event.
-	 * 
-	 * @return const char*	The name of the event.
-	 */
-	const char* EventWindowLostFocus::GetName() const
-	{
-		return "EventWindowLostFocus";
-	}
-
-	/**
-	 * @brief	Get the type of the event.
-	 * 
-	 * @return const EventType	The type of the event.
-	 */
-	const EventType EventWindowLostFocus::GetType() const
-	{
-		return EventType::kWindowLostFocus;	
-	}
-
-	/**
-	 * @brief	Get the category flags of the event.
-	 * 
-	 * @return event_category_t	The category flags of the event.
-	 */
-	event_category_t EventWindowLostFocus::GetCategoryFlags() const
-	{
-		return EventCategory::kApplication;
-	}
-	
-	/**
-	 * @brief	Construct a window moved event with a given x and y position.
-	 * 
-	 * @param x	The new horizontal position of the top left corner of the window.
-	 * @param y	The new vertical position of the top left corner of the window.
-	 * 
-	 */
-	EventWindowMoved::EventWindowMoved(const uint32_t x, const uint32_t y) : 
-		Event(),
-		x_	{ x },
-		y_	{ y }
+	/// @brief Constructs a new AppTerminating event.
+	EventAppTerminating::EventAppTerminating() : 
+		EventApp()
 	{}
-
+	
 	/**
-	 * @brief	Get the name of the event.
+	 * @brief Get the name of the event.
 	 * 
-	 * @return const char*	The name of the event.
-	 * 
+	 * @return const char* The name of the event.
 	 */
-	const char* EventWindowMoved::GetName() const
+	const char* EventAppTerminating::GetName() const
 	{
-		return "EventWindowMoved";
+		return "EventAppTerminating";
 	}
-
+	
 	/**
-	 * @brief	Get the type of the event.
+	 * @brief Get the type of the event.
 	 * 
-	 * @return const EventType	The type of the event.
-	 * 
+	 * @return EventType The type of the event.
 	 */
-	const EventType EventWindowMoved::GetType() const
+	EventType EventAppTerminating::GetType() const
 	{
-		return EventType::kWindowMoved;
+		return EventType::kAppTerminating;
 	}
-
+	
 	/**
-	 * @brief	Get the category flags of the event.
+	 * @brief Get the category flags of the event.
 	 * 
-	 * @return event_category_t	The category flags of the event.
+	 * @return event_category_t The category flags of the event.
 	 */
-	event_category_t EventWindowMoved::GetCategoryFlags() const
+	event_category_t EventAppTerminating::GetCategoryFlags() const
 	{
 		return EventCategory::kApplication;
 	}
 
 	/**
-	 * @brief	Get a string representation of the event, including the name and the new x and y position of the window.
+	 * @brief Get the string representation of the event.
 	 * 
-	 * @return std::string	The string representation of the event.
+	 * @return std::string The string representation of the event.
 	 */
-	std::string EventWindowMoved::ToString() const
+	std::string EventAppTerminating::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [" << x_ << ", " << y_ << "]";
+		ss << GetName();
 		return ss.str();
 	}
 
+	/// @brief Constructs a new AppLowMemory event.
+	EventAppLowMemory::EventAppLowMemory() :
+		EventApp()
+	{}
+	
 	/**
-	 * @brief	Get the x position of the top left corner of the window.
+	 * @brief Get the name of the event.
 	 * 
-	 * @return uint32_t	The x position of the top left corner of the window.
+	 * @return const char* The name of the event.
 	 */
-	uint32_t EventWindowMoved::GetX() const
+	const char* EventAppLowMemory::GetName() const
 	{
-		return x_;
+		return "EventAppLowMemory";
+	}
+	
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventAppLowMemory::GetType() const
+	{
+		return EventType::kAppLowMemory;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppLowMemory::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventAppLowMemory::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
 	}
 
+	/// @brief Constructs a new AppEnteringBackground event.
+	EventAppEnteringBackground::EventAppEnteringBackground() :
+		EventApp()
+	{}
+	
 	/**
-	 * @brief	Get the y position of the top left corner of the window.
+	 * @brief Get the name of the event.
 	 * 
-	 * @return uint32_t	The y position of the top left corner of the window.
+	 * @return const char* The name of the event.
 	 */
-	uint32_t EventWindowMoved::GetY() const
+	const char* EventAppEnteringBackground::GetName() const
 	{
-		return y_;
+		return "EventAppEnteringBackground";
+	}
+	
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventAppEnteringBackground::GetType() const
+	{
+		return EventType::kAppEnteringBackground;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppEnteringBackground::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventAppEnteringBackground::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
 	}
 
-
+	/// @brief Constructs a new AppEnteredBackground event.
+	EventAppEnteredBackground::EventAppEnteredBackground() :
+		EventApp()
+	{}
+	
 	/**
-	 * @brief	Get the name of the event.
+	 * @brief Get the name of the event.
 	 * 
-	 * @return const char*	The name of the event.
+	 * @return const char* The name of the event.
+	 */
+	const char* EventAppEnteredBackground::GetName() const
+	{
+		return "EventAppEnteredBackground";
+	}
+	
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventAppEnteredBackground::GetType() const
+	{
+		return EventType::kAppEnteredBackground;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppEnteredBackground::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventAppEnteredBackground::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
+	}
+
+	/// @brief Constructs a new AppEnteringForeground event.
+	EventAppEnteringForeground::EventAppEnteringForeground() :
+		EventApp()
+	{}
+	
+	/**
+	 * @brief Get the name of the event.
+	 * 
+	 * @return const char* The name of the event.
+	 */
+	const char* EventAppEnteringForeground::GetName() const
+	{
+		return "EventAppEnteringForeground";
+	}
+	
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventAppEnteringForeground::GetType() const
+	{
+		return EventType::kAppEnteringForeground;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppEnteringForeground::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventAppEnteringForeground::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
+	}
+
+	/// @brief Constructs a new AppEnteredForeground event.
+	EventAppEnteredForeground::EventAppEnteredForeground() :
+		EventApp()
+	{}
+	
+	/**
+	 * @brief Get the name of the event.
+	 * 
+	 * @return const char* The name of the event.
+	 */
+	const char* EventAppEnteredForeground::GetName() const
+	{
+		return "EventAppEnteredForeground";
+	}
+	
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventAppEnteredForeground::GetType() const
+	{
+		return EventType::kAppEnteredForeground;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppEnteredForeground::GetCategoryFlags() const
+	{
+		return EventCategory::kApplication;
+	}
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventAppEnteredForeground::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
+	}
+
+	/// @brief Constructs a new AppTick event.
+	EventAppTick::EventAppTick() :
+		EventApp()
+	{}
+	
+	/**
+	 * @brief Get the name of the event.
+	 * 
+	 * @return const char* The name of the event.
 	 */
 	const char* EventAppTick::GetName() const
 	{
 		return "EventAppTick";
 	}
-
+	
 	/**
-	 * @brief	Get the type of the event.
+	 * @brief Get the type of the event.
 	 * 
-	 * @return const EventType	The type of the event.
+	 * @return EventType The type of the event.
 	 */
-	const EventType EventAppTick::GetType() const
+	EventType EventAppTick::GetType() const
 	{
 		return EventType::kAppTick;
 	}
-
+	
 	/**
-	 * @brief	Get the category flags of the event.
+	 * @brief Get the category flags of the event.
 	 * 
-	 * @return event_category_t	The category flags of the event.
+	 * @return event_category_t The category flags of the event.
 	 */
 	event_category_t EventAppTick::GetCategoryFlags() const
 	{
 		return EventCategory::kApplication;
 	}
-
+	
 	/**
-	 * @brief	Get the name of the event.
+	 * @brief Get the string representation of the event.
 	 * 
-	 * @return const char*	The name of the event.
+	 * @return std::string The string representation of the event.
 	 */
-	const char* EventAppUpdate::GetName() const
+	std::string EventAppTick::ToString() const
 	{
-		return "EventAppUpdate";
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
 	}
 
+	/// @brief Constructs a new AppUpdated event.
+	EventAppUpdated::EventAppUpdated() :
+		EventApp()
+	{}
+	
 	/**
-	 * @brief	Get the type of the event.
+	 * @brief Get the name of the event.
 	 * 
-	 * @return const EventType	The type of the event.
+	 * @return const char* The name of the event.
 	 */
-	const EventType EventAppUpdate::GetType() const
+	const char* EventAppUpdated::GetName() const
 	{
-		return EventType::kAppUpdate;
+		return "EventAppUpdated";
 	}
-
+	
 	/**
-	 * @brief	Get the category flags of the event.
+	 * @brief Get the type of the event.
 	 * 
-	 * @return event_category_t	The category flags of the event.
+	 * @return EventType The type of the event.
 	 */
-	event_category_t EventAppUpdate::GetCategoryFlags() const
-	{	
+	EventType EventAppUpdated::GetType() const
+	{
+		return EventType::kAppUpdated;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppUpdated::GetCategoryFlags() const
+	{
 		return EventCategory::kApplication;
 	}
 	
 	/**
-	 * @brief	Get the name of the event.
+	 * @brief Get the string representation of the event.
 	 * 
-	 * @return const char*	The name of the event.
+	 * @return std::string The string representation of the event.
 	 */
-	const char* EventAppRender::GetName() const
+	std::string EventAppUpdated::ToString() const
 	{
-		return "EventAppRender";
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
 	}
 
+	/// @brief Constructs a new AppRendered event.
+	EventAppRendered::EventAppRendered() :
+		EventApp()
+	{}
+	
 	/**
-	 * @brief	Get the type of the event.
+	 * @brief Get the name of the event.
 	 * 
-	 * @return const EventType	The type of the event.
+	 * @return const char* The name of the event.
 	 */
-	const EventType EventAppRender::GetType() const
+	const char* EventAppRendered::GetName() const
 	{
-		return EventType::kAppRender;
+		return "EventAppRendered";
 	}
-
+	
 	/**
-	 * @brief	Get the category flags of the event.
+	 * @brief Get the type of the event.
 	 * 
-	 * @return event_category_t	The category flags of the event.
+	 * @return EventType The type of the event.
 	 */
-	event_category_t EventAppRender::GetCategoryFlags() const
+	EventType EventAppRendered::GetType() const
+	{
+		return EventType::kAppRendered;
+	}
+	
+	/**
+	 * @brief Get the category flags of the event.
+	 * 
+	 * @return event_category_t The category flags of the event.
+	 */
+	event_category_t EventAppRendered::GetCategoryFlags() const
 	{
 		return EventCategory::kApplication;
 	}
-
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventAppRendered::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName();
+		return ss.str();
+	}
 } // Namespace trac

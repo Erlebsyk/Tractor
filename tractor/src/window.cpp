@@ -198,6 +198,7 @@ namespace trac
 		
 		//Update the surface
 		SDL_UpdateWindowSurface( window_ );
+		
 	}
 
 	/**

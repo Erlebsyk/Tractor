@@ -1,6 +1,6 @@
 /**
- * @file	event_mouse.cpp
- * @brief	Source file for mouse events. See event_mouse.hpp for more information.
+ * @file	event_gesture.cpp
+ * @brief	Source file for gesture events. See event_gesture.hpp for more information.
  * 
  * @author	Erlend Elias Isachsen
  * @date	18.08.2023
@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_mouse.hpp"
+#include "events/event_gesture.hpp"
 
 namespace trac
 {

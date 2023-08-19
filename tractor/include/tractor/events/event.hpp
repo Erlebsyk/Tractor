@@ -29,24 +29,108 @@ namespace trac
 	/// @brief	The EventType enum defines the different types of events that can be handled by the tractor game engine library.
 	enum class EventType
 	{
-		kNone = 0, // The default event type. This is used for events that are not handled by the tractor game engine library.
-		kWindowClosed, // The window close event type. This is used for window close events.
-		kWindowResized, // The window resize event type. This is used for window resize events.
-		kWindowFocused, // The window focus event type. This is used for window focus events.
-		kWindowLostFocus, // The window lost focus event type. This is used for window lost focus events.
-		kWindowMoved, // The window moved event type. This is used for window moved events.
-		kAppTick, // The application tick event type. This is used for application tick events.
-		kAppUpdate, // The application update event type. This is used for application update events.
-		kAppRender, // The application render event type. This is used for application render events.
-		kKeyDown, // The key pressed event type. This is used for key pressed events.
-		kKeyUp, // The key released event type. This is used for key released events.
-		kKeyTyped, // The key typed event type. This is used for key typed events.
-		kMouseButtonUp, // The mouse button pressed event type. This is used for mouse button pressed events.
-		kMouseButtonDown, // The mouse button released event type. This is used for mouse button released events.
-		kMouseMotion, // The mouse moved event type. This is used for mouse moved events.
-		kMouseWheel, // The mouse scrolled event type. This is used for mouse scrolled events.
-		kSdl, // The SDL event type. This is used for SDL events.
-		kEngineEventCount // The number of event types in the tractor game engine library. This is used to determine the number of event types in the library.
+		kNone = 0, // No event type. First event type equals 0.
+
+		// System events
+		kQuit, // User requested quit event.
+		kLocaleChanged, // The user's locale preferences have changed.
+		kClipboardUpdate, // The clipboard changed.
+		kDropFile, // The system requests a file open.
+		kDropText, // text/plain drag-and-drop event.
+		kDropBegin, // A new set of drops is beginning (NULL filename).
+		kDropComplete, // Current set of drops is now complete (NULL filename).
+
+		// Audio hotplug events
+		kAudioDeviceAdded, // A new audio device is available.
+		kAudioDeviceRemoved, // An audio device has been removed.
+
+		// Application events
+		kAppTerminating, // The application is being terminated by the OS.
+		kAppLowMemory, // The application is low on memory, free memory if possible.
+		kAppEnteringBackground, // The application is about to enter the background.
+		kAppEnteredBackground, // The application did enter the background and may not get CPU for some time.
+		kAppEnteringForeground, // The application is about to enter the foreground.
+		kAppEnteredForeground, // The application is now interactive.
+		kAppTick, // Application tick event.
+		kAppUpdated, // Application update event.
+		kAppRendered, // Application render event.
+
+		// Display events
+		kDisplayOrientation, // Display orientation has changed.
+		kDisplayConnected, // Display has been added to the system.
+		kDisplayDisconnected, // Display has been removed from the system.
+
+		// Window events
+		kWindowShown, // Window has been shown.
+		kWindowHidden, // Window has been hidden.
+		kWindowExposed, // Window has been exposed and should be redrawn.
+		kWindowMoved, // Window has been moved.
+		kWindowResized, // Window has been resized.
+		kWindowSizeChanged, // The window size has changed, either as a result of an API call or through the system or user changing the window size.
+		kWindowMinimized, // Window has been minimized.
+		kWindowMaximized, // Window has been maximized.
+		kWindowRestored, // Window has been restored to normal size and position.
+		kWindowEnter, // Window has gained mouse focus.
+		kWindowLeave, // Window has lost mouse focus.
+		kWindowFocusGained, // Window has gained keyboard focus.
+		kWindowFocusLost, // Window has lost keyboard focus.
+		kWindowTakeFocus, // Window is being offered a focus.
+		kWindowHitTest, // Window had a hit test that wasn't SDL_HITTEST_NORMAL.
+		kWindowIccProfileChanged, // Window has had its ICC profile changed.
+		kWindowDisplayChanged, // Window display data has changed.
+		kWindowClose, // The window manager requests that the window be closed.
+		
+		// Keyboard events
+		kKeyDown, // Key pressed event.
+		kKeyUp, // Key released event.
+		kTextEditing, // Keyboard text editing event.
+		kTextEditingExt, // Extended keyboard text editing event.
+		kTextInput, // Keyboard text input event.
+		kKeyMapChanged, // Keymap changed event (for instance language change).
+
+		// Mouse events
+		kMouseMotion, // Mouse moved event.
+		kMouseButtonDown, // Mouse button pressed event.
+		kMouseButtonUp, // Mouse button released event.
+		kMouseWheel, // Mouse wheel event.
+
+		// Joystick events
+		kJoyAxisMotion, // Joystick axis motion event.
+		kJoyBallMotion, // Joystick trackball motion event.
+		kJoyHatMotion, // Joystick hat position change event.
+		kJoyButtonDown, // Joystick button pressed event.
+		kJoyButtonUp, // Joystick button released event.
+		kJoyDeviceAdded, // A new joystick has been inserted into the system.
+		kJoyDeviceRemoved, // An opened joystick has been removed.
+		kJoyBatteryUpdated, // The state of a joystick battery has changed.
+
+		// Controller events
+		kControllerAxisMotion, // Game controller axis motion.
+		kControllerButtonDown, // Game controller button pressed.
+		kControllerButtonUp, // Game controller button released.
+		kControllerDeviceAdded, // A new Game controller has been inserted into the system.
+		kControllerDeviceRemoved, // An opened Game controller has been removed.
+		kControllerDeviceRemapped, // The controller mapping was updated.
+		kControllerTouchpadMotion, // Game controller touchpad moved.
+		kControllerTouchpadDown, // Game controller touchpad button pressed.
+		kControllerTouchpadUp, // Game controller touchpad button released.
+		kControllerSensorUpdate, // Game controller sensor updated.
+
+		// Touch events
+		kFingerDown, // Finger touch down event.
+		kFingerUp, // Finger touch up event.
+		kFingerMotion, // Finger touch motion event.
+
+		// Gesture events
+		kDollarGesture, // Dollar gesture event.
+		kDollarRecord, // Dollar gesture recording event.
+		kMultiGesture, // Multi Finger Gesture data.
+
+		// Render events
+		kRenderTargetsReset, // The render targets have been reset and their contents need to be updated.
+		kRenderDeviceReset, // The device has been reset and all textures need to be recreated.
+
+		kEventTypeCount // The number of event types.
 	};
 
 	/**
@@ -55,14 +139,21 @@ namespace trac
 	 */
 	enum EventCategory
 	{
-		kNone			= 0,
-		kApplication	= (1 << 0),
-		kInput			= (1 << 1),
-		kKeyboard		= (1 << 2),
-		kMouse			= (1 << 3),
-		kMouseButton	= (1 << 4),
-		kSdl			= (1 << 5),
-		kEngineFinal	= (1 << 6) // This is the last category in the engine. All categories with values below this are reserved for the engine.
+		kNone				= 0,
+		kApplication		= (1 << 0),
+		kInput				= (1 << 1),
+		kKeyboard			= (1 << 2),
+		kMouse				= (1 << 3),
+		kMouseButton		= (1 << 4),
+		kController			= (1 << 5),
+		kControllerButton	= (1 << 6),
+		kControllerAxis		= (1 << 7),
+		kJoystick			= (1 << 8),
+		kJoystickButton		= (1 << 9),
+		kJoystickAxis		= (1 << 10),
+		kWindow				= (1 << 11),
+		kDisplay			= (1 << 12),
+		kEngineFinal		= (1 << 13) // This is the last category in the engine. All categories with values below this are reserved for the engine.
 	};
 
 	/// Defines the type for the event category bitfield.
@@ -144,7 +235,7 @@ namespace trac
 		 * 
 		 * @return const EventType	The type of the event.
 		 */
-		virtual const EventType GetType() const = 0;
+		virtual EventType GetType() const = 0;
 
 		/**
 		 * @brief	Get the category flags for the event. This is a pure virtual function that must be implemented by the derived event class.
@@ -155,6 +246,13 @@ namespace trac
 		 * @return event_category_t	The category flags for the event.
 		 */
 		virtual event_category_t GetCategoryFlags() const = 0;
+
+		/**
+		 * @brief	Get the timestamp of the event in milliseconds.
+		 * 
+		 * @return uint64_t	The timestamp of the event in milliseconds.
+		 */
+		virtual uint64_t GetTimestampMs() const = 0;
 
 		virtual std::string ToString() const;
 		bool IsInCategory(EventCategory category) const;

@@ -3,124 +3,190 @@
  * @brief	Application event header file. All events related to the application are defined here.
  * 
  * @author	Erlend Elias Isachsen
- * @date	26.07.2023
- *
- * @todo	Implement window focus, lost focus and moved events.
+ * @date	18.08.2023
+ * 
 */
 
 #ifndef EVENT_APPLICATION_HPP_
 #define EVENT_APPLICATION_HPP_
 
-// Project header includes
+// Related header include
 #include "event.hpp"
 
 namespace trac
 {
-
-	
-	/// @brief	Window closed event class. This event is triggered when the window is closed.
-	class EventWindowClose : public Event
-	{
-	public:
-		const char* GetName() const override;
-		const EventType GetType() const override;
-		event_category_t GetCategoryFlags() const override;
-	};
-
-	/// @brief	Window resize event class. This event is triggered when the window is resized.
-	class EventWindowResize : public Event
+	/// @brief	Abstract base class for application events.
+	class EventApp : public Event
 	{
 	public:
 		// Constructors and destructors
+	
+		EventApp();
+		/// @brief Virtual default destructor.
+		virtual ~EventApp() = default;
 
-		EventWindowResize(uint32_t width, uint32_t height);
+		/// @brief Explicitly defined default copy constructor.
+		EventApp(const EventApp& other) = default;
+		/// @brief Explicitly defined default move constructor.
+		EventApp(EventApp&& other) = default;
+		/// @brief Explicitly defined default copy assignment operator.
+		EventApp& operator=(const EventApp& other) = default;
+		/// @brief Explicitly defined default move assignment operator.
+		EventApp& operator=(EventApp&& other) = default;
+	
+		//Public functions
+	
+		uint64_t GetTimestampMs() const override;
+	
+	private:
+		/// The timestamp of the event in milliseconds.
+		const uint64_t timestamp_ms_;
+	};
+
+	/// @brief Event class for when the application is being terminated.
+	class EventAppTerminating : public EventApp
+	{
+	public:
+		// Constructors and destructors
+	
+		EventAppTerminating();
 	
 		//Public functions
 	
 		const char* GetName() const override;
-		const EventType GetType() const override;
+		EventType GetType() const override;
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
-
-		uint32_t GetWidth() const;
-		uint32_t GetHeight() const;
-
-	private:
-		/// The width of the window.
-		const uint32_t width_;
-		/// The height of the window.
-		const uint32_t height_;
 	};
 
-	/// @brief	Window focus event.
-	class EventWindowFocus : public Event
-	{
-	public:
-		const char* GetName() const override;
-		const EventType GetType() const override;
-		event_category_t GetCategoryFlags() const override;
-	};
-
-	/// @brief	Window lost focus event.
-	class EventWindowLostFocus : public Event
-	{
-	public:
-		const char* GetName() const override;
-		const EventType GetType() const override;
-		event_category_t GetCategoryFlags() const override;
-	};
-
-	/// @brief	Window moved event.
-	class EventWindowMoved : public Event
+	/// @brief	Event class for when the application is starting to run low on memory.
+	class EventAppLowMemory : public EventApp
 	{
 	public:
 		// Constructors and destructors
-		
-		EventWindowMoved(uint32_t x, uint32_t y);
-
-		// Public functions
-
+	
+		EventAppLowMemory();
+	
+		//Public functions
+	
 		const char* GetName() const override;
-		const EventType GetType() const override;
+		EventType GetType() const override;
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
-
-		uint32_t GetX() const;
-		uint32_t GetY() const;
-
-	private:
-		/// The x position of the window.
-		const uint32_t x_;
-		/// The y position of the window.
-		const uint32_t y_;
 	};
 
-	/// @brief	Application tick event class. This event is triggered every frame.
-	class EventAppTick : public Event
+	/// @brief	Event class for when the application is entering the background.
+	class EventAppEnteringBackground : public EventApp
 	{
 	public:
+		// Constructors and destructors
+	
+		EventAppEnteringBackground();
+	
+		//Public functions
+	
 		const char* GetName() const override;
-		const EventType GetType() const override;
+		EventType GetType() const override;
 		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
 	};
 
-	/// @brief	Application update event class.
-	class EventAppUpdate : public Event
+	/// @brief	Event class for when the application has entered the background.
+	class EventAppEnteredBackground : public EventApp
 	{
 	public:
+		// Constructors and destructors
+	
+		EventAppEnteredBackground();
+	
+		//Public functions
+	
 		const char* GetName() const override;
-		const EventType GetType() const override;
+		EventType GetType() const override;
 		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
 	};
 
-	/// @brief	Application render event class.
-	class EventAppRender : public Event
+	/// @brief	Event class for when the application is entering the foreground.
+	class EventAppEnteringForeground : public EventApp
 	{
 	public:
+		// Constructors and destructors
+	
+		EventAppEnteringForeground();
+	
+		//Public functions
+	
 		const char* GetName() const override;
-		const EventType GetType() const override;
+		EventType GetType() const override;
 		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
 	};
+
+	/// @brief	Event class for when the application has entered the foreground.
+	class EventAppEnteredForeground : public EventApp
+	{
+	public:
+		// Constructors and destructors
+	
+		EventAppEnteredForeground();
+	
+		//Public functions
+	
+		const char* GetName() const override;
+		EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
+	};
+
+	/// @brief	Event class for the event triggered each application tick.
+	class EventAppTick : public EventApp
+	{
+	public:
+		// Constructors and destructors
+	
+		EventAppTick();
+	
+		//Public functions
+	
+		const char* GetName() const override;
+		EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
+	};
+
+	/// @brief	Application update event.
+	class EventAppUpdated : public EventApp
+	{
+	public:
+		// Constructors and destructors
+	
+		EventAppUpdated();
+	
+		//Public functions
+	
+		const char* GetName() const override;
+		EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
+	};
+
+	/// @brief	Application render event.
+	class EventAppRendered : public EventApp
+	{
+	public:
+		// Constructors and destructors
+	
+		EventAppRendered();
+	
+		//Public functions
+	
+		const char* GetName() const override;
+		EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
+		std::string ToString() const override;
+	};
+
 } // Namespace trac
 
 #endif // EVENT_APPLICATION_HPP_ 

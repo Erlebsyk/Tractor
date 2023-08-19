@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.2.1 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.3.0 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -24,9 +24,16 @@ set(SourceFiles
 
 	src/events/event.cpp
 	src/events/event_application.cpp
-	src/events/event_key.cpp
+	src/events/event_controller.cpp
+	src/events/event_display.cpp
+	src/events/event_gesture.cpp
+	src/events/event_joystick.cpp
+	src/events/event_keyboard.cpp
 	src/events/event_mouse.cpp
-	src/events/event_sdl.cpp
+	src/events/event_render.cpp
+	src/events/event_system.cpp
+	src/events/event_touch.cpp
+	src/events/event_window.cpp
 )
 set(IncludeFiles
 	include/tractor.hpp
@@ -39,9 +46,16 @@ set(IncludeFiles
 
 	include/tractor/events/event.hpp
 	include/tractor/events/event_application.hpp
-	include/tractor/events/event_key.hpp
+	include/tractor/events/event_controller.hpp
+	include/tractor/events/event_display.hpp
+	include/tractor/events/event_gesture.hpp
+	include/tractor/events/event_joystick.hpp
+	include/tractor/events/event_keyboard.hpp
 	include/tractor/events/event_mouse.hpp
-	include/tractor/events/event_sdl.hpp
+	include/tractor/events/event_render.hpp
+	include/tractor/events/event_system.hpp
+	include/tractor/events/event_touch.hpp
+	include/tractor/events/event_window.hpp
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
 
