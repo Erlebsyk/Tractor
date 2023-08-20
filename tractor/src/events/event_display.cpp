@@ -18,7 +18,11 @@
 
 namespace trac
 {
-	/// @brief Constructs a new Display event.
+	/**
+	 * @brief	Constructs a new EventDisplay object.
+	 * 
+	 * @param display_index	The index of the display.
+	 */
 	EventDisplay::EventDisplay(const display_index_t display_index) :
 		Event(),
 		display_index_	{ display_index		},
@@ -38,9 +42,9 @@ namespace trac
 	/**
 	 * @brief Get the timestamp of the event in milliseconds.
 	 * 
-	 * @return uint64_t The timestamp of the event in milliseconds.
+	 * @return timestamp_t The timestamp of the event in milliseconds.
 	 */
-	uint64_t EventDisplay::GetTimestampMs() const
+	timestamp_t EventDisplay::GetTimestampMs() const
 	{
 		return timestamp_ms_;
 	}
@@ -148,6 +152,16 @@ namespace trac
 	{
 		return EventType::kDisplayConnected;
 	}
+
+	/**
+	 * @brief	Get the category flags of the event.
+	 * 
+	 * @return event_category_t	The category flags of the event.
+	 */
+	event_category_t EventDisplayConnected::GetCategoryFlags() const
+	{
+		return EventCategory::kDisplay | EventCategory::kDevice;
+	}
 	
 	/**
 	 * @brief	Constructs a new DisplayDisconnected event.
@@ -177,4 +191,15 @@ namespace trac
 	{
 		return EventType::kDisplayDisconnected;
 	}
+
+	/**
+	 * @brief	Get the category flags of the event.
+	 * 
+	 * @return event_category_t	The category flags of the event.
+	 */
+	event_category_t EventDisplayDisconnected::GetCategoryFlags() const
+	{
+		return EventCategory::kDisplay | EventCategory::kDevice;
+	}
+
 } // namespace trac

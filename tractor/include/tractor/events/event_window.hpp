@@ -15,6 +15,8 @@
 
 namespace trac
 {
+	/// Type definition for window ID that is used to differentiate between different windows.
+	typedef uint32_t window_id_t;
 
 } // Namespace trac
 

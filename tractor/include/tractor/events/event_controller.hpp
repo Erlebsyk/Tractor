@@ -56,13 +56,13 @@ namespace trac
 
 		//Public functions
 
-		uint64_t GetTimestampMs() const override;
+		timestamp_t GetTimestampMs() const override;
 
 		controller_id_t GetControllerId() const;
 	
 	private:
 		/// The timestamp of the event in milliseconds.
-		const uint64_t timestamp_ms_;
+		const timestamp_t timestamp_ms_;
 		/// The id of the controller that triggered the event.
 		const controller_id_t controller_id_;
 	};

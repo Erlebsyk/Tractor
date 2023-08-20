@@ -27,9 +27,9 @@ namespace trac
 	/**
 	 * @brief	Get the timestamp of the event in milliseconds.
 	 * 
-	 * @return uint64_t	The timestamp of the event in milliseconds.
+	 * @return timestamp_t	The timestamp of the event in milliseconds.
 	 */
-	uint64_t EventApp::GetTimestampMs() const
+	timestamp_t EventApp::GetTimestampMs() const
 	{
 		return timestamp_ms_;
 	}
@@ -442,7 +442,7 @@ namespace trac
 	 */
 	event_category_t EventAppRendered::GetCategoryFlags() const
 	{
-		return EventCategory::kApplication;
+		return EventCategory::kApplication | EventCategory::kDisplay;
 	}
 	
 	/**

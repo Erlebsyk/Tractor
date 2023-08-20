@@ -52,9 +52,8 @@ namespace trac
 
 		//Public functions
 	
-		event_category_t GetCategoryFlags() const override;
-		uint64_t GetTimestampMs() const override;
-
+		virtual event_category_t GetCategoryFlags() const override;
+		timestamp_t GetTimestampMs() const override;
 		virtual std::string ToString() const override;
 
 		display_index_t GetDisplayIndex() const;
@@ -63,7 +62,7 @@ namespace trac
 		/// The index of the display.
 		const display_index_t display_index_;
 		/// The timestamp of the event in milliseconds.
-		const uint64_t timestamp_ms_;
+		const timestamp_t timestamp_ms_;
 	};
 
 	/// @brief Event for whenever the display orientation changes.
@@ -99,6 +98,7 @@ namespace trac
 	
 		const char* GetName() const override;
 		EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
 	};
 
 	/// @brief	Event triggered whenever a display is disconnected.
@@ -113,6 +113,7 @@ namespace trac
 	
 		const char* GetName() const override;
 		EventType GetType() const override;
+		event_category_t GetCategoryFlags() const override;
 	};
 } // Namespace trac
 

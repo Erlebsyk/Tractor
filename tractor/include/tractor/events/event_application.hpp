@@ -36,11 +36,11 @@ namespace trac
 	
 		//Public functions
 	
-		uint64_t GetTimestampMs() const override;
+		timestamp_t GetTimestampMs() const override;
 	
 	private:
 		/// The timestamp of the event in milliseconds.
-		const uint64_t timestamp_ms_;
+		const timestamp_t timestamp_ms_;
 	};
 
 	/// @brief Event class for when the application is being terminated.

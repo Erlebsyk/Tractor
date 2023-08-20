@@ -21,6 +21,9 @@
 #include "eventpp/eventqueue.h"
 namespace trac
 {
+	/// Type definition for the timestamp type. The timestamp is in milliseconds.
+	typedef uint64_t timestamp_t;
+
 	class Event;
 	struct EventPolicyB;
 	struct EventPolicyNb;
@@ -84,7 +87,6 @@ namespace trac
 		kKeyDown, // Key pressed event.
 		kKeyUp, // Key released event.
 		kTextEditing, // Keyboard text editing event.
-		kTextEditingExt, // Extended keyboard text editing event.
 		kTextInput, // Keyboard text input event.
 		kKeyMapChanged, // Keymap changed event (for instance language change).
 
@@ -92,6 +94,7 @@ namespace trac
 		kMouseMotion, // Mouse moved event.
 		kMouseButtonDown, // Mouse button pressed event.
 		kMouseButtonUp, // Mouse button released event.
+		kMouseButtonClicked, // Mouse button clicked event.
 		kMouseWheel, // Mouse wheel event.
 
 		// Joystick events
@@ -140,20 +143,26 @@ namespace trac
 	enum EventCategory
 	{
 		kNone				= 0,
+
 		kApplication		= (1 << 0),
 		kInput				= (1 << 1),
-		kKeyboard			= (1 << 2),
-		kMouse				= (1 << 3),
-		kMouseButton		= (1 << 4),
-		kController			= (1 << 5),
-		kControllerButton	= (1 << 6),
-		kControllerAxis		= (1 << 7),
+		kDevice				= (1 << 2),
+		kWindow				= (1 << 3),
+		kDisplay			= (1 << 4),
+
+		kKeyboard			= (1 << 5),
+		kMouse				= (1 << 6),
+		kController			= (1 << 7),
 		kJoystick			= (1 << 8),
-		kJoystickButton		= (1 << 9),
-		kJoystickAxis		= (1 << 10),
-		kWindow				= (1 << 11),
-		kDisplay			= (1 << 12),
-		kEngineFinal		= (1 << 13) // This is the last category in the engine. All categories with values below this are reserved for the engine.
+
+		kButton				= (1 << 9),
+		kAxis				= (1 << 10),
+		kTouch				= (1 << 11),
+		kHat				= (1 << 12),
+		kBall				= (1 << 13),
+		kSensor				= (1 << 14),
+
+		kEngineFinal		= (1 << 15) // This is the last category in the engine. All categories with values below this are reserved for the engine.
 	};
 
 	/// Defines the type for the event category bitfield.
@@ -250,9 +259,9 @@ namespace trac
 		/**
 		 * @brief	Get the timestamp of the event in milliseconds.
 		 * 
-		 * @return uint64_t	The timestamp of the event in milliseconds.
+		 * @return timestamp_t	The timestamp of the event in milliseconds.
 		 */
-		virtual uint64_t GetTimestampMs() const = 0;
+		virtual timestamp_t GetTimestampMs() const = 0;
 
 		virtual std::string ToString() const;
 		bool IsInCategory(EventCategory category) const;

@@ -32,9 +32,9 @@ namespace trac
 	/**
 	 * @brief	Get the timestamp of the event in milliseconds.
 	 * 
-	 * @return uint64_t	The timestamp of the event in milliseconds.
+	 * @return timestamp_t	The timestamp of the event in milliseconds.
 	 */
-	uint64_t EventController::GetTimestampMs() const
+	timestamp_t EventController::GetTimestampMs() const
 	{
 		return timestamp_ms_;
 	}
@@ -89,7 +89,7 @@ namespace trac
 	 */
 	event_category_t EventControllerAxisMotion::GetCategoryFlags() const
 	{
-		return EventCategory::kController | EventCategory::kInput | EventCategory::kControllerAxis;
+		return EventCategory::kController | EventCategory::kInput | EventCategory::kAxis;
 	}
 	
 	/**
@@ -145,7 +145,7 @@ namespace trac
 	 */
 	event_category_t EventControllerButton::GetCategoryFlags() const
 	{
-		return EventCategory::kController | EventCategory::kInput | EventCategory::kControllerButton;
+		return EventCategory::kController | EventCategory::kInput | EventCategory::kButton;
 	}
 	
 	/**
@@ -270,7 +270,7 @@ namespace trac
 	 */
 	event_category_t EventControllerDevice::GetCategoryFlags() const
 	{
-		return EventCategory::kController;
+		return EventCategory::kController | EventCategory::kDevice;
 	}
 	
 	/**
@@ -453,7 +453,7 @@ namespace trac
 	 */
 	event_category_t EventControllerTouchpadMotion::GetCategoryFlags() const
 	{
-		return EventCategory::kController | EventCategory::kInput;
+		return EventCategory::kController | EventCategory::kInput | EventCategory::kTouch;
 	}
 	
 	/**
@@ -517,7 +517,7 @@ namespace trac
 	 */
 	event_category_t EventControllerTouchpadPressure::GetCategoryFlags() const
 	{
-		return EventCategory::kController | EventCategory::kInput;
+		return EventCategory::kController | EventCategory::kInput | EventCategory::kTouch;
 	}
 	
 	/**
@@ -664,7 +664,7 @@ namespace trac
 	 */
 	event_category_t EventControllerSensorUpdate::GetCategoryFlags() const
 	{
-		return EventCategory::kController | EventCategory::kInput;
+		return EventCategory::kController | EventCategory::kInput | EventCategory::kSensor;
 	}
 	
 	/**
