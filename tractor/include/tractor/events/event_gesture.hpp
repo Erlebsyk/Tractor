@@ -31,8 +31,8 @@ namespace trac
 			gesture_id_t gesture_id,
 			touch_id_t touch_id,
 			uint32_t num_fingers,
-			float x,
-			float y
+			pos_rel_t pos_x,
+			pos_rel_t pos_y
 		);
 
 		/// The timestamp of the gesture.
@@ -43,10 +43,10 @@ namespace trac
 		touch_id_t touch_id;
 		/// The number of fingers used in the gesture.
 		uint32_t num_fingers;
-		/// The x-position of the gesture.
-		float x;
-		/// The y-position of the gesture.
-		float y;
+		/// The normalized x-position of the center of the gesture.
+		pos_rel_t pos_x;
+		/// The normalized y-position of the center the gesture.
+		pos_rel_t pos_y;
 	};
 
 	/// @brief Abstract base class for all gesture events.
@@ -77,8 +77,8 @@ namespace trac
 		gesture_id_t GetGestureId() const;
 		touch_id_t GetTouchId() const;
 		uint32_t GetNumFingers() const;
-		float GetX() const;
-		float GetY() const;
+		pos_rel_t GetPosX() const;
+		pos_rel_t GetPosY() const;
 
 	private:
 		/// The gesture data.
@@ -131,7 +131,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMultiGesture(const GestureData &data, float d_theta, float d_distance);
+		EventMultiGesture(const GestureData &data, pos_rel_t d_theta, pos_rel_t d_distance);
 	
 		//Public functions
 	
@@ -139,14 +139,14 @@ namespace trac
 		EventType GetType() const override;
 		std::string ToString() const override;
 	
-		float GetDTheta() const;
-		float GetDDistance() const;
+		pos_rel_t GetDTheta() const;
+		pos_rel_t GetDDistance() const;
 
 	private:
 		/// The change in angle.
-		const float d_theta_;
+		const pos_rel_t d_theta_;
 		/// The change in distance.
-		const float d_distance_;
+		const pos_rel_t d_distance_;
 	};
 
 } // Namespace trac

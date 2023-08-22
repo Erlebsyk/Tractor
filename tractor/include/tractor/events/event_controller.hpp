@@ -263,8 +263,8 @@ namespace trac
 			controller_id_t id,
 			controller_touchpad_t touchpad_index,
 			controller_touchpad_finger_t touchpad_finger_index,
-			float x,
-			float y
+			pos_rel_t pos_x,
+			pos_rel_t pos_y
 		);
 	
 		//Public functions
@@ -274,14 +274,14 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
 
-		float GetX() const;
-		float GetY() const;
+		pos_rel_t GetX() const;
+		pos_rel_t GetY() const;
 	
 	private:
-		/// The x position of the touchpad.
-		const float x_;
-		/// The y position of the touchpad.
-		const float y_;
+		/// The relative x position of the touchpad.
+		const pos_rel_t pos_x_;
+		/// The relative y position of the touchpad.
+		const pos_rel_t pos_y_;
 	};
 
 	/// @brief	Abstract base class for controller touchpad pressure events.

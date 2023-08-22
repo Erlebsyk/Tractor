@@ -23,8 +23,6 @@ namespace trac
 {
 	/// Type definition for mouse ID that is used to differentiate between different mice.
 	typedef uint32_t mouse_id_t;
-	/// Type definition for mouse positions, both absolute and relative.
-	typedef int32_t mouse_pos_t;
 	/// Type definition for mouse button states bitmask.
 	typedef uint32_t mouse_button_state_t;
 
@@ -57,8 +55,8 @@ namespace trac
 		EventMouse(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y
 		);
 		/// @brief Virtual default destructor.
 		virtual ~EventMouse() = default;
@@ -78,8 +76,8 @@ namespace trac
 
 		mouse_id_t GetMouseID() const;
 		window_id_t GetWindowID() const;
-		mouse_pos_t GetPosX() const;
-		mouse_pos_t GetPosY() const;
+		pos_pixel_t GetPosX() const;
+		pos_pixel_t GetPosY() const;
 
 	private:
 		/// The timestamp of the event in milliseconds.
@@ -89,9 +87,9 @@ namespace trac
 		/// The ID of the window that the event occurred in.
 		const window_id_t window_id_;
 		/// The x-position of the mouse in the window.
-		const mouse_pos_t pos_x_;
+		const pos_pixel_t pos_x_;
 		/// The y-position of the mouse in the window.
-		const mouse_pos_t pos_y_;
+		const pos_pixel_t pos_y_;
 	};
 
 	/// @brief	Mouse movement event.
@@ -103,11 +101,11 @@ namespace trac
 		EventMouseMotion(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y,
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y,
 			mouse_button_state_t button_state,
-			mouse_pos_t rel_x,
-			mouse_pos_t rel_y
+			pos_pixel_t rel_x,
+			pos_pixel_t rel_y
 		);
 	
 		//Public functions
@@ -120,16 +118,16 @@ namespace trac
 		mouse_button_state_t GetButtonState() const;
 		bool IsButtonPressed(MouseButton button) const;
 		bool AreButtonsPressed(mouse_button_state_t button_bitmask) const;
-		mouse_pos_t GetRelX() const;
-		mouse_pos_t GetRelY() const;
+		pos_pixel_t GetRelX() const;
+		pos_pixel_t GetRelY() const;
 
 	private:
 		/// The current state of the mouse buttons.
 		mouse_button_state_t button_state_;
 		/// The relative motion of the mouse in x-direction.
-		const mouse_pos_t rel_x_;
+		const pos_pixel_t rel_x_;
 		/// The relative motion of the mouse in y-direction.
-		const mouse_pos_t rel_y_;
+		const pos_pixel_t rel_y_;
 	};
 
 	/// @brief Abstract base class for mouse button events.
@@ -141,8 +139,8 @@ namespace trac
 		EventMouseButton(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y,
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y,
 			MouseButton button
 		);
 		/// @brief Virtual default destructor.
@@ -178,8 +176,8 @@ namespace trac
 		EventMouseButtonDown(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y,
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y,
 			MouseButton button
 		);
 	
@@ -198,8 +196,8 @@ namespace trac
 		EventMouseButtonUp(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y,
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y,
 			MouseButton button
 		);
 	
@@ -218,8 +216,8 @@ namespace trac
 		EventMouseButtonClicked(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y,
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y,
 			MouseButton button,
 			uint32_t clicks
 		);
@@ -246,10 +244,10 @@ namespace trac
 		EventMouseWheel(
 			mouse_id_t mouse_id,
 			window_id_t window_id,
-			mouse_pos_t pos_x,
-			mouse_pos_t pos_y,
-			mouse_pos_t scroll_x,
-			mouse_pos_t scroll_y,
+			pos_pixel_t pos_x,
+			pos_pixel_t pos_y,
+			pos_pixel_t scroll_x,
+			pos_pixel_t scroll_y,
 			bool flipped = false
 		);
 	
@@ -260,15 +258,15 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
 
-		mouse_pos_t GetScrollX(bool account_for_flip = false) const;
-		mouse_pos_t GetScrollY(bool account_for_flip = false) const;
+		pos_pixel_t GetScrollX(bool account_for_flip = false) const;
+		pos_pixel_t GetScrollY(bool account_for_flip = false) const;
 		bool IsFlipped() const;
 
 	private:
 		/// The amount of scrolling in the horizontal direction. Positive values indicate scrolling to the right.
-		const mouse_pos_t scroll_x_;
+		const pos_pixel_t scroll_x_;
 		/// The amount of scrolling in the vertical direction. Positive values away from the user, negative values towards the user.
-		const mouse_pos_t scroll_y_;
+		const pos_pixel_t scroll_y_;
 		/// Whether or not the scroll direction is flipped.
 		const bool flipped_;
 	};

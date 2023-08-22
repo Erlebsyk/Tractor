@@ -4,7 +4,10 @@
  * 			events, mouse events, window events, etc. This file defines the main events and event categories, and introduces the event base class.
  * 
  * 	Events and event types are introduced in this library, but the external library 'eventpp' is used to set up the event system. The eventpp library provides
- * 	all the mechanisms needed to set up the event system, such as event listeners, dispatchment, etc.
+ * 	all the mechanisms needed to set up the event system, such as event listeners, dispatchment, etc. The event module defines multiple event types and event
+ * 	categories, where each event type has a corresponding event class that contains the relevant event data. The eventpp library is used to handle event
+ *	dispatchment and event listeners, and the eventpp library is set up to use the event types defined in this library such that event listeneres can listen to
+ *	the defined event types.
  * 
  * @author	Erlend Elias Isachsen
  * @date	23.07.2023
@@ -23,13 +26,25 @@ namespace trac
 {
 	/// Type definition for the timestamp type. The timestamp is in milliseconds.
 	typedef uint64_t timestamp_t;
+	/// Type definition for pixel positions.
+	typedef int32_t pos_pixel_t;
+	/// Type definition for pixel sizes.
+	typedef int32_t size_pixel_t;
+	/// Type definition for relative positions, normalized to the range 0.0 to 1.0 or -1.0 to 1.0.
+	typedef float pos_rel_t;
+	/// Type definition for relative sizes, normalized to the range 0.0 to 1.0.
+	typedef float size_rel_t;
 
 	class Event;
 	struct EventPolicyB;
 	struct EventPolicyNb;
 	class EventDispatcher;
 
-	/// @brief	The EventType enum defines the different types of events that can be handled by the tractor game engine library.
+	/**
+	 * @brief	The EventType enum defines the different types of events that can be handled by the tractor game engine library. Each event type has a
+	 * 			corresponding event class that contains the relevant event data. Each event can also be categorized into one or more categories, which can be
+	 * 			used to filter events and is defined in the EventCategory enum.
+	 */
 	enum class EventType
 	{
 		kNone = 0, // No event type. First event type equals 0.
@@ -149,20 +164,21 @@ namespace trac
 		kDevice				= (1 << 2),
 		kWindow				= (1 << 3),
 		kDisplay			= (1 << 4),
+		kAudio				= (1 << 5),
 
-		kKeyboard			= (1 << 5),
-		kMouse				= (1 << 6),
-		kController			= (1 << 7),
-		kJoystick			= (1 << 8),
+		kKeyboard			= (1 << 6),
+		kMouse				= (1 << 7),
+		kController			= (1 << 8),
+		kJoystick			= (1 << 9),
 
-		kButton				= (1 << 9),
-		kAxis				= (1 << 10),
-		kTouch				= (1 << 11),
-		kHat				= (1 << 12),
-		kBall				= (1 << 13),
-		kSensor				= (1 << 14),
+		kButton				= (1 << 10),
+		kAxis				= (1 << 11),
+		kTouch				= (1 << 12),
+		kHat				= (1 << 13),
+		kBall				= (1 << 14),
+		kSensor				= (1 << 15),
 
-		kEngineFinal		= (1 << 15) // This is the last category in the engine. All categories with values below this are reserved for the engine.
+		kEngineFinal		= (1 << 16) // This is the last category in the engine. All categories with values below this are reserved for the engine.
 	};
 
 	/// Defines the type for the event category bitfield.

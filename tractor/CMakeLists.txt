@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.3.1 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.3.2 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -24,6 +24,7 @@ set(SourceFiles
 
 	src/events/event.cpp
 	src/events/event_application.cpp
+	src/events/event_audio.cpp
 	src/events/event_controller.cpp
 	src/events/event_display.cpp
 	src/events/event_gesture.cpp
@@ -46,6 +47,7 @@ set(IncludeFiles
 
 	include/tractor/events/event.hpp
 	include/tractor/events/event_application.hpp
+	include/tractor/events/event_audio.hpp
 	include/tractor/events/event_controller.hpp
 	include/tractor/events/event_display.hpp
 	include/tractor/events/event_gesture.hpp

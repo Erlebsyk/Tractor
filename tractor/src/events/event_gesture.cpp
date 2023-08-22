@@ -23,22 +23,22 @@ namespace trac
 	 * @param gesture_id	The ID of the gesture.
 	 * @param touch_id	The touch ID.
 	 * @param num_fingers	The number of fingers used in the gesture.
-	 * @param x	The x-position of the gesture.
-	 * @param y	The y-position of the gesture.
+	 * @param pos_x	The x-position of the gesture.
+	 * @param pos_y	The y-position of the gesture.
 	 */
 	GestureData::GestureData(
 			const gesture_id_t gesture_id,
 			const touch_id_t touch_id,
 			const uint32_t num_fingers,
-			const float x,
-			const float y
+			const pos_rel_t pos_x,
+			const pos_rel_t pos_y
 		) : 
 			timestamp_ms	{ SDL_GetTicks64()	},
 			gesture_id		{ gesture_id		},
 			touch_id		{ touch_id			},
 			num_fingers		{ num_fingers		},
-			x				{ x					},
-			y				{ y					}
+			pos_x			{ pos_x					},
+			pos_y			{ pos_y					}
 	{}
 
 	/**
@@ -79,7 +79,7 @@ namespace trac
 	std::string EventGesture::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << data_.gesture_id << " " << data_.touch_id << " " << data_.num_fingers << " " << data_.x << " " << data_.y;
+		ss << GetName() << GetGestureId() << " " << GetTouchId() << " " << GetNumFingers() << " " << GetPosX() << " " << GetPosY();
 		return ss.str();
 	}
 
@@ -116,21 +116,21 @@ namespace trac
 	/**
 	 * @brief	Get the x-position of the gesture.
 	 * 
-	 * @return float	The x-position of the gesture.
+	 * @return pos_rel_t	The x-position of the gesture.
 	 */
-	float EventGesture::GetX() const
+	pos_rel_t EventGesture::GetPosX() const
 	{
-		return data_.x;
+		return data_.pos_x;
 	}
 
 	/**
 	 * @brief	Get the y-position of the gesture.
 	 * 
-	 * @return float	The y-position of the gesture.
+	 * @return pos_rel_t	The y-position of the gesture.
 	 */
-	float EventGesture::GetY() const
+	pos_rel_t EventGesture::GetPosY() const
 	{
-		return data_.y;
+		return data_.pos_y;
 	}
 
 	/**
@@ -222,7 +222,7 @@ namespace trac
 	 * @param d_theta	The change in angle of the gesture.
 	 * @param d_distance	The change in distance of the gesture.
 	 */
-	EventMultiGesture::EventMultiGesture(const GestureData &data, const float d_theta, const float d_distance) :
+	EventMultiGesture::EventMultiGesture(const GestureData &data, const pos_rel_t d_theta, const pos_rel_t d_distance) :
 		EventGesture(data),
 		d_theta_	{ d_theta		},
 		d_distance_	{ d_distance	}
@@ -256,7 +256,7 @@ namespace trac
 	std::string EventMultiGesture::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << GetGestureId() << " " << GetTouchId() << " " << GetNumFingers() << " " << GetX() << " " << GetY();
+		ss << GetName() << GetGestureId() << " " << GetTouchId() << " " << GetNumFingers() << " " << GetPosX() << " " << GetPosY();
 		ss << " " << GetDTheta() << " " << GetDDistance();
 		return ss.str();
 	}
@@ -264,9 +264,9 @@ namespace trac
 	/**
 	 * @brief	Get the change in angle of the gesture.
 	 * 
-	 * @return float	The change in angle of the gesture.
+	 * @return pos_rel_t	The change in angle of the gesture.
 	 */
-	float EventMultiGesture::GetDTheta() const
+	pos_rel_t EventMultiGesture::GetDTheta() const
 	{
 		return d_theta_;
 	}
@@ -274,9 +274,9 @@ namespace trac
 	/**
 	 * @brief	Get the change in distance of the gesture.
 	 * 
-	 * @return float	The change in distance of the gesture.
+	 * @return pos_rel_t	The change in distance of the gesture.
 	 */
-	float EventMultiGesture::GetDDistance() const
+	pos_rel_t EventMultiGesture::GetDDistance() const
 	{
 		return d_distance_;
 	}

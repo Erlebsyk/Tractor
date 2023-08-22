@@ -29,8 +29,8 @@ namespace trac
 	EventMouse::EventMouse(
 			const mouse_id_t mouse_id,
 			const window_id_t window_id,
-			const mouse_pos_t pos_x,
-			const mouse_pos_t pos_y
+			const pos_pixel_t pos_x,
+			const pos_pixel_t pos_y
 		) :
 			Event(),
 			timestamp_ms_	{ SDL_GetTicks64()	},
@@ -73,9 +73,9 @@ namespace trac
 	/**
 	 * @brief	Get the x-position of the mouse in the window.
 	 * 
-	 * @return mouse_pos_t	The x-position of the mouse in the window.
+	 * @return pos_pixel_t	The x-position of the mouse in the window.
 	 */
-	mouse_pos_t EventMouse::GetPosX() const
+	pos_pixel_t EventMouse::GetPosX() const
 	{
 		return pos_x_;
 	}
@@ -83,9 +83,9 @@ namespace trac
 	/**
 	 * @brief	Get the y-position of the mouse in the window.
 	 * 
-	 * @return mouse_pos_t	The y-position of the mouse in the window.
+	 * @return pos_pixel_t	The y-position of the mouse in the window.
 	 */
-	mouse_pos_t EventMouse::GetPosY() const
+	pos_pixel_t EventMouse::GetPosY() const
 	{
 		return pos_y_;
 	}
@@ -104,11 +104,11 @@ namespace trac
 	EventMouseMotion::EventMouseMotion(
 		const mouse_id_t mouse_id,
 		const window_id_t window_id,
-		const mouse_pos_t pos_x,
-		const mouse_pos_t pos_y,
+		const pos_pixel_t pos_x,
+		const pos_pixel_t pos_y,
 		const mouse_button_state_t button_state,
-		const mouse_pos_t rel_x,
-		const mouse_pos_t rel_y
+		const pos_pixel_t rel_x,
+		const pos_pixel_t rel_y
 	) :
 		EventMouse(mouse_id, window_id, pos_x, pos_y),
 		button_state_	{ button_state	},
@@ -198,9 +198,9 @@ namespace trac
 	/**
 	 * @brief	Get the relative motion of the mouse in x-direction.
 	 * 
-	 * @return mouse_pos_t	The relative motion of the mouse in x-direction.
+	 * @return pos_pixel_t	The relative motion of the mouse in x-direction.
 	 */
-	mouse_pos_t EventMouseMotion::GetRelX() const
+	pos_pixel_t EventMouseMotion::GetRelX() const
 	{
 		return rel_x_;
 	}
@@ -208,9 +208,9 @@ namespace trac
 	/**
 	 * @brief	Get the relative motion of the mouse in y-direction.
 	 * 
-	 * @return mouse_pos_t	The relative motion of the mouse in y-direction.
+	 * @return pos_pixel_t	The relative motion of the mouse in y-direction.
 	 */
-	mouse_pos_t EventMouseMotion::GetRelY() const
+	pos_pixel_t EventMouseMotion::GetRelY() const
 	{
 		return rel_y_;
 	}
@@ -228,8 +228,8 @@ namespace trac
 	EventMouseButton::EventMouseButton(
 		const mouse_id_t mouse_id,
 		const window_id_t window_id,
-		const mouse_pos_t pos_x,
-		const mouse_pos_t pos_y,
+		const pos_pixel_t pos_x,
+		const pos_pixel_t pos_y,
 		const MouseButton button
 	) :
 		EventMouse(mouse_id, window_id, pos_x, pos_y),
@@ -293,8 +293,8 @@ namespace trac
 	EventMouseButtonDown::EventMouseButtonDown(
 		const mouse_id_t mouse_id,
 		const window_id_t window_id,
-		const mouse_pos_t pos_x,
-		const mouse_pos_t pos_y,
+		const pos_pixel_t pos_x,
+		const pos_pixel_t pos_y,
 		const MouseButton button
 	) :
 		EventMouseButton(mouse_id, window_id, pos_x, pos_y, button)
@@ -332,8 +332,8 @@ namespace trac
 	EventMouseButtonUp::EventMouseButtonUp(
 		const mouse_id_t mouse_id,
 		const window_id_t window_id,
-		const mouse_pos_t pos_x,
-		const mouse_pos_t pos_y,
+		const pos_pixel_t pos_x,
+		const pos_pixel_t pos_y,
 		const MouseButton button
 	) :
 		EventMouseButton(mouse_id, window_id, pos_x, pos_y, button)
@@ -372,8 +372,8 @@ namespace trac
 	EventMouseButtonClicked::EventMouseButtonClicked(
 		const mouse_id_t mouse_id,
 		const window_id_t window_id,
-		const mouse_pos_t pos_x,
-		const mouse_pos_t pos_y,
+		const pos_pixel_t pos_x,
+		const pos_pixel_t pos_y,
 		const MouseButton button,
 		const uint32_t clicks
 	) :
@@ -438,10 +438,10 @@ namespace trac
 	EventMouseWheel::EventMouseWheel(
 		const mouse_id_t mouse_id,
 		const window_id_t window_id,
-		const mouse_pos_t pos_x,
-		const mouse_pos_t pos_y,
-		const mouse_pos_t scroll_x,
-		const mouse_pos_t scroll_y,
+		const pos_pixel_t pos_x,
+		const pos_pixel_t pos_y,
+		const pos_pixel_t scroll_x,
+		const pos_pixel_t scroll_y,
 		const bool flipped
 	) :
 		EventMouse(mouse_id, window_id, pos_x, pos_y),
@@ -502,11 +502,11 @@ namespace trac
 	 * @brief	Get the horizontal scroll amount.
 	 * 
 	 * @param account_for_flip	Whether or not to account for the scroll direction being flipped.
-	 * @return mouse_pos_t	The horizontal scroll amount.
+	 * @return pos_pixel_t	The horizontal scroll amount.
 	 */
-	mouse_pos_t EventMouseWheel::GetScrollX(const bool account_for_flip) const
+	pos_pixel_t EventMouseWheel::GetScrollX(const bool account_for_flip) const
 	{
-		const mouse_pos_t inversion_factor = (account_for_flip && IsFlipped()) ? -1 : 1;
+		const pos_pixel_t inversion_factor = (account_for_flip && IsFlipped()) ? -1 : 1;
 		return scroll_x_ * inversion_factor;
 	}
 
@@ -514,11 +514,11 @@ namespace trac
 	 * @brief	Get the vertical scroll amount.
 	 * 
 	 * @param account_for_flip	Whether or not to account for the scroll direction being flipped.
-	 * @return mouse_pos_t	The vertical scroll amount.
+	 * @return pos_pixel_t	The vertical scroll amount.
 	 */
-	mouse_pos_t EventMouseWheel::GetScrollY(const bool account_for_flip) const
+	pos_pixel_t EventMouseWheel::GetScrollY(const bool account_for_flip) const
 	{
-		const mouse_pos_t inversion_factor = (account_for_flip && IsFlipped()) ? -1 : 1;
+		const pos_pixel_t inversion_factor = (account_for_flip && IsFlipped()) ? -1 : 1;
 		return scroll_y_ * inversion_factor;
 	}
 

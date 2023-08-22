@@ -411,19 +411,19 @@ namespace trac
 	 * @param id	The id of the controller that triggered the event.
 	 * @param touchpad_index	The index of the touchpad that triggered the event.
 	 * @param touchpad_finger_index	The index of the finger that triggered the event.
-	 * @param x	The x position of the finger on the touchpad.
-	 * @param y	The y position of the finger on the touchpad.
+	 * @param pos_x	The x position of the finger on the touchpad.
+	 * @param pos_y	The y position of the finger on the touchpad.
 	 */
 	EventControllerTouchpadMotion::EventControllerTouchpadMotion(
 			const controller_id_t id,
 			const controller_touchpad_t touchpad_index,
 			const controller_touchpad_finger_t touchpad_finger_index,
-			const float x,
-			const float y
+			const pos_rel_t pos_x,
+			const pos_rel_t pos_y
 		) :
 			EventControllerTouchpad(id, touchpad_index, touchpad_finger_index),
-			x_	{ x },
-			y_	{ y }
+			pos_x_	{ pos_x },
+			pos_y_	{ pos_y }
 	{}
 	
 	/**
@@ -475,21 +475,21 @@ namespace trac
 	/**
 	 * @brief	Get the x position of the touchpad.
 	 * 
-	 * @return float	The x position of the touchpad.
+	 * @return pos_rel_t	The x position of the touchpad.
 	 */
 	float EventControllerTouchpadMotion::GetX() const
 	{
-		return x_;
+		return pos_x_;
 	}
 	
 	/**
 	 * @brief	Get the y position of the touchpad.
 	 * 
-	 * @return float	The y position of the touchpad.
+	 * @return pos_rel_t	The y position of the touchpad.
 	 */
 	float EventControllerTouchpadMotion::GetY() const
 	{
-		return y_;
+		return pos_y_;
 	}
 
 	/**
