@@ -23,6 +23,7 @@ namespace trac
 	/// @brief Enum class for audio device types.
 	enum class AudioType
 	{
+		kNone,
 		kOutputDevice,
 		kCaptureDevice
 	};

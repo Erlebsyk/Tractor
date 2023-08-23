@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor_tests VERSION 0.2.0 DESCRIPTION "Tests for the Tractor game engine" LANGUAGES CXX C)
+project(tractor_tests VERSION 0.3.0 DESCRIPTION "Tests for the Tractor game engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -11,11 +11,28 @@ endif()
 
 include(GNUInstallDirs)
 
-set(HeaderFiles)
+set(HeaderFiles
+	events/test_event_data.hpp
+)
 set(SourceFiles
 	tests_externals.cpp
     tests_tractor.cpp
-#	tests_tractor_events.cpp
+
+	events/test_event_data.cpp
+
+	events/test_event.cpp
+	events/test_event_application.cpp
+	events/test_event_audio.cpp
+	events/test_event_controller.cpp
+	events/test_event_display.cpp
+	events/test_event_gesture.cpp
+	events/test_event_joystick.cpp
+	events/test_event_keyboard.cpp
+	events/test_event_mouse.cpp
+	events/test_event_render.cpp
+	events/test_event_system.cpp
+	events/test_event_touch.cpp
+	events/test_event_window.cpp
 )
 add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
 

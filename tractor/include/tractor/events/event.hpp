@@ -182,12 +182,12 @@ namespace trac
 	};
 
 	/// Defines the type for the event category bitfield.
-	typedef uint8_t event_category_t;
+	typedef uint32_t event_category_t;
 
 	/// Defines the type for the blocking event dispatcher function. The blocking dispatcher can forward the event as a reference where performance is critical.
 	typedef void (event_cb_b_fn)(Event& e);
 	/// Defines the type for the non-blocking event dispatcher function. The non-blocking dispatcher must forward the event as a shared pointer.
-	typedef void (event_cb_nb_fn)(std::shared_ptr<Event>& e);
+	typedef void (event_cb_nb_fn)(std::shared_ptr<Event> e);
 	/// Defines the type for the event dispatcher.
 	typedef eventpp::EventDispatcher<EventType, event_cb_b_fn, EventPolicyB> event_dispatcher_t;
 	/// Defines the type for the event queue.
@@ -196,7 +196,9 @@ namespace trac
 	typedef uint64_t listener_id_t;
 
 	void event_queue_process();
-	void event_queue_process_one();
+	bool event_queue_process_one();
+	bool event_queue_empty();
+	void event_queue_clear();
 
 	void event_dispatch(std::shared_ptr<Event> e);
 	void event_dispatch_b(Event& e);
@@ -212,6 +214,7 @@ namespace trac
 	void event_listener_remove_all();
 
 	std::ostream& operator<<(std::ostream& os, const Event& e);
+	std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Event> e);
 
 	/**
 	 * @brief	The Event class is the virtual base class for all events in the tractor game engine library. All events must be derived from this class.

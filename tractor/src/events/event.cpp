@@ -65,10 +65,35 @@ namespace trac
 		EventDispatcher::GetEngineQueue()->process();
 	}
 
-	/// @brief	Processes a single queued event submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
-	void event_queue_process_one()
+	/**
+	 * @brief	Processes a single queued event submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
+	 * 
+	 * @return bool Whether the event queue is empty or not after processing the event.
+	 * @retval True	The event queue is empty after processing the event.
+	 * @retval False	The event queue is not empty after processing the event.
+	 */
+	bool event_queue_process_one()
 	{
 		EventDispatcher::GetEngineQueue()->processOne();
+		return event_queue_empty();
+	}
+
+	/**
+	 * @brief	Checks whether the event queue is empty or not.
+	 * 
+	 * @return bool	Whether the event queue is empty or not.
+	 * @retval True	The event queue is empty.
+	 * @retval False	The event queue is not empty.
+	 */
+	bool event_queue_empty()
+	{
+		return EventDispatcher::GetEngineQueue()->emptyQueue();
+	}
+
+	/// @brief	Clears all queued events from the event queue.
+	void event_queue_clear()
+	{
+		EventDispatcher::GetEngineQueue()->clearEvents();
 	}
 
 	/**
@@ -217,6 +242,18 @@ namespace trac
 	std::ostream& operator<<(std::ostream& os, const Event& e)
 	{
 		return os << e.ToString();
+	}
+
+	/**
+	 * @brief	Inserter operator for pointers to the Event class. This function is used to insert an event into an output stream (i.e. to print event data).
+	 * 
+	 * @param os	The output stream to insert the event into.
+	 * @param e	The event to insert into the output stream.
+	 * @return std::ostream&	The output stream with the event inserted.
+	 */
+	std::ostream& operator<<(std::ostream& os, const std::shared_ptr<Event> e)
+	{
+		return os << e->ToString();
 	}
 
 	/**

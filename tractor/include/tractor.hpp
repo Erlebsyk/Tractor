@@ -22,6 +22,7 @@
 
 #include "tractor/events/event.hpp"
 #include "tractor/events/event_application.hpp"
+#include "tractor/events/event_audio.hpp"
 #include "tractor/events/event_controller.hpp"
 #include "tractor/events/event_display.hpp"
 #include "tractor/events/event_gesture.hpp"
