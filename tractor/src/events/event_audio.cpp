@@ -134,4 +134,15 @@ namespace trac
 	{
 		return "EventAudioDeviceRemoved";
 	}
+
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventAudioDeviceRemoved::GetType() const
+	{
+		return EventType::kAudioDeviceRemoved;
+	}
+
 } // namespace trac
