@@ -21,7 +21,7 @@ namespace trac
 	/// Type definition for joystick IDs.
 	typedef SDL_JoystickID joystick_id_t;
 	/// Type definition for joystick axis indices.
-	typedef uint8_t index_t;
+	typedef uint16_t index_t;
 	/// Type definition for joystick axis move values.
 	typedef int16_t move_value_t;
 

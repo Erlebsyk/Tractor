@@ -40,6 +40,18 @@ namespace trac
 	}
 
 	/**
+	 * @brief	Get a string representation of the event.
+	 * 
+	 * @return std::string	A string representation of the event.
+	 */
+	std::string EventController::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName() << ": [" << GetControllerId() << "]";
+		return ss.str();
+	}
+
+	/**
 	 * @brief	Get the controller id of the controller that triggered the event.
 	 * 
 	 * @return controller_id_t	The controller id of the controller that triggered the event.
@@ -56,7 +68,7 @@ namespace trac
 	 * @param axis	The axis that was moved.
 	 * @param value	The value of the axis.
 	 */
-	EventControllerAxisMotion::EventControllerAxisMotion(const controller_id_t id, const uint8_t axis, const int16_t value) :
+	EventControllerAxisMotion::EventControllerAxisMotion(const controller_id_t id, const uint16_t axis, const int16_t value) :
 		EventController(id),
 		axis_	{ axis	},
 		value_	{ value	}
@@ -100,16 +112,16 @@ namespace trac
 	std::string EventControllerAxisMotion::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [" << GetAxis() << ", " << GetValue() << "]";
+		ss << GetName() << ": [" << GetControllerId() << ", " << GetAxis() << ", " << GetValue() << "]";
 		return ss.str();
 	}
 
 	/**
 	 * @brief	Get the axis that was moved.
 	 * 
-	 * @return uint8_t	The axis that was moved.
+	 * @return uint16_t	The axis that was moved.
 	 */
-	uint8_t EventControllerAxisMotion::GetAxis() const
+	uint16_t EventControllerAxisMotion::GetAxis() const
 	{
 		return axis_;
 	}
@@ -250,7 +262,7 @@ namespace trac
 	std::string EventControllerButtonUp::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName();
+		ss << GetName() << ": [" << GetControllerId() << ", " << GetButton() << "]";
 		return ss.str();
 	}
 
@@ -273,18 +285,6 @@ namespace trac
 		return EventCategory::kController | EventCategory::kDevice;
 	}
 	
-	/**
-	 * @brief Get the string representation of the event.
-	 * 
-	 * @return std::string The string representation of the event.
-	 */
-	std::string EventControllerDevice::ToString() const
-	{
-		std::stringstream ss;
-		ss << GetName() << ": [" << GetControllerId() << "]";
-		return ss.str();
-	}
-
 	/**
 	 * @brief	Creates a new controller device added event.
 	 * 
@@ -675,7 +675,7 @@ namespace trac
 	std::string EventControllerSensorUpdate::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName();
+		ss << GetName() << ": [" << GetControllerId() << ", " << GetSensorId() << ", " << GetDataX() << ", " << GetDataY() << ", " << GetDataZ() << "]";
 		return ss.str();
 	}
 

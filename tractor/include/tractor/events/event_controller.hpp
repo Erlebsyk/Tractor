@@ -25,7 +25,7 @@ namespace trac
 	/// Defines a controller button type to distinguish between different buttons on a controller.
 	typedef SDL_GameControllerButton controller_button_t;
 	/// Defines controller button state
-	typedef uint8_t controller_button_state_t;
+	typedef uint16_t controller_button_state_t;
 	/// Defines a type for the controller touchpad index.
 	typedef int32_t controller_touchpad_t;
 	/// Defines a type for the controller touchpad finger index.
@@ -57,6 +57,7 @@ namespace trac
 		//Public functions
 
 		timestamp_t GetTimestampMs() const override;
+		virtual std::string ToString() const override;
 
 		controller_id_t GetControllerId() const;
 	
@@ -73,7 +74,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventControllerAxisMotion(controller_id_t id, uint8_t axis, int16_t value);
+		EventControllerAxisMotion(controller_id_t id, uint16_t axis, int16_t value);
 	
 		//Public functions
 	
@@ -82,12 +83,12 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
 
-		uint8_t GetAxis() const;
+		uint16_t GetAxis() const;
 		int16_t GetValue() const;
 	
 	private:
 		/// The axis that was moved.
-		const uint8_t axis_;
+		const uint16_t axis_;
 		/// The value of the axis.
 		const int16_t value_;
 	};
@@ -177,7 +178,6 @@ namespace trac
 		//Public functions
 	
 		event_category_t GetCategoryFlags() const override;
-		std::string ToString() const override;
 	};
 
 	/// @brief	Controller device removed event class.
