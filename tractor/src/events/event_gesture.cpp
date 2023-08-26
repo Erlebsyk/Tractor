@@ -79,7 +79,7 @@ namespace trac
 	std::string EventGesture::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << GetGestureId() << " " << GetTouchId() << " " << GetNumFingers() << " " << GetPosX() << " " << GetPosY();
+		ss << GetName() << ": [" << GetGestureId() << ", " << GetTouchId() << ", " << GetNumFingers() << ", " << GetPosX() << ", " << GetPosY() << "]";
 		return ss.str();
 	}
 
@@ -256,8 +256,8 @@ namespace trac
 	std::string EventMultiGesture::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << GetGestureId() << " " << GetTouchId() << " " << GetNumFingers() << " " << GetPosX() << " " << GetPosY();
-		ss << " " << GetDTheta() << " " << GetDDistance();
+		ss << EventGesture::ToString();
+		ss << ", [" << GetDTheta() << ", " << GetDDistance() << "]";
 		return ss.str();
 	}
 

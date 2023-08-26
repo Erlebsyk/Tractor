@@ -51,6 +51,18 @@ namespace trac
 	}
 
 	/**
+	 * @brief	Get a string representation of the event.
+	 * 
+	 * @return std::string	A string representation of the event.
+	 */
+	std::string EventMouse::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName() << ": [" << GetMouseID() << ", " << GetWindowID() << ", " << GetPosX() << ", " << GetPosY() << "]";
+		return ss.str();
+	}
+
+	/**
 	 * @brief	Get the mouse ID of the event.
 	 * 
 	 * @return mouse_id_t	The mouse ID of the event.
@@ -154,8 +166,8 @@ namespace trac
 	std::string EventMouseMotion::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetMouseID() << ", " << GetWindowID() << ", " << GetButtonState() << ", " << GetPosX() << ", " << GetPosY();
-		ss << ", " << GetRelX() << ", " << GetRelY();
+		ss << EventMouse::ToString();
+		ss << ", [" << GetButtonState() << ", " << GetRelX() << ", " << GetRelY() << "]";
 		return ss.str();
 	}
 
@@ -254,7 +266,8 @@ namespace trac
 	std::string EventMouseButton::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetMouseID() << ", " << GetWindowID() << ", ";
+		ss << EventMouse::ToString();
+		ss << ", [";
 		if(GetButton() == MouseButton::kLeft)
 			ss << "Left";
 		else if(GetButton() == MouseButton::kMiddle)
@@ -267,7 +280,7 @@ namespace trac
 			ss << "X2";
 		else
 			ss << "Unknown";
-		ss << ", " << GetPosX() << ", " << GetPosY();
+		ss << "]";
 		return ss.str();
 	}
 
@@ -410,7 +423,7 @@ namespace trac
 	{
 		std::stringstream ss;
 		ss << EventMouseButton::ToString();
-		ss << ", " << GetClicks();
+		ss << ", [" << GetClicks() << "]";
 		return ss.str();
 	}
 
@@ -488,13 +501,15 @@ namespace trac
 	std::string EventMouseWheel::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetMouseID() << ", " << GetWindowID() << ", " << GetPosX() << ", " << GetPosY();
+		ss << EventMouse::ToString();
+		ss << ", [";
 
 		if(IsFlipped())
-			ss << ", " << GetScrollX() << ", " << GetScrollY();
+			ss << GetScrollX() << ", " << GetScrollY();
 		else
-			ss << ", " << -GetScrollX() << ", " << -GetScrollY();
+			ss << -GetScrollX() << ", " << -GetScrollY();
 
+		ss << "]";
 		return ss.str();
 	}
 

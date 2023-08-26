@@ -73,6 +73,7 @@ namespace trac
 		//Public functions
 	
 		timestamp_t GetTimestampMs() const override;
+		virtual std::string ToString() const override;
 
 		mouse_id_t GetMouseID() const;
 		window_id_t GetWindowID() const;

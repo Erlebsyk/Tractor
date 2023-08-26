@@ -88,8 +88,9 @@ namespace trac
 	std::string EventTouch::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetWindowID() << " " << GetTouchID() << " ";
-		ss << GetFingerID() << " " << GetPosX() << " " << GetPosY() << " " << GetDX() << " " << GetDY() << " " << GetPressure();
+		ss << GetName() << ": [" << GetWindowID() << ", " << GetTouchID() << ", ";
+		ss << GetFingerID() << ", " << GetPosX() << ", " << GetPosY() << ", " << GetDX() << ", " << GetDY() << ", " << GetPressure();
+		ss << "]";
 		return ss.str();
 	}
 

@@ -73,7 +73,7 @@ namespace test
 		EXPECT_EQ(trac::EventType::kAudioDeviceRemoved, data_g.GetType());
 		EXPECT_EQ((trac::EventCategory::kAudio | trac::EventCategory::kDevice), data_g.GetCategoryFlags());
 		EXPECT_EQ(timestamp_ms, data_g.GetTimestampMs());
-		EXPECT_STREQ("EventAudioDeviceRemoved: 10 1", data_g.GetString().c_str());
+		EXPECT_STREQ("EventAudioDeviceRemoved: [10, 1]", data_g.GetString().c_str());
 		EXPECT_EQ(e, data_g.GetEvent());
 		EXPECT_EQ(10, data_g.GetID());
 		EXPECT_EQ(trac::AudioType::kOutputDevice, data_g.GetAudioType());
@@ -86,7 +86,7 @@ namespace test
 		EXPECT_EQ(trac::EventType::kAudioDeviceAdded, data_g.GetType());
 		EXPECT_EQ((trac::EventCategory::kAudio | trac::EventCategory::kDevice), data_g.GetCategoryFlags());
 		EXPECT_EQ(timestamp_ms, data_g.GetTimestampMs());
-		EXPECT_STREQ("EventAudioDeviceAdded: 11 2", data_g.GetString().c_str());
+		EXPECT_STREQ("EventAudioDeviceAdded: [11, 2]", data_g.GetString().c_str());
 		EXPECT_EQ(e, data_g.GetEvent());
 		EXPECT_EQ(11, data_g.GetID());
 		EXPECT_EQ(trac::AudioType::kCaptureDevice, data_g.GetAudioType());

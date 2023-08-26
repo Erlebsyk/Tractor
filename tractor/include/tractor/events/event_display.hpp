@@ -79,7 +79,7 @@ namespace trac
 		EventType GetType() const override;
 		std::string ToString() const override;
 	
-		DisplayOrientation GetOrientationData() const;
+		DisplayOrientation GetOrientation() const;
 
 	private:
 		/// The orientation of the display.

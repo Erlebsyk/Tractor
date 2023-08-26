@@ -59,7 +59,7 @@ namespace trac
 	std::string EventAudioDevice::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetID() << " " << (uint32_t)GetAudioType();
+		ss << GetName() << ": [" << GetID() << ", " << (uint32_t)GetAudioType() << "]";
 		return ss.str();
 	}
 

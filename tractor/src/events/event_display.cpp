@@ -57,7 +57,7 @@ namespace trac
 	std::string EventDisplay::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << display_index_;
+		ss << GetName() << ": [" << display_index_ << "]";
 		return ss.str();
 	}
 
@@ -110,7 +110,20 @@ namespace trac
 	std::string EventDisplayOrientation::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetDisplayIndex() << ", " << (uint32_t)orientation_;
+		ss << GetName() << ": [" << GetDisplayIndex() << ", ";
+
+		if(orientation_ == DisplayOrientation::kLandscape)
+			ss << "landscape";
+		else if(orientation_ == DisplayOrientation::kPortrait)
+			ss << "portrait";
+		else if(orientation_ == DisplayOrientation::kLandscapeFlipped)
+			ss << "landscape flipped";
+		else if(orientation_ == DisplayOrientation::kPortraitFlipped)
+			ss << "portrait flipped";
+		else
+			ss << "unknown";
+
+		ss << "]";
 		return ss.str();
 	}
 
@@ -119,7 +132,7 @@ namespace trac
 	 * 
 	 * @return DisplayOrientation	The orientation of the display.
 	 */
-	DisplayOrientation EventDisplayOrientation::GetOrientationData() const
+	DisplayOrientation EventDisplayOrientation::GetOrientation() const
 	{
 		return orientation_;
 	}

@@ -57,7 +57,7 @@ namespace trac
 	std::string EventWindow::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetWindowID();
+		ss << GetName() << ": [" << GetWindowID() << "]";
 		return ss.str();
 	}
 
@@ -199,8 +199,8 @@ namespace trac
 	std::string EventWindowMoved::ToString() const
 	{
 		std::stringstream ss;
-		ss << EventWindow::ToString() << " ";
-		ss << "(" << GetPosX() << ", " << GetPosY() << ")";
+		ss << EventWindow::ToString() << ", [";
+		ss << GetPosX() << ", " << GetPosY()  << "]";
 		return ss.str();
 	}
 
@@ -265,8 +265,8 @@ namespace trac
 	std::string EventWindowResized::ToString() const
 	{
 		std::stringstream ss;
-		ss << EventWindow::ToString() << " ";
-		ss << "(" << GetWidth() << ", " << GetHeight() << ")";
+		ss << EventWindow::ToString() << ", [";
+		ss << GetWidth() << ", " << GetHeight() << "]";
 		return ss.str();
 	}
 
@@ -648,8 +648,8 @@ namespace trac
 	std::string EventWindowDisplayChanged::ToString() const
 	{
 		std::stringstream ss;
-		ss << EventWindow::ToString() << " ";
-		ss << GetDisplayIndex();
+		ss << EventWindow::ToString() << ", [";
+		ss << GetDisplayIndex() << "]";
 		return ss.str();
 	}
 

@@ -74,7 +74,7 @@ namespace trac
 	std::string EventKeyboard::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetScanCode() << " (" << GetKeyCode() << ") " << GetKeyMod();
+		ss << GetName() << ": [" << GetScanCode() << " (" << GetKeyCode() << "), " << GetKeyMod() << "]";
 		return ss.str();
 	}
 
@@ -265,7 +265,7 @@ namespace trac
 	std::string EventTextEditing::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetText() << " (" << GetStart() << ", " << GetLength() << ")";
+		ss << GetName() << ": []" << GetText() << " (" << GetStart() << ", " << GetLength() << ")" << "]";
 		return ss.str();
 	}
 
@@ -337,7 +337,7 @@ namespace trac
 	std::string EventTextInput::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetText();
+		ss << GetName() << ": [" << GetText() << "]";
 		return ss.str();
 	}
 

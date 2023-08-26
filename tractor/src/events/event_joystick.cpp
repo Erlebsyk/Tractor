@@ -101,7 +101,7 @@ namespace trac
 	std::string EventJoystickAxisMotion::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetJoystickId() << ", " << (uint32_t)axis_index_ << ", " << axis_value_;
+		ss << GetName() << ": [" << GetJoystickId() << ", " << (uint32_t)axis_index_ << ", " << axis_value_ << "]";
 		return ss.str();
 	}
 
@@ -178,7 +178,7 @@ namespace trac
 	std::string EventJoystickBallMotion::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetJoystickId() << ", " << (uint32_t)ball_index_ << ", " << x_rel_ << ", " << y_rel_;
+		ss << GetName() << ": [" << GetJoystickId() << ", " << (uint32_t)ball_index_ << ", " << x_rel_ << ", " << y_rel_ << "]";
 		return ss.str();
 	}
 
@@ -263,7 +263,7 @@ namespace trac
 	std::string EventJoystickHatMotion::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetJoystickId() << ", " << GetHatIndex() << ", ";
+		ss << GetName() << ": [" << GetJoystickId() << ", " << GetIndex() << ", ";
 		
 		if(position_ == JoystickHatPosition::kCentered)
 			ss << "centered";
@@ -286,6 +286,7 @@ namespace trac
 		else
 			ss << "unknown";
 
+		ss << "]";
 		return ss.str();
 	}
 
@@ -294,7 +295,7 @@ namespace trac
 	 * 
 	 * @return index_t	The index of the hat that was moved.
 	 */
-	index_t EventJoystickHatMotion::GetHatIndex() const
+	index_t EventJoystickHatMotion::GetIndex() const
 	{
 		return hat_index_;
 	}
@@ -304,7 +305,7 @@ namespace trac
 	 * 
 	 * @return JoystickHatPosition	The new position of the hat.
 	 */
-	JoystickHatPosition EventJoystickHatMotion::GetHatPosition() const
+	JoystickHatPosition EventJoystickHatMotion::GetPosition() const
 	{
 		return position_;
 	}
@@ -348,7 +349,7 @@ namespace trac
 	std::string EventJoystickButton::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetJoystickId() << ", " << GetButton();
+		ss << GetName() << ": [" << GetJoystickId() << ", " << GetButton() << "]";
 		return ss.str();
 	}
 
@@ -439,7 +440,7 @@ namespace trac
 	std::string EventJoystickDevice::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetJoystickId();
+		ss << GetName() << ": [" << GetJoystickId() << "]";
 		return ss.str();
 	}
 
@@ -507,7 +508,7 @@ namespace trac
 	 * @param id	The ID of the joystick that triggered the event.
 	 * @param battery_level	The new battery level.
 	 */
-	EventJoystickBatteryUpdated::EventJoystickBatteryUpdated(const joystick_id_t id, const JoytsickBatteryLevel battery_level) :
+	EventJoystickBatteryUpdated::EventJoystickBatteryUpdated(const joystick_id_t id, const JoystickBatteryLevel battery_level) :
 		EventJoystick(id),
 		battery_level_	{ battery_level	}
 	{}
@@ -550,30 +551,32 @@ namespace trac
 	std::string EventJoystickBatteryUpdated::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": " << GetJoystickId() << ", ";
-		if(GetBatteryLevel() == JoytsickBatteryLevel::kUnknown)
+		ss << GetName() << ": [" << GetJoystickId() << ", ";
+		if(GetLevel() == JoystickBatteryLevel::kUnknown)
 			ss << "unknown";
-		else if(GetBatteryLevel() == JoytsickBatteryLevel::kEmpty)
+		else if(GetLevel() == JoystickBatteryLevel::kEmpty)
 			ss << "empty";
-		else if(GetBatteryLevel() == JoytsickBatteryLevel::kLow)
+		else if(GetLevel() == JoystickBatteryLevel::kLow)
 			ss << "low";
-		else if(GetBatteryLevel() == JoytsickBatteryLevel::kMedium)
+		else if(GetLevel() == JoystickBatteryLevel::kMedium)
 			ss << "medium";
-		else if(GetBatteryLevel() == JoytsickBatteryLevel::kFull)
+		else if(GetLevel() == JoystickBatteryLevel::kFull)
 			ss << "full";
-		else if(GetBatteryLevel() == JoytsickBatteryLevel::kWired)
+		else if(GetLevel() == JoystickBatteryLevel::kWired)
 			ss << "wired";
 		else
 			ss << "unknown";
+
+		ss << "]";
 		return ss.str();
 	}
 
 	/**
 	 * @brief	Get the new battery level.
 	 * 
-	 * @return JoytsickBatteryLevel	The new battery level.
+	 * @return JoystickBatteryLevel	The new battery level.
 	 */
-	JoytsickBatteryLevel EventJoystickBatteryUpdated::GetBatteryLevel() const
+	JoystickBatteryLevel EventJoystickBatteryUpdated::GetLevel() const
 	{
 		return battery_level_;
 	}

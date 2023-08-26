@@ -40,7 +40,7 @@ namespace trac
 	};
 
 	/// @brief	Enumeration of the defined joystick battery levels.
-	enum class JoytsickBatteryLevel
+	enum class JoystickBatteryLevel
 	{
 		kUnknown = SDL_JOYSTICK_POWER_UNKNOWN,
 		kEmpty = SDL_JOYSTICK_POWER_EMPTY,
@@ -150,8 +150,8 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
 	
-		index_t GetHatIndex() const;
-		JoystickHatPosition GetHatPosition() const;
+		index_t GetIndex() const;
+		JoystickHatPosition GetPosition() const;
 
 	private:
 		/// The index of the hat that was moved.
@@ -278,7 +278,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventJoystickBatteryUpdated(joystick_id_t id, JoytsickBatteryLevel battery_level);
+		EventJoystickBatteryUpdated(joystick_id_t id, JoystickBatteryLevel battery_level);
 	
 		//Public functions
 	
@@ -287,11 +287,11 @@ namespace trac
 		event_category_t GetCategoryFlags() const override;
 		std::string ToString() const override;
 	
-		JoytsickBatteryLevel GetBatteryLevel() const;
+		JoystickBatteryLevel GetLevel() const;
 
 	private:
 		/// The new battery level.
-		JoytsickBatteryLevel battery_level_;
+		JoystickBatteryLevel battery_level_;
 	};
 } // Namespace trac
 

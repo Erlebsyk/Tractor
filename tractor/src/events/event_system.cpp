@@ -140,7 +140,7 @@ namespace trac
 	std::string EventDrop::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [" << GetDrop() << "], " << GetWindowId();
+		ss << GetName() << ": [(" << GetDrop() << "), " << GetWindowId() << "]";
 		return ss.str();
 	}
 
