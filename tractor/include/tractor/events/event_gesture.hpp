@@ -27,6 +27,7 @@ namespace trac
 	/// @brief Struct containing gesture data.
 	struct GestureData
 	{
+		GestureData();
 		GestureData(
 			gesture_id_t gesture_id,
 			touch_id_t touch_id,

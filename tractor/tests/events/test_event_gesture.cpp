@@ -9,14 +9,13 @@
 
 namespace test
 {
+	static void event_gesture_dollar_cb(std::shared_ptr<trac::Event> e);
+	static void event_gesture_multi_cb(std::shared_ptr<trac::Event> e);
+
 	struct GestureBaseData
 	{
 		trac::timestamp_t timestamp_ms = 0;
-		trac::gesture_id_t gesture_id = 0;
-		trac::touch_id_t touch_id = 0;
-		uint32_t num_fingers = 0;
-		trac::pos_rel_t pos_x = 0.0f;
-		trac::pos_rel_t pos_y = 0.0f;
+		trac::GestureData gesture_data = trac::GestureData();
 	};
 
 	struct GestureDollarData
@@ -46,11 +45,11 @@ namespace test
 
 			auto event_gesture = std::static_pointer_cast<trac::EventGesture>(e);
 			base_data_.timestamp_ms = event_gesture->GetTimestampMs();
-			base_data_.gesture_id = event_gesture->GetGestureId();
-			base_data_.touch_id = event_gesture->GetTouchId();
-			base_data_.num_fingers = event_gesture->GetNumFingers();
-			base_data_.pos_x = event_gesture->GetPosX();
-			base_data_.pos_y = event_gesture->GetPosY();
+			base_data_.gesture_data.gesture_id = event_gesture->GetGestureId();
+			base_data_.gesture_data.touch_id = event_gesture->GetTouchId();
+			base_data_.gesture_data.num_fingers = event_gesture->GetNumFingers();
+			base_data_.gesture_data.pos_x = event_gesture->GetPosX();
+			base_data_.gesture_data.pos_y = event_gesture->GetPosY();
 		}
 
 		void SetDollarData(std::shared_ptr<trac::Event> e)
@@ -80,21 +79,14 @@ namespace test
 
 	static EventGestureData data_g = EventGestureData();
 
-	void event_gesture_dollar_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetDollarData(e);
-	}
-
-	void event_gesture_multi_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetMultiData(e);
-	}
+	void event_gesture_dollar_cb(std::shared_ptr<trac::Event> e) { data_g.SetDollarData(e); }
+	void event_gesture_multi_cb(std::shared_ptr<trac::Event> e) { data_g.SetMultiData(e); }
 
 	GTEST_TEST(tractor, event_gesture)
 	{
 		trac::event_listener_remove_all();
 
-		// Initial values should be blank
+		// Initial values should be blank / zero
 		data_g = EventGestureData();
 		EXPECT_STREQ("", data_g.GetName().c_str());
 		EXPECT_EQ(trac::EventType::kNone, data_g.GetType());
@@ -102,11 +94,11 @@ namespace test
 		EXPECT_EQ(0, data_g.GetTimestampMs());
 		EXPECT_STREQ("", data_g.GetString().c_str());
 		EXPECT_EQ(nullptr, data_g.GetEvent());
-		EXPECT_EQ(0, data_g.GetBaseData().gesture_id);
-		EXPECT_EQ(0, data_g.GetBaseData().touch_id);
-		EXPECT_EQ(0, data_g.GetBaseData().num_fingers);
-		EXPECT_FLOAT_EQ(0.0f, data_g.GetBaseData().pos_x);
-		EXPECT_FLOAT_EQ(0.0f, data_g.GetBaseData().pos_y);
+		EXPECT_EQ(0, data_g.GetBaseData().gesture_data.gesture_id);
+		EXPECT_EQ(0, data_g.GetBaseData().gesture_data.touch_id);
+		EXPECT_EQ(0, data_g.GetBaseData().gesture_data.num_fingers);
+		EXPECT_FLOAT_EQ(0.0f, data_g.GetBaseData().gesture_data.pos_x);
+		EXPECT_FLOAT_EQ(0.0f, data_g.GetBaseData().gesture_data.pos_y);
 		EXPECT_FLOAT_EQ(0.0f, data_g.GetDollarData().error);
 		EXPECT_FLOAT_EQ(0.0f, data_g.GetMultiData().d_theta);
 		EXPECT_FLOAT_EQ(0.0f, data_g.GetMultiData().d_dist);
@@ -135,11 +127,11 @@ namespace test
 		EXPECT_EQ(timestamp_ms, data_g.GetTimestampMs());
 		EXPECT_STREQ("EventDollarGesture: [1, 2, 3, 4.5, 6.7]", data_g.GetString().c_str());
 		EXPECT_EQ(e, data_g.GetEvent());
-		EXPECT_EQ(1, data_g.GetBaseData().gesture_id);
-		EXPECT_EQ(2, data_g.GetBaseData().touch_id);
-		EXPECT_EQ(3, data_g.GetBaseData().num_fingers);
-		EXPECT_FLOAT_EQ(4.5f, data_g.GetBaseData().pos_x);
-		EXPECT_FLOAT_EQ(6.7f, data_g.GetBaseData().pos_y);
+		EXPECT_EQ(1, data_g.GetBaseData().gesture_data.gesture_id);
+		EXPECT_EQ(2, data_g.GetBaseData().gesture_data.touch_id);
+		EXPECT_EQ(3, data_g.GetBaseData().gesture_data.num_fingers);
+		EXPECT_FLOAT_EQ(4.5f, data_g.GetBaseData().gesture_data.pos_x);
+		EXPECT_FLOAT_EQ(6.7f, data_g.GetBaseData().gesture_data.pos_y);
 		EXPECT_FLOAT_EQ(1.23f, data_g.GetDollarData().error);
 
 		data_g = EventGestureData();
@@ -156,11 +148,11 @@ namespace test
 		EXPECT_EQ(timestamp_ms, data_g.GetTimestampMs());
 		EXPECT_STREQ("EventDollarRecord: [4, 5, 6, 7.8, 9]", data_g.GetString().c_str());
 		EXPECT_EQ(e, data_g.GetEvent());
-		EXPECT_EQ(4, data_g.GetBaseData().gesture_id);
-		EXPECT_EQ(5, data_g.GetBaseData().touch_id);
-		EXPECT_EQ(6, data_g.GetBaseData().num_fingers);
-		EXPECT_FLOAT_EQ(7.8f, data_g.GetBaseData().pos_x);
-		EXPECT_FLOAT_EQ(9.0f, data_g.GetBaseData().pos_y);
+		EXPECT_EQ(4, data_g.GetBaseData().gesture_data.gesture_id);
+		EXPECT_EQ(5, data_g.GetBaseData().gesture_data.touch_id);
+		EXPECT_EQ(6, data_g.GetBaseData().gesture_data.num_fingers);
+		EXPECT_FLOAT_EQ(7.8f, data_g.GetBaseData().gesture_data.pos_x);
+		EXPECT_FLOAT_EQ(9.0f, data_g.GetBaseData().gesture_data.pos_y);
 
 		data_g = EventGestureData();
 		e = std::make_shared<trac::EventMultiGesture>(
@@ -177,11 +169,11 @@ namespace test
 		EXPECT_EQ(timestamp_ms, data_g.GetTimestampMs());
 		EXPECT_STREQ("EventMultiGesture: [7, 8, 9, 10.11, 12.13], [14.15, 16.17]", data_g.GetString().c_str());
 		EXPECT_EQ(e, data_g.GetEvent());
-		EXPECT_EQ(7, data_g.GetBaseData().gesture_id);
-		EXPECT_EQ(8, data_g.GetBaseData().touch_id);
-		EXPECT_EQ(9, data_g.GetBaseData().num_fingers);
-		EXPECT_FLOAT_EQ(10.11f, data_g.GetBaseData().pos_x);
-		EXPECT_FLOAT_EQ(12.13f, data_g.GetBaseData().pos_y);
+		EXPECT_EQ(7, data_g.GetBaseData().gesture_data.gesture_id);
+		EXPECT_EQ(8, data_g.GetBaseData().gesture_data.touch_id);
+		EXPECT_EQ(9, data_g.GetBaseData().gesture_data.num_fingers);
+		EXPECT_FLOAT_EQ(10.11f, data_g.GetBaseData().gesture_data.pos_x);
+		EXPECT_FLOAT_EQ(12.13f, data_g.GetBaseData().gesture_data.pos_y);
 		EXPECT_FLOAT_EQ(14.15f, data_g.GetMultiData().d_theta);
 		EXPECT_FLOAT_EQ(16.17f, data_g.GetMultiData().d_dist);
 	}

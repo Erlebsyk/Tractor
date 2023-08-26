@@ -29,6 +29,7 @@ namespace trac
 	/// @brief Enumerator defining the different mouse buttons.
 	enum class MouseButton
 	{
+		kUnknown = 0,
 		kLeft = SDL_BUTTON_LEFT,
 		kMiddle = SDL_BUTTON_MIDDLE,
 		kRight = SDL_BUTTON_RIGHT,
@@ -126,9 +127,9 @@ namespace trac
 		/// The current state of the mouse buttons.
 		mouse_button_state_t button_state_;
 		/// The relative motion of the mouse in x-direction.
-		const pos_pixel_t rel_x_;
+		const pos_pixel_t dx_;
 		/// The relative motion of the mouse in y-direction.
-		const pos_pixel_t rel_y_;
+		const pos_pixel_t dy_;
 	};
 
 	/// @brief Abstract base class for mouse button events.

@@ -34,6 +34,7 @@ namespace trac
 	/// @brief Struct containing a key symbol.
 	struct KeySym
 	{
+		KeySym();
 		KeySym(ScanCode scan, KeyCode key, key_mod_t mod);
 
 		/// Physical key code
@@ -73,6 +74,8 @@ namespace trac
 		ScanCode GetScanCode() const;
 		KeyCode GetKeyCode() const;
 		key_mod_t GetKeyMod() const;
+		window_id_t GetWindowId() const;
+		bool IsRepeat() const;
 
 	private:
 		/// Timestamp of the event in milliseconds.
@@ -137,6 +140,7 @@ namespace trac
 		timestamp_t GetTimestampMs() const override;
 
 		std::string GetText() const;
+		window_id_t GetWindowId() const;
 	
 		private:
 		/// Timestamp of the event in milliseconds.

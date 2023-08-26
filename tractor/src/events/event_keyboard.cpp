@@ -18,6 +18,12 @@
 
 namespace trac
 {
+	KeySym::KeySym() : 
+		scancode	{ SDL_Scancode::SDL_SCANCODE_UNKNOWN	},
+		keycode		{ SDL_KeyCode::SDLK_UNKNOWN				},
+		mod			{ 0		}
+	{}
+
 	/**
 	 * @brief	Construct a new key symbol.
 	 * 
@@ -74,7 +80,8 @@ namespace trac
 	std::string EventKeyboard::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [" << GetScanCode() << " (" << GetKeyCode() << "), " << GetKeyMod() << "]";
+		ss << GetName() << ": [" << GetWindowId() << ", " << GetScanCode() << " (" << GetKeyCode() << "), " << GetKeyMod();
+		ss << ", " << (IsRepeat() ? "true" : "false") << "]";
 		return ss.str();
 	}
 
@@ -118,6 +125,26 @@ namespace trac
 		return key_sym_.mod;
 	}
 
+	/**
+	 * @brief	Get the ID of the window that the event occurred in.
+	 * 
+	 * @return window_id_t	The ID of the window that the event occurred in.
+	 */
+	window_id_t EventKeyboard::GetWindowId() const
+	{
+		return window_id_;
+	}
+
+	/**
+	 * @brief	Get whether the key press is a repeat key.
+	 * 
+	 * @return bool	Whether the key press is a repeat key.
+	 */
+	bool EventKeyboard::IsRepeat() const
+	{
+		return repeat_;
+	}
+	
 	/**
 	 * @brief	Construct a new keyboard key press event.
 	 * 
@@ -214,6 +241,16 @@ namespace trac
 	}
 
 	/**
+	 * @brief	Get the ID of the window that the event occurred in.
+	 * 
+	 * @return window_id_t	The ID of the window that the event occurred in.
+	 */
+	window_id_t EventText::GetWindowId() const
+	{
+		return window_id_;
+	}
+
+	/**
 	 * @brief	Construct a new text editing event.
 	 * 
 	 * @param text	The text that was edited.
@@ -265,7 +302,7 @@ namespace trac
 	std::string EventTextEditing::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": []" << GetText() << " (" << GetStart() << ", " << GetLength() << ")" << "]";
+		ss << GetName() << ": [" << GetWindowId() << ", \"" << GetText() << "\" (" << GetStart() << ", " << GetLength() << ")" << "]";
 		return ss.str();
 	}
 
@@ -337,7 +374,7 @@ namespace trac
 	std::string EventTextInput::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [" << GetText() << "]";
+		ss << GetName() << ": [" << GetWindowId() << ", \"" << GetText() << "\"]";
 		return ss.str();
 	}
 

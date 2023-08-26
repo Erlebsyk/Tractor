@@ -82,6 +82,16 @@ namespace trac
 	{
 		return "EventLocaleChanged";
 	}
+
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventLocaleChanged::GetType() const
+	{
+		return EventType::kLocaleChanged;
+	}
 	
 	/// @brief Construct a new EventLocaleChanged event.
 	EventClipboardUpdate::EventClipboardUpdate() :
@@ -140,7 +150,7 @@ namespace trac
 	std::string EventDrop::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [(" << GetDrop() << "), " << GetWindowId() << "]";
+		ss << GetName() << ": [\"" << GetDrop() << "\", " << GetWindowId() << "]";
 		return ss.str();
 	}
 
@@ -252,6 +262,18 @@ namespace trac
 	{
 		return EventType::kDropBegin;
 	}
+
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventDropBegin::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName() << ": [" << GetWindowId() << "]";
+		return ss.str();
+	}
 	
 	/**
 	 * @brief	Construct a new EventDropComplete event.
@@ -280,5 +302,17 @@ namespace trac
 	EventType EventDropComplete::GetType() const
 	{
 		return EventType::kDropComplete;
+	}
+
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventDropComplete::ToString() const
+	{
+		std::stringstream ss;
+		ss << GetName() << ": [" << GetWindowId() << "]";
+		return ss.str();
 	}
 } // namespace trac

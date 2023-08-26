@@ -663,4 +663,32 @@ namespace trac
 		return index_;
 	}
 
+	/**
+	 * @brief	Construct a new EventWindowClosed event.
+	 * 
+	 * @param id	The ID of the window that was closed.
+	 */
+	EventWindowClosed::EventWindowClosed(const window_id_t id) :
+		EventWindow(id)
+	{}
+	
+	/**
+	 * @brief Get the name of the event.
+	 * 
+	 * @return const char* The name of the event.
+	 */
+	const char* EventWindowClosed::GetName() const
+	{
+		return "EventWindowClosed";
+	}
+	
+	/**
+	 * @brief Get the type of the event.
+	 * 
+	 * @return EventType The type of the event.
+	 */
+	EventType EventWindowClosed::GetType() const
+	{
+		return EventType::kWindowClosed;
+	}
 } // namespace trac

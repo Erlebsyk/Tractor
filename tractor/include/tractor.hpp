@@ -29,6 +29,7 @@
 #include "tractor/events/event_joystick.hpp"
 #include "tractor/events/event_keyboard.hpp"
 #include "tractor/events/event_mouse.hpp"
+#include "tractor/events/event_render.hpp"
 #include "tractor/events/event_system.hpp"
 #include "tractor/events/event_touch.hpp"
 #include "tractor/events/event_window.hpp"

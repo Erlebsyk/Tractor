@@ -115,7 +115,7 @@ namespace trac
 		//Public functions
 	
 		event_category_t GetCategoryFlags() const override;
-		std::string ToString() const override;
+		virtual std::string ToString() const override;
 
 		std::string GetDrop() const;
 		window_id_t GetWindowId() const;
@@ -167,6 +167,7 @@ namespace trac
 	
 		const char* GetName() const override;
 		EventType GetType() const override;
+		std::string ToString() const override;
 	};
 
 	/// @brief	A drop with multiple items has completed. The filename/drop is null/blank on the begin and complete events.
@@ -181,6 +182,7 @@ namespace trac
 	
 		const char* GetName() const override;
 		EventType GetType() const override;
+		std::string ToString() const override;
 	};
 } // Namespace trac
 

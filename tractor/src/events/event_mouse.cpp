@@ -124,8 +124,8 @@ namespace trac
 	) :
 		EventMouse(mouse_id, window_id, pos_x, pos_y),
 		button_state_	{ button_state	},
-		rel_x_			{ rel_x			},
-		rel_y_			{ rel_y			}
+		dx_			{ rel_x			},
+		dy_			{ rel_y			}
 	{}
 	
 	/**
@@ -167,7 +167,7 @@ namespace trac
 	{
 		std::stringstream ss;
 		ss << EventMouse::ToString();
-		ss << ", [" << GetButtonState() << ", " << GetRelX() << ", " << GetRelY() << "]";
+		ss << ", [" << GetButtonState() << ", (" << GetRelX() << ", " << GetRelY() << ")]";
 		return ss.str();
 	}
 
@@ -214,7 +214,7 @@ namespace trac
 	 */
 	pos_pixel_t EventMouseMotion::GetRelX() const
 	{
-		return rel_x_;
+		return dx_;
 	}
 
 	/**
@@ -224,7 +224,7 @@ namespace trac
 	 */
 	pos_pixel_t EventMouseMotion::GetRelY() const
 	{
-		return rel_y_;
+		return dy_;
 	}
 	
 	/**
@@ -269,17 +269,17 @@ namespace trac
 		ss << EventMouse::ToString();
 		ss << ", [";
 		if(GetButton() == MouseButton::kLeft)
-			ss << "Left";
+			ss << "left";
 		else if(GetButton() == MouseButton::kMiddle)
-			ss << "Middle";
+			ss << "middle";
 		else if(GetButton() == MouseButton::kRight)
-			ss << "Right";
+			ss << "right";
 		else if(GetButton() == MouseButton::kX1)
-			ss << "X1";
+			ss << "x1";
 		else if(GetButton() == MouseButton::kX2)
-			ss << "X2";
+			ss << "x2";
 		else
-			ss << "Unknown";
+			ss << "unknown";
 		ss << "]";
 		return ss.str();
 	}
@@ -505,9 +505,9 @@ namespace trac
 		ss << ", [";
 
 		if(IsFlipped())
-			ss << GetScrollX() << ", " << GetScrollY();
+			ss << "(" << -GetScrollX() << ", " << -GetScrollY() << "), " << "true";
 		else
-			ss << -GetScrollX() << ", " << -GetScrollY();
+			ss << "(" << GetScrollX() << ", " << GetScrollY() << "), " << "false";
 
 		ss << "]";
 		return ss.str();

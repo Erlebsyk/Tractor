@@ -123,41 +123,18 @@ namespace test
 
 	static EventJoystickData data_g = EventJoystickData();
 
-	void event_joystick_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.Set(e);
-	}
-
-	void event_joystick_axis_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetAxisData(e);
-	}
-
-	void event_joystick_ball_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetBallData(e);
-	}
-
-	void event_joystick_hat_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetHatData(e);
-	}
-
-	void event_joystick_button_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetButtonData(e);
-	}
-
-	void event_joystick_battery_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetBatteryData(e);
-	}
+	void event_joystick_cb(std::shared_ptr<trac::Event> e) { data_g.Set(e); }
+	void event_joystick_axis_cb(std::shared_ptr<trac::Event> e) { data_g.SetAxisData(e); }
+	void event_joystick_ball_cb(std::shared_ptr<trac::Event> e) { data_g.SetBallData(e); }
+	void event_joystick_hat_cb(std::shared_ptr<trac::Event> e) { data_g.SetHatData(e); }
+	void event_joystick_button_cb(std::shared_ptr<trac::Event> e) { data_g.SetButtonData(e); }
+	void event_joystick_battery_cb(std::shared_ptr<trac::Event> e) { data_g.SetBatteryData(e); }
 
 	GTEST_TEST(tractor, event_joystick)
 	{
 		trac::event_listener_remove_all();
 
-		// Initial values should be blank
+		// Initial values should be blank / zero
 		data_g = EventJoystickData();
 		EXPECT_STREQ("", data_g.GetName().c_str());
 		EXPECT_EQ(trac::EventType::kNone, data_g.GetType());

@@ -96,7 +96,7 @@ namespace trac
 		kWindowHitTest, // Window had a hit test that wasn't SDL_HITTEST_NORMAL.
 		kWindowIccProfileChanged, // Window has had its ICC profile changed.
 		kWindowDisplayChanged, // Window display data has changed.
-		kWindowClose, // The window manager requests that the window be closed.
+		kWindowClosed, // The window manager requests that the window be closed.
 		
 		// Keyboard events
 		kKeyDown, // Key pressed event.

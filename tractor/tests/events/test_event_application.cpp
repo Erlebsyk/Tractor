@@ -12,18 +12,17 @@
 
 namespace test
 {
+	static void event_app_cb(std::shared_ptr<trac::Event> e);
+
 	static EventBaseData data_g = EventBaseData();
 
-	void event_app_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.Set(e);
-	}
+	void event_app_cb(std::shared_ptr<trac::Event> e) { data_g.Set(e); }
 
 	GTEST_TEST(tractor, event_application)
 	{
 		trac::event_listener_remove_all();
 
-		// Initial values should be blank
+		// Initial values should be blank / zero
 		data_g = EventBaseData();
 		EXPECT_STREQ("", data_g.GetName().c_str());
 		EXPECT_EQ(trac::EventType::kNone, data_g.GetType());

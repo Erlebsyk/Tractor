@@ -96,7 +96,7 @@ namespace trac
 	void sdl_dispatch_window_event(SDL_Event* event)
 	{
 		//if(event->window.event == SDL_WINDOWEVENT_CLOSE)
-		//	event_dispatch(std::make_shared<EventWindowClose>());
+		//	event_dispatch(std::make_shared<EventWindowClosed>());
 		//else if(event->window.event == SDL_WINDOWEVENT_RESIZED)
 		//	event_dispatch(std::make_shared<EventWindowResize>((uint32_t)event->window.data1, (uint32_t)event->window.data2));
 		//else if(event->window.event == SDL_WINDOWEVENT_FOCUS_GAINED)

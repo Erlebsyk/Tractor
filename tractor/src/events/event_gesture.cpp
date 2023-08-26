@@ -17,6 +17,16 @@
 
 namespace trac
 {
+	/// @brief Default constructor for gesture data.
+	GestureData::GestureData() : 
+		timestamp_ms	{ 0		},
+		gesture_id		{ 0		},
+		touch_id		{ 0		},
+		num_fingers		{ 0		},
+		pos_x			{ 0.0f	},
+		pos_y			{ 0.0f	}
+	{}
+
 	/**
 	 * @brief	Constructs new gesture event data.
 	 * 

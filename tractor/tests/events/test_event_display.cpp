@@ -9,6 +9,9 @@
 
 namespace test
 {
+	static void event_display_cb(std::shared_ptr<trac::Event> e);
+	static void event_display_orientation_cb(std::shared_ptr<trac::Event> e);
+
 	class EventDisplayData : public EventBaseData
 	{
 	public:
@@ -43,21 +46,14 @@ namespace test
 
 	static EventDisplayData data_g = EventDisplayData();
 
-	void event_display_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.Set(e);
-	}
-
-	void event_display_orientation_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetOrientationData(e);
-	}
+	void event_display_cb(std::shared_ptr<trac::Event> e) { data_g.Set(e); }
+	void event_display_orientation_cb(std::shared_ptr<trac::Event> e) { data_g.SetOrientationData(e); }
 
 	GTEST_TEST(tractor, event_display)
 	{
 		trac::event_listener_remove_all();
 
-		// Initial values should be blank
+		// Initial values should be blank / zero
 		data_g = EventDisplayData();
 		EXPECT_STREQ("", data_g.GetName().c_str());
 		EXPECT_EQ(trac::EventType::kNone, data_g.GetType());

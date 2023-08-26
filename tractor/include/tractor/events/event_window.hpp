@@ -326,6 +326,20 @@ namespace trac
 		const display_index_t index_;
 	};
 
+	/// @brief	Event that is generated when the window is closed.
+	class EventWindowClosed : public EventWindow
+	{
+	public:
+		// Constructors and destructors
+	
+		EventWindowClosed(window_id_t id);
+	
+		//Public functions
+	
+		const char* GetName() const override;
+		EventType GetType() const override;
+	};
+
 } // Namespace trac
 
 #endif // EVENT_WINDOW_HPP_ 

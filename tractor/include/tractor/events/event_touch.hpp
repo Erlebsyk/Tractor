@@ -29,6 +29,7 @@ namespace trac
 	/// @brief Structure containing information about a touch point.
 	struct TouchPoint
 	{
+		TouchPoint();
 		TouchPoint(
 			finger_id_t finger_id,
 			pos_rel_t pos_x,
@@ -39,17 +40,17 @@ namespace trac
 		);
 
 		/// The ID of the finger that produced the event.
-		const finger_id_t finger_id;
+		finger_id_t finger_id;
 		/// The x-position of the touch event, normalized to the range 0.0 to 1.0.
-		const pos_rel_t pos_x;
+		pos_rel_t pos_x;
 		/// The y-position of the touch event, normalized to the range 0.0 to 1.0.
-		const pos_rel_t pos_y;
+		pos_rel_t pos_y;
 		/// The change in x-direction, normalized to the range -1.0 to 1.0.
-		const pos_rel_t dx;
+		pos_rel_t dx;
 		/// The change in y-direction, normalized to the range -1.0 to 1.0.
-		const pos_rel_t dy;
+		pos_rel_t dy;
 		/// The pressure of the touch event, normalized to the range 0.0 to 1.0.
-		const float pressure;
+		float pressure;
 	};
 
 	/// @brief	Abstract base class for touch events.

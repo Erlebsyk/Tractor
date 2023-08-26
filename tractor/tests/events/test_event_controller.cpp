@@ -9,6 +9,13 @@
 
 namespace test
 {
+	static void event_controller_cb(std::shared_ptr<trac::Event> e);
+	static void event_controller_axis_cb(std::shared_ptr<trac::Event> e);
+	static void event_controller_button_cb(std::shared_ptr<trac::Event> e);
+	static void event_controller_touchpad_motion_cb(std::shared_ptr<trac::Event> e);
+	static void event_controller_touchpad_pressure_cb(std::shared_ptr<trac::Event> e);
+	static void event_controller_sensor_cb(std::shared_ptr<trac::Event> e);
+
 	struct ControllerAxisData
 	{
 		uint16_t axis_id = 0;
@@ -39,7 +46,6 @@ namespace test
 	class EventControllerData : public EventBaseData
 	{
 	public:
-
 		EventControllerData() :
 			EventBaseData(),
 			controller_id_ { 0 },
@@ -123,41 +129,18 @@ namespace test
 
 	static EventControllerData data_g = EventControllerData();
 
-	void event_controller_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.Set(e);
-	}
-
-	void event_controller_axis_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetAxisData(e);
-	}
-
-	void event_controller_button_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetButtonData(e);
-	}
-
-	void event_controller_touchpad_motion_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetTouchpadMotionData(e);
-	}
-
-	void event_controller_touchpad_pressure_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetTouchpadPressureData(e);
-	}
-
-	void event_controller_sensor_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.SetSensorData(e);
-	}
+	void event_controller_cb(std::shared_ptr<trac::Event> e) { data_g.Set(e); }
+	void event_controller_axis_cb(std::shared_ptr<trac::Event> e) { data_g.SetAxisData(e); }
+	void event_controller_button_cb(std::shared_ptr<trac::Event> e) { data_g.SetButtonData(e); }
+	void event_controller_touchpad_motion_cb(std::shared_ptr<trac::Event> e) { data_g.SetTouchpadMotionData(e);	}
+	void event_controller_touchpad_pressure_cb(std::shared_ptr<trac::Event> e) { data_g.SetTouchpadPressureData(e);}
+	void event_controller_sensor_cb(std::shared_ptr<trac::Event> e) { data_g.SetSensorData(e); }
 
 	GTEST_TEST(tractor, event_controller)
 	{
 		trac::event_listener_remove_all();
 
-		// Initial values should be blank
+		// Initial values should be blank / zero
 		data_g = EventControllerData();
 		EXPECT_STREQ("", data_g.GetName().c_str());
 		EXPECT_EQ(trac::EventType::kNone, data_g.GetType());

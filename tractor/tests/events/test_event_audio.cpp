@@ -9,6 +9,8 @@
 
 namespace test
 {
+	static void event_audio_cb(std::shared_ptr<trac::Event> e);
+
 	class EventAudioData : public EventBaseData
 	{
 	public:
@@ -36,16 +38,13 @@ namespace test
 
 	static EventAudioData data_g = EventAudioData();
 
-	void event_audio_cb(std::shared_ptr<trac::Event> e)
-	{
-		data_g.Set(e);
-	}
+	void event_audio_cb(std::shared_ptr<trac::Event> e) { data_g.Set(e); }
 
 	GTEST_TEST(tractor, event_audio)
 	{
 		trac::event_listener_remove_all();
 
-		// Initial values should be blank
+		// Initial values should be blank / zero
 		data_g = EventAudioData();
 		EXPECT_STREQ("", data_g.GetName().c_str());
 		EXPECT_EQ(trac::EventType::kNone, data_g.GetType());

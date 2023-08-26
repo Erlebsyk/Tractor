@@ -18,6 +18,17 @@
 
 namespace trac
 {
+	
+	/// @brief	Default constructor for the TouchPoint struct. All values are initialized to 0.
+	TouchPoint::TouchPoint() : 
+		finger_id	{ 0 },
+		pos_x		{ 0.0f },
+		pos_y		{ 0.0f },
+		dx			{ 0.0f },
+		dy			{ 0.0f },
+		pressure	{ 0.0f }
+	{}
+
 	/**
 	 * @brief	Construct a new TouchPoint object, containing information about a touch point. This constructor expects all inputs to be properly normalized
 	 * 			beforehand, and do not perform any "sanity" or bounds checking.
@@ -89,7 +100,7 @@ namespace trac
 	{
 		std::stringstream ss;
 		ss << GetName() << ": [" << GetWindowID() << ", " << GetTouchID() << ", ";
-		ss << GetFingerID() << ", " << GetPosX() << ", " << GetPosY() << ", " << GetDX() << ", " << GetDY() << ", " << GetPressure();
+		ss << GetFingerID() << ", (" << GetPosX() << ", " << GetPosY() << "), (" << GetDX() << ", " << GetDY() << "), " << GetPressure();
 		ss << "]";
 		return ss.str();
 	}
