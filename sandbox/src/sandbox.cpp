@@ -27,6 +27,9 @@ std::shared_ptr<trac::Application> trac::create_application()
 namespace app
 {
 	
+	
+	bool SandboxApp::quit_ = false;
+
 	/// @brief	Constructs a sandbox application instance.
 	SandboxApp::SandboxApp() : 
 		trac::Application()
@@ -44,21 +47,25 @@ namespace app
 		trac::WindowProperties window_properties("Sandbox", 1280, 720);
 		std::shared_ptr<trac::Window> window = trac::Window::Create(window_properties);
 
-		bool quit = false;
-		SDL_Event e;
-		while( quit == false )
+		trac::listener_id_t quit_id = trac::event_listener_add_b(trac::EventType::kQuit, quit);
+
+		while(!quit_)
 		{
-			while( SDL_PollEvent( &e ) != 0 )
-			{
-				//User requests quit
-				if( e.type == SDL_QUIT )
-				{
-					quit = true;
-				}
-			}
+			trac::event_queue_process();
 		}
 
 		return 0;
+	}
+
+	/**
+	 * @brief	Mark the application for quitting.
+	 * 
+	 * @param e	The event that triggered the quit.
+	 */
+	void SandboxApp::quit(trac::Event& e)
+	{
+		trac::log_client_info("Application quit requested....");
+		quit_ = true;
 	}
 
 } // Namespace app

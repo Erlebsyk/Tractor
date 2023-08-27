@@ -27,4 +27,7 @@
 #include <set>
 #include <unordered_set>
 
+// Project header includes
+#include "tractor/events.hpp"
+
 #endif // TRACTOR_PCH_HPP_ 

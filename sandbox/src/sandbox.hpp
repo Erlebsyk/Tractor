@@ -27,6 +27,12 @@ namespace app
 		// Public functions
 		
 		int run() override;
+
+		static void quit(trac::Event& e);
+
+	private:
+		/// Flag indicating if the application should quit.
+		static bool quit_;
 	};
 } // Namespace app
 

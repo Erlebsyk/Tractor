@@ -17,7 +17,7 @@
 #include <SDL_opengl.h>
 
 // Project header includes
-#include "events/event.hpp"
+#include "events.hpp"
 
 namespace trac
 {

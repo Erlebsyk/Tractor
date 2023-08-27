@@ -19,10 +19,8 @@
 #include "tractor/application.hpp"
 #include "tractor/logger.hpp"
 #include "tractor/window.hpp"
-#include "tractor/events/event.hpp"
-#include "tractor/events/event_application.hpp"
-#include "tractor/events/event_key.hpp"
-#include "tractor/events/event_mouse.hpp"
+
+#include "tractor/events.hpp"
 
 namespace trac
 {

@@ -56,7 +56,7 @@ int main(int argc, char* argv[])
 {
 	// Initialize SDL
 
-	const int sdl_init_status = SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTS);
+	const int sdl_init_status = SDL_Init(SDL_INIT_EVERYTHING);
 	if (sdl_init_status != 0)
 	{
 		std::cout << "SDL_Init failed: " << SDL_GetError() << std::endl;
@@ -114,51 +114,5 @@ inline int32_t trac::run(int argc, char* argv[])
 
 	return status;
 }
-
-#endif
-
-#if 0
-
-	const int sdl_init_status = SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTS);
-	//if(sdl_init_status < 0)
-	//	trac::log_engine_error("SDL could not initialize! SDL init returned error code: [%d], and error [%s]", sdl_init_status, SDL_GetError());
-	
-	SDL_Window* window = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 600, 600, SDL_WINDOW_SHOWN );
-	if( window == NULL )
-	{
-		//printf( "Window could not be created! SDL_Error: %s\n", SDL_GetError() );
-	}
-
-	//Get window surface
-	SDL_Surface* screenSurface = SDL_GetWindowSurface( window );
-
-	//Fill the surface white
-	SDL_FillRect( screenSurface, NULL, SDL_MapRGB( screenSurface->format, 0x10, 0x0, 0x10 ) );
-	
-	//Update the surface
-	SDL_UpdateWindowSurface( window );
-
-	// Keep window open until user closes it and polls for events.
-	bool quit = false;
-	SDL_Event e;
-	while( quit == false )
-	{
-		while( SDL_PollEvent( &e ) != 0 )
-		{
-			//User requests quit
-			if( e.type == SDL_QUIT )
-			{
-				quit = true;
-			}
-		}
-	}
-
-	//Destroy window
-	SDL_DestroyWindow( window );
-
-	//Quit SDL subsystems
-	SDL_Quit();
-
-	return 0;
 
 #endif

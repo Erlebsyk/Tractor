@@ -19,8 +19,7 @@
 // Project header includes
 #include "logger.hpp"
 #include "sdl_hook.hpp"
-#include "events/event.hpp"
-#include "events/event_sdl.hpp"
+#include "events.hpp"
 
 namespace trac
 {
@@ -37,7 +36,7 @@ namespace trac
 		engine_initialized = true;
 		Logger::Initialize();
 		EventDispatcher::Initialize();
-		sdl_link_events();
+		sdl_init();
 	}
 
 	/**

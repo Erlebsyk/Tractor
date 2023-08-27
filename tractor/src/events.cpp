@@ -1,19 +1,19 @@
 /**
- * @file	event.cpp
- * @brief	Main source file for the event module. See event.hpp for more information.
+ * @file	events.cpp
+ * @brief	Main source file for the event module. See events.hpp for more information.
  * 
  * @author	Erlend Elias Isachsen
- * @date	26.07.2023
- * 
-*/
+ * @date	27.08.2023
+ */
 
 // Precompiled header include
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event.hpp"
+#include "events.hpp"
 
 // Project includes
+#include "sdl_hook_events.hpp"
 #include "logger.hpp"
 
 namespace trac
@@ -53,6 +53,8 @@ namespace trac
 	static listener_id_t event_id_b = 0;
 	/// A map of all registered non-blocking event listeners.
 	static listener_id_t event_id_nb = 0;
+	/// A tracker for SDL event listeners.
+	static SdlListenerTracker listener_tracker;
 
 	/// The global engine event dispatcher.
 	std::shared_ptr<event_dispatcher_t> EventDispatcher::engine_dispatcher_s_ = nullptr;
@@ -62,13 +64,40 @@ namespace trac
 	/// @brief	Processes all queued events submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
 	void event_queue_process()
 	{
+		SDL_PumpEvents();
 		EventDispatcher::GetEngineQueue()->process();
 	}
 
-	/// @brief	Processes a single queued event submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
-	void event_queue_process_one()
+	/**
+	 * @brief	Processes a single queued event submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
+	 * 
+	 * @return bool Whether the event queue is empty or not after processing the event.
+	 * @retval True	The event queue is empty after processing the event.
+	 * @retval False	The event queue is not empty after processing the event.
+	 */
+	bool event_queue_process_one()
 	{
+		SDL_PumpEvents();
 		EventDispatcher::GetEngineQueue()->processOne();
+		return event_queue_empty();
+	}
+
+	/**
+	 * @brief	Checks whether the event queue is empty or not.
+	 * 
+	 * @return bool	Whether the event queue is empty or not.
+	 * @retval True	The event queue is empty.
+	 * @retval False	The event queue is not empty.
+	 */
+	bool event_queue_empty()
+	{
+		return EventDispatcher::GetEngineQueue()->emptyQueue();
+	}
+
+	/// @brief	Clears all queued events from the event queue.
+	void event_queue_clear()
+	{
+		EventDispatcher::GetEngineQueue()->clearEvents();
 	}
 
 	/**
@@ -120,6 +149,7 @@ namespace trac
 		const handle_b_t handle = EventDispatcher::GetEngineDispatcher()->appendListener(type, callback);
 		event_id_b++;
 		listeners_b.emplace(event_id_b, ListenerDataB{type, handle});
+		listener_tracker.AddListener(type);
 		return event_id_b;
 	}
 
@@ -138,6 +168,7 @@ namespace trac
 		const handle_nb_t handle = EventDispatcher::GetEngineQueue()->appendListener(type, callback);
 		event_id_nb++;
 		listeners_nb.emplace(event_id_nb, ListenerDataNb{type, handle});
+		listener_tracker.AddListener(type);
 		return event_id_nb;
 	}
 
@@ -153,6 +184,7 @@ namespace trac
 		{
 			EventDispatcher::GetEngineDispatcher()->removeListener(it->second.type, it->second.handle);
 			listeners_b.erase(it);
+			listener_tracker.RemoveListener(it->second.type);
 		}
 		else
 		{
@@ -171,6 +203,7 @@ namespace trac
 		if (it != listeners_nb.end())
 		{
 			EventDispatcher::GetEngineQueue()->removeListener(it->second.type, it->second.handle);
+			listener_tracker.RemoveListener(it->second.type);
 			listeners_nb.erase(it);
 		}
 		else
@@ -186,6 +219,7 @@ namespace trac
 		for (auto& listener : listeners_b)
 		{
 			EventDispatcher::GetEngineDispatcher()->removeListener(listener.second.type, listener.second.handle);
+			listener_tracker.RemoveListener(listener.second.type);
 		}
 		listeners_b.clear();
 	}
@@ -196,6 +230,7 @@ namespace trac
 		for (auto& listener : listeners_nb)
 		{
 			EventDispatcher::GetEngineQueue()->removeListener(listener.second.type, listener.second.handle);
+			listener_tracker.RemoveListener(listener.second.type);
 		}
 		listeners_nb.clear();
 	}
@@ -205,41 +240,6 @@ namespace trac
 	{
 		event_listener_remove_all_b();
 		event_listener_remove_all_nb();
-	}
-
-	/**
-	 * @brief	Inserter operator for the Event class. This function is used to insert an event into an output stream (i.e. to print event data).
-	 * 
-	 * @param os	The output stream to insert the event into.
-	 * @param e	The event to insert into the output stream.
-	 * @return std::ostream&	The output stream with the event inserted.
-	 */
-	std::ostream& operator<<(std::ostream& os, const Event& e)
-	{
-		return os << e.ToString();
-	}
-
-	/**
-	 * @brief	Converts the event to a string representation. This function is used to print the event data to the console.
-	 * 
-	 * @return std::string	The string representation of the event.
-	 */
-	std::string Event::ToString() const
-	{
-		return GetName();
-	}
-
-	/**
-	 * @brief	Returns whether the event is in the provided category or not.
-	 * 
-	 * @param category	The category to check.
-	 * @return bool	True if the event is in the provided category, false otherwise.
-	 * @retval True	The event is in the provided category.
-	 * @retval False	The event is not in the provided category.
-	 */
-	bool Event::IsInCategory(EventCategory category) const
-	{
-		return GetCategoryFlags() & category;
 	}
 
 	/**
@@ -297,4 +297,5 @@ namespace trac
 	{
 		return engine_queue_s_;
 	}
-} // Namespace trac
+
+} // namespace trac

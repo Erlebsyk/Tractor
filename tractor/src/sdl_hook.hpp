@@ -12,7 +12,7 @@
 
 namespace trac
 {
-	void sdl_link_events();
+	void sdl_init();
 } // Namespace trac
 
 #endif // SDL_HOOK_HPP_
