@@ -36,7 +36,8 @@ namespace trac
 		kRightUp = SDL_HAT_RIGHTUP,
 		kRightDown = SDL_HAT_RIGHTDOWN,
 		kLeftUp = SDL_HAT_LEFTUP,
-		kLeftDown = SDL_HAT_LEFTDOWN
+		kLeftDown = SDL_HAT_LEFTDOWN,
+		kUnknown
 	};
 
 	/// @brief	Enumeration of the defined joystick battery levels.

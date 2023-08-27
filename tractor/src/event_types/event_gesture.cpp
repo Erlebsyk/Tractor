@@ -20,7 +20,6 @@ namespace trac
 	/// @brief Default constructor for gesture data.
 	GestureData::GestureData() : 
 		timestamp_ms	{ 0		},
-		gesture_id		{ 0		},
 		touch_id		{ 0		},
 		num_fingers		{ 0		},
 		pos_x			{ 0.0f	},
@@ -30,25 +29,22 @@ namespace trac
 	/**
 	 * @brief	Constructs new gesture event data.
 	 * 
-	 * @param gesture_id	The ID of the gesture.
 	 * @param touch_id	The touch ID.
 	 * @param num_fingers	The number of fingers used in the gesture.
 	 * @param pos_x	The x-position of the gesture.
 	 * @param pos_y	The y-position of the gesture.
 	 */
 	GestureData::GestureData(
-			const gesture_id_t gesture_id,
 			const touch_id_t touch_id,
 			const uint32_t num_fingers,
 			const pos_rel_t pos_x,
 			const pos_rel_t pos_y
 		) : 
 			timestamp_ms	{ SDL_GetTicks64()	},
-			gesture_id		{ gesture_id		},
 			touch_id		{ touch_id			},
 			num_fingers		{ num_fingers		},
-			pos_x			{ pos_x					},
-			pos_y			{ pos_y					}
+			pos_x			{ pos_x				},
+			pos_y			{ pos_y				}
 	{}
 
 	/**
@@ -89,18 +85,8 @@ namespace trac
 	std::string EventGesture::ToString() const
 	{
 		std::stringstream ss;
-		ss << GetName() << ": [" << GetGestureId() << ", " << GetTouchId() << ", " << GetNumFingers() << ", " << GetPosX() << ", " << GetPosY() << "]";
+		ss << GetName() << ": [" << GetTouchId() << ", " << GetNumFingers() << ", (" << GetPosX() << ", " << GetPosY() << ")]";
 		return ss.str();
-	}
-
-	/**
-	 * @brief	Get the gesture ID.
-	 * 
-	 * @return gesture_id_t	The gesture ID.
-	 */
-	gesture_id_t EventGesture::GetGestureId() const
-	{
-		return data_.gesture_id;
 	}
 
 	/**
@@ -144,14 +130,60 @@ namespace trac
 	}
 
 	/**
+	 * @brief	Construct a new event dollar gesture base object.
+	 * 
+	 * @param data	The gesture data.
+	 * @param gesture_id	The ID of the gesture.
+	 * @param error	The error value of the gesture.
+	 */
+	EventDollarGestureBase::EventDollarGestureBase(const GestureData &data, const gesture_id_t gesture_id, const float error) :
+		EventGesture(data),
+		gesture_id_	{ gesture_id	},
+		error_		{ error			}
+	{}
+	
+	/**
+	 * @brief Get the string representation of the event.
+	 * 
+	 * @return std::string The string representation of the event.
+	 */
+	std::string EventDollarGestureBase::ToString() const
+	{
+		std::stringstream ss;
+		ss << EventGesture::ToString();
+		ss << ", [" << GetGestureId() << ", " << GetError() << "]";
+		return ss.str();
+	}
+
+	/**
+	 * @brief	Get the gesture ID of the dollar gesture event.
+	 * 
+	 * @return gesture_id_t	The gesture ID of the event.
+	 */
+	gesture_id_t EventDollarGestureBase::GetGestureId() const
+	{
+		return gesture_id_;
+	}
+
+	/**
+	 * @brief	Get the error value of the gesture dollar gesture event.
+	 * 
+	 * @return float	The error value of the gesture event.
+	 */
+	float EventDollarGestureBase::GetError() const
+	{
+		return error_;
+	}
+
+	/**
 	 * @brief	Construct a new event dollar gesture object.
 	 * 
 	 * @param data	The gesture data.
+	 * @param gesture_id	The ID of the gesture.
 	 * @param error	The error value of the gesture.
 	 */
-	EventDollarGesture::EventDollarGesture(const GestureData &data, const float error) :
-		EventGesture(data),
-		error_ { error }
+	EventDollarGesture::EventDollarGesture(const GestureData &data, const gesture_id_t gesture_id, const float error) :
+		EventDollarGestureBase(data, gesture_id, error)
 	{}
 	
 	/**
@@ -175,24 +207,14 @@ namespace trac
 	}
 
 	/**
-	 * @brief	Get the error value of the gesture.
-	 * 
-	 * @return float	The error value of the gesture.
-	 */
-	float EventDollarGesture::GetError() const
-	{
-		return error_;
-	}
-
-	/**
 	 * @brief	Construct a new event dollar record object.
 	 * 
 	 * @param data	The gesture data.
+	 * @param gesture_id	The ID of the gesture.
 	 * @param error	The error value of the gesture.
 	 */
-	EventDollarRecord::EventDollarRecord(const GestureData &data, const float error) :
-		EventGesture(data),
-		error_ { error }
+	EventDollarRecord::EventDollarRecord(const GestureData &data, const gesture_id_t gesture_id, const float error) :
+		EventDollarGestureBase(data, gesture_id, error)
 	{}
 	
 	/**
@@ -213,16 +235,6 @@ namespace trac
 	EventType EventDollarRecord::GetType() const
 	{
 		return EventType::kDollarRecord;
-	}
-	
-	/**
-	 * @brief	Get the error value of the gesture.
-	 * 
-	 * @return float	The error value of the gesture.
-	 */
-	float EventDollarRecord::GetError() const
-	{
-		return error_;
 	}
 
 	/**

@@ -36,7 +36,7 @@ namespace trac
 		engine_initialized = true;
 		Logger::Initialize();
 		EventDispatcher::Initialize();
-		sdl_link_events();
+		sdl_init();
 	}
 
 	/**

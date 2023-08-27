@@ -13,6 +13,7 @@
 #include "events.hpp"
 
 // Project includes
+#include "sdl_hook_events.hpp"
 #include "logger.hpp"
 
 namespace trac
@@ -52,6 +53,8 @@ namespace trac
 	static listener_id_t event_id_b = 0;
 	/// A map of all registered non-blocking event listeners.
 	static listener_id_t event_id_nb = 0;
+	/// A tracker for SDL event listeners.
+	static SdlListenerTracker listener_tracker;
 
 	/// The global engine event dispatcher.
 	std::shared_ptr<event_dispatcher_t> EventDispatcher::engine_dispatcher_s_ = nullptr;
@@ -61,6 +64,7 @@ namespace trac
 	/// @brief	Processes all queued events submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
 	void event_queue_process()
 	{
+		SDL_PumpEvents();
 		EventDispatcher::GetEngineQueue()->process();
 	}
 
@@ -73,6 +77,7 @@ namespace trac
 	 */
 	bool event_queue_process_one()
 	{
+		SDL_PumpEvents();
 		EventDispatcher::GetEngineQueue()->processOne();
 		return event_queue_empty();
 	}
@@ -144,6 +149,7 @@ namespace trac
 		const handle_b_t handle = EventDispatcher::GetEngineDispatcher()->appendListener(type, callback);
 		event_id_b++;
 		listeners_b.emplace(event_id_b, ListenerDataB{type, handle});
+		listener_tracker.AddListener(type);
 		return event_id_b;
 	}
 
@@ -162,6 +168,7 @@ namespace trac
 		const handle_nb_t handle = EventDispatcher::GetEngineQueue()->appendListener(type, callback);
 		event_id_nb++;
 		listeners_nb.emplace(event_id_nb, ListenerDataNb{type, handle});
+		listener_tracker.AddListener(type);
 		return event_id_nb;
 	}
 
@@ -177,6 +184,7 @@ namespace trac
 		{
 			EventDispatcher::GetEngineDispatcher()->removeListener(it->second.type, it->second.handle);
 			listeners_b.erase(it);
+			listener_tracker.RemoveListener(it->second.type);
 		}
 		else
 		{
@@ -195,6 +203,7 @@ namespace trac
 		if (it != listeners_nb.end())
 		{
 			EventDispatcher::GetEngineQueue()->removeListener(it->second.type, it->second.handle);
+			listener_tracker.RemoveListener(it->second.type);
 			listeners_nb.erase(it);
 		}
 		else
@@ -210,6 +219,7 @@ namespace trac
 		for (auto& listener : listeners_b)
 		{
 			EventDispatcher::GetEngineDispatcher()->removeListener(listener.second.type, listener.second.handle);
+			listener_tracker.RemoveListener(listener.second.type);
 		}
 		listeners_b.clear();
 	}
@@ -220,6 +230,7 @@ namespace trac
 		for (auto& listener : listeners_nb)
 		{
 			EventDispatcher::GetEngineQueue()->removeListener(listener.second.type, listener.second.handle);
+			listener_tracker.RemoveListener(listener.second.type);
 		}
 		listeners_nb.clear();
 	}

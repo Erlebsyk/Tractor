@@ -18,26 +18,38 @@
 
 namespace trac
 {
+	/// @brief 	Default constructor for mouse data.
+	MouseData::MouseData() : 
+		mouse_id	{ 0 },
+		window_id	{ 0 },
+		pos_x		{ 0 },
+		pos_y		{ 0 }
+	{}
+
 	/**
-	 * @brief	Construct a new mouse event.
+	 * @brief	Construct a new mouse data object.
 	 * 
 	 * @param mouse_id	The ID of the mouse that triggered the event.
 	 * @param window_id	The ID of the window that the event occurred in.
 	 * @param pos_x	The x-position of the mouse cursor in the window.
 	 * @param pos_y	The y-position of the mouse cursor in the window.
 	 */
-	EventMouse::EventMouse(
-			const mouse_id_t mouse_id,
-			const window_id_t window_id,
-			const pos_pixel_t pos_x,
-			const pos_pixel_t pos_y
-		) :
+	MouseData::MouseData(const mouse_id_t mouse_id, const window_id_t window_id, const pos_pixel_t pos_x, const pos_pixel_t pos_y) : 
+		mouse_id	{ mouse_id	},
+		window_id	{ window_id	},
+		pos_x		{ pos_x		},
+		pos_y		{ pos_y		}
+	{}
+
+	/**
+	 * @brief	Construct a new mouse event.
+	 * 
+	 * @param mouse_data	The mouse data of the event.
+	 */
+	EventMouse::EventMouse(const MouseData& mouse_data) :
 			Event(),
 			timestamp_ms_	{ SDL_GetTicks64()	},
-			mouse_id_		{ mouse_id			},
-			window_id_		{ window_id			},
-			pos_x_			{ pos_x				},
-			pos_y_			{ pos_y				}
+			mouse_data_		{ mouse_data		}
 	{}
 	
 	/**
@@ -69,7 +81,7 @@ namespace trac
 	 */
 	mouse_id_t EventMouse::GetMouseID() const
 	{
-		return mouse_id_;
+		return mouse_data_.mouse_id;
 	}
 
 	/**
@@ -79,7 +91,7 @@ namespace trac
 	 */
 	window_id_t EventMouse::GetWindowID() const
 	{
-		return window_id_;
+		return mouse_data_.window_id;
 	}
 
 	/**
@@ -89,7 +101,7 @@ namespace trac
 	 */
 	pos_pixel_t EventMouse::GetPosX() const
 	{
-		return pos_x_;
+		return mouse_data_.pos_x;
 	}
 
 	/**
@@ -99,33 +111,27 @@ namespace trac
 	 */
 	pos_pixel_t EventMouse::GetPosY() const
 	{
-		return pos_y_;
+		return mouse_data_.pos_y;
 	}
 
 	/**
 	 * @brief	Construct a new mouse motion event.
 	 * 
-	 * @param mouse_id	The ID of the mouse that triggered the event.
-	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param pos_x	The x-position of the mouse cursor in the window.
-	 * @param pos_y	The y-position of the mouse cursor in the window.
+	 * @param mouse_data	The mouse data of the event.
 	 * @param button_state	The current state of the mouse buttons.
 	 * @param rel_x	The relative motion of the mouse in x-direction.
 	 * @param rel_y	The relative motion of the mouse in y-direction.
 	 */
 	EventMouseMotion::EventMouseMotion(
-		const mouse_id_t mouse_id,
-		const window_id_t window_id,
-		const pos_pixel_t pos_x,
-		const pos_pixel_t pos_y,
+		const MouseData& mouse_data,
 		const mouse_button_state_t button_state,
 		const pos_pixel_t rel_x,
 		const pos_pixel_t rel_y
 	) :
-		EventMouse(mouse_id, window_id, pos_x, pos_y),
+		EventMouse(mouse_data),
 		button_state_	{ button_state	},
-		dx_			{ rel_x			},
-		dy_			{ rel_y			}
+		dx_				{ rel_x			},
+		dy_				{ rel_y			}
 	{}
 	
 	/**
@@ -230,21 +236,12 @@ namespace trac
 	/**
 	 * @brief	Construct a new mouse button event.
 	 * 
-	 * @param mouse_id	The ID of the mouse that triggered the event.
-	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param pos_x	The x-position of the mouse cursor in the window.
-	 * @param pos_y	The y-position of the mouse cursor in the window.
+	 * @param mouse_data	The mouse data of the event.
 	 * @param button	The button that triggered the event.
 	 * 
 	 */
-	EventMouseButton::EventMouseButton(
-		const mouse_id_t mouse_id,
-		const window_id_t window_id,
-		const pos_pixel_t pos_x,
-		const pos_pixel_t pos_y,
-		const MouseButton button
-	) :
-		EventMouse(mouse_id, window_id, pos_x, pos_y),
+	EventMouseButton::EventMouseButton(const MouseData& mouse_data, const MouseButton button) :
+		EventMouse(mouse_data),
 		button_ { button }
 	{}
 	
@@ -297,20 +294,11 @@ namespace trac
 	/**
 	 * @brief	Construct a new mouse button release event.
 	 * 
-	 * @param mouse_id	The ID of the mouse that triggered the event.
-	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param pos_x	The x-position of the mouse cursor in the window.
-	 * @param pos_y	The y-position of the mouse cursor in the window.
+	 * @param mouse_data	The mouse data of the event.
 	 * @param button	The button that triggered the event.
 	 */
-	EventMouseButtonDown::EventMouseButtonDown(
-		const mouse_id_t mouse_id,
-		const window_id_t window_id,
-		const pos_pixel_t pos_x,
-		const pos_pixel_t pos_y,
-		const MouseButton button
-	) :
-		EventMouseButton(mouse_id, window_id, pos_x, pos_y, button)
+	EventMouseButtonDown::EventMouseButtonDown(const MouseData& mouse_data, const MouseButton button) :
+		EventMouseButton(mouse_data, button)
 	{}
 	
 	/**
@@ -336,20 +324,11 @@ namespace trac
 	/**
 	 * @brief	Construct a new mouse button press event.
 	 * 
-	 * @param mouse_id	The ID of the mouse that triggered the event.
-	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param pos_x	The x-position of the mouse cursor in the window.
-	 * @param pos_y	The y-position of the mouse cursor in the window.
+	 * @param mouse_data	The mouse data of the event.
 	 * @param button	The button that triggered the event.
 	 */
-	EventMouseButtonUp::EventMouseButtonUp(
-		const mouse_id_t mouse_id,
-		const window_id_t window_id,
-		const pos_pixel_t pos_x,
-		const pos_pixel_t pos_y,
-		const MouseButton button
-	) :
-		EventMouseButton(mouse_id, window_id, pos_x, pos_y, button)
+	EventMouseButtonUp::EventMouseButtonUp(const MouseData& mouse_data, const MouseButton button) :
+		EventMouseButton(mouse_data, button)
 	{}
 	
 	/**
@@ -375,22 +354,12 @@ namespace trac
 	/**
 	 * @brief	Construct a new mouse button click event.
 	 * 
-	 * @param mouse_id	The ID of the mouse that triggered the event.
-	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param pos_x	The x-position of the mouse cursor in the window.
-	 * @param pos_y	The y-position of the mouse cursor in the window.
+	 * @param mouse_data	The mouse data of the event.
 	 * @param button	The button that triggered the event.
 	 * @param clicks	The number of clicks that triggered the event.
 	 */
-	EventMouseButtonClicked::EventMouseButtonClicked(
-		const mouse_id_t mouse_id,
-		const window_id_t window_id,
-		const pos_pixel_t pos_x,
-		const pos_pixel_t pos_y,
-		const MouseButton button,
-		const uint32_t clicks
-	) :
-		EventMouseButton(mouse_id, window_id, pos_x, pos_y, button),
+	EventMouseButtonClicked::EventMouseButtonClicked(const MouseData& mouse_data, const MouseButton button, const uint32_t clicks) :
+		EventMouseButton(mouse_data, button),
 		clicks_ { clicks }
 	{}
 	
@@ -440,24 +409,13 @@ namespace trac
 	/**
 	 * @brief	Construct a new mouse wheel event.
 	 * 
-	 * @param mouse_id	The ID of the mouse that triggered the event.
-	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param pos_x	The x-position of the mouse cursor in the window.
-	 * @param pos_y	The y-position of the mouse cursor in the window.
+	 * @param mouse_data	The mouse data of the event.
 	 * @param scroll_x	The horizontal scroll amount.
 	 * @param scroll_y	The vertical scroll amount.
 	 * @param flipped	Whether the scroll direction is flipped.
 	 */
-	EventMouseWheel::EventMouseWheel(
-		const mouse_id_t mouse_id,
-		const window_id_t window_id,
-		const pos_pixel_t pos_x,
-		const pos_pixel_t pos_y,
-		const pos_pixel_t scroll_x,
-		const pos_pixel_t scroll_y,
-		const bool flipped
-	) :
-		EventMouse(mouse_id, window_id, pos_x, pos_y),
+	EventMouseWheel::EventMouseWheel(const MouseData& mouse_data, const pos_pixel_t scroll_x, const pos_pixel_t scroll_y, const bool flipped) :
+		EventMouse(mouse_data),
 		scroll_x_	{ scroll_x	},
 		scroll_y_	{ scroll_y	},
 		flipped_	{ flipped	}

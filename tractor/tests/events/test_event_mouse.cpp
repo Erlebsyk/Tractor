@@ -162,7 +162,7 @@ namespace test
 
 		// Dispatch each event type one by one
 		data_g = EventMouseData();
-		e = std::make_shared<trac::EventMouseMotion>(1, 2, 3, 4, ((1 << 0) | (1 << 3)) , 5, 6);
+		e = std::make_shared<trac::EventMouseMotion>(trac::MouseData(1, 2, 3, 4), ((1 << 0) | (1 << 3)) , 5, 6);
 		timestamp_ms = e->GetTimestampMs();
 		trac::event_dispatch(e);
 		trac::event_queue_process();
@@ -181,7 +181,7 @@ namespace test
 		EXPECT_EQ(6, data_g.GetMouseMotionData().dy);
 		
 		data_g = EventMouseData();
-		e = std::make_shared<trac::EventMouseButtonDown>(2, 3, 11, 12, trac::MouseButton::kLeft);
+		e = std::make_shared<trac::EventMouseButtonDown>(trac::MouseData(2, 3, 11, 12), trac::MouseButton::kLeft);
 		timestamp_ms = e->GetTimestampMs();
 		trac::event_dispatch(e);
 		trac::event_queue_process();
@@ -198,7 +198,7 @@ namespace test
 		EXPECT_EQ(trac::MouseButton::kLeft, data_g.GetMouseButtonData().button);
 
 		data_g = EventMouseData();
-		e = std::make_shared<trac::EventMouseButtonUp>(3, 4, 21, 22, trac::MouseButton::kRight);
+		e = std::make_shared<trac::EventMouseButtonUp>(trac::MouseData(3, 4, 21, 22), trac::MouseButton::kRight);
 		timestamp_ms = e->GetTimestampMs();
 		trac::event_dispatch(e);
 		trac::event_queue_process();
@@ -215,7 +215,7 @@ namespace test
 		EXPECT_EQ(trac::MouseButton::kRight, data_g.GetMouseButtonData().button);
 
 		data_g = EventMouseData();
-		e = std::make_shared<trac::EventMouseButtonClicked>(4, 5, 31, 32, trac::MouseButton::kMiddle, 2);
+		e = std::make_shared<trac::EventMouseButtonClicked>(trac::MouseData(4, 5, 31, 32), trac::MouseButton::kMiddle, 2);
 		timestamp_ms = e->GetTimestampMs();
 		trac::event_dispatch(e);
 		trac::event_queue_process();
@@ -233,7 +233,7 @@ namespace test
 		EXPECT_EQ(2, data_g.GetMouseClickedData().clicks);
 
 		data_g = EventMouseData();
-		e = std::make_shared<trac::EventMouseWheel>(5, 6, 41, 42, 101, 102, false);
+		e = std::make_shared<trac::EventMouseWheel>(trac::MouseData(5, 6, 41, 42), 101, 102, false);
 		timestamp_ms = e->GetTimestampMs();
 		trac::event_dispatch(e);
 		trac::event_queue_process();
@@ -252,7 +252,7 @@ namespace test
 		EXPECT_FALSE(data_g.GetMouseScrollData().flipped_);
 
 		data_g = EventMouseData();
-		e = std::make_shared<trac::EventMouseWheel>(5, 6, 41, 42, 101, 102, true);
+		e = std::make_shared<trac::EventMouseWheel>(trac::MouseData(5, 6, 41, 42), 101, 102, true);
 		timestamp_ms = e->GetTimestampMs();
 		trac::event_dispatch(e);
 		trac::event_queue_process();

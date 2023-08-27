@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.3.8 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.3.9 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -12,6 +12,7 @@ endif()
 include(GNUInstallDirs)
 
 set(HeaderFiles
+	src/sdl_hook_events.hpp
 	src/sdl_hook.hpp
 )
 set(SourceFiles
@@ -19,6 +20,7 @@ set(SourceFiles
 	src/events.cpp
 	src/application.cpp
 	src/logger.cpp
+	src/sdl_hook_events.cpp
 	src/sdl_hook.cpp
 	src/tractor_pch.cpp
 	src/window.cpp

@@ -47,18 +47,29 @@ namespace trac
 		kX2 = SDL_BUTTON_X2MASK
 	};
 
+	/// @brief Structure for common mouse data.
+	struct MouseData
+	{
+		MouseData();
+		MouseData(mouse_id_t mouse_id, window_id_t window_id, pos_pixel_t pos_x, pos_pixel_t pos_y);
+
+		/// The ID of the mouse that generated the event.
+		mouse_id_t mouse_id;
+		/// The ID of the window that generated the event.
+		window_id_t window_id;
+		/// The x-position of the mouse cursor in the window.
+		pos_pixel_t pos_x;
+		/// The y-position of the mouse cursor in the window.
+		pos_pixel_t pos_y;
+	};
+
 	/// @brief	Abstract base class for mouse events.
 	class EventMouse : public Event
 	{
 	public:
 		// Constructors and destructors
 	
-		EventMouse(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y
-		);
+		EventMouse(const MouseData& mouse_data);
 		/// @brief Virtual default destructor.
 		virtual ~EventMouse() = default;
 
@@ -84,14 +95,8 @@ namespace trac
 	private:
 		/// The timestamp of the event in milliseconds.
 		const timestamp_t timestamp_ms_;
-		/// The ID of the mouse that the event occurred on.
-		const mouse_id_t mouse_id_;
-		/// The ID of the window that the event occurred in.
-		const window_id_t window_id_;
-		/// The x-position of the mouse in the window.
-		const pos_pixel_t pos_x_;
-		/// The y-position of the mouse in the window.
-		const pos_pixel_t pos_y_;
+		/// Common mouse data
+		const MouseData mouse_data_;
 	};
 
 	/// @brief	Mouse movement event.
@@ -100,15 +105,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMouseMotion(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y,
-			mouse_button_state_t button_state,
-			pos_pixel_t rel_x,
-			pos_pixel_t rel_y
-		);
+		EventMouseMotion(const MouseData& mouse_data, mouse_button_state_t button_state, pos_pixel_t rel_x, pos_pixel_t rel_y);
 	
 		//Public functions
 	
@@ -138,13 +135,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMouseButton(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y,
-			MouseButton button
-		);
+		EventMouseButton(const MouseData& mouse_data, MouseButton button);
 		/// @brief Virtual default destructor.
 		virtual ~EventMouseButton() = default;
 
@@ -175,13 +166,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMouseButtonDown(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y,
-			MouseButton button
-		);
+		EventMouseButtonDown(const MouseData& mouse_data, MouseButton button);
 	
 		//Public functions
 	
@@ -195,13 +180,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMouseButtonUp(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y,
-			MouseButton button
-		);
+		EventMouseButtonUp(const MouseData& mouse_data, MouseButton button);
 	
 		//Public functions
 	
@@ -215,14 +194,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMouseButtonClicked(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y,
-			MouseButton button,
-			uint32_t clicks
-		);
+		EventMouseButtonClicked(const MouseData& mouse_data, MouseButton button, uint32_t clicks);
 	
 		//Public functions
 	
@@ -243,15 +215,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventMouseWheel(
-			mouse_id_t mouse_id,
-			window_id_t window_id,
-			pos_pixel_t pos_x,
-			pos_pixel_t pos_y,
-			pos_pixel_t scroll_x,
-			pos_pixel_t scroll_y,
-			bool flipped = false
-		);
+		EventMouseWheel(const MouseData& mouse_data, pos_pixel_t scroll_x, pos_pixel_t scroll_y, bool flipped = false);
 	
 		//Public functions
 	

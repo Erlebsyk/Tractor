@@ -29,7 +29,6 @@ namespace trac
 	{
 		GestureData();
 		GestureData(
-			gesture_id_t gesture_id,
 			touch_id_t touch_id,
 			uint32_t num_fingers,
 			pos_rel_t pos_x,
@@ -38,8 +37,6 @@ namespace trac
 
 		/// The timestamp of the gesture.
 		timestamp_t timestamp_ms;
-		/// The gesture ID.
-		gesture_id_t gesture_id;
 		/// The touch ID.
 		touch_id_t touch_id;
 		/// The number of fingers used in the gesture.
@@ -75,7 +72,6 @@ namespace trac
 		timestamp_t GetTimestampMs() const override;
 		virtual std::string ToString() const override;
 
-		gesture_id_t GetGestureId() const;
 		touch_id_t GetTouchId() const;
 		uint32_t GetNumFingers() const;
 		pos_rel_t GetPosX() const;
@@ -86,44 +82,65 @@ namespace trac
 		const GestureData data_;
 	};
 
-	/// @brief	An event that is triggered when a gesture is recorded.
-	class EventDollarGesture : public EventGesture
+	/// @brief	Abstract base class for dollar gesture events.
+	class EventDollarGestureBase : public EventGesture
 	{
 	public:
 		// Constructors and destructors
 	
-		EventDollarGesture(const GestureData &data, float error);
+		EventDollarGestureBase(const GestureData &data, gesture_id_t gesture_id, float error);
+		/// @brief Virtual default destructor.
+		virtual ~EventDollarGestureBase() = default;
+
+		/// @brief Explicitly defined default copy constructor.
+		EventDollarGestureBase(const EventDollarGestureBase&) = default;
+		/// @brief Explicitly defined default move constructor.
+		EventDollarGestureBase(EventDollarGestureBase&&) = default;
+		/// @brief Explicitly defined default copy assignment operator.
+		EventDollarGestureBase& operator=(const EventDollarGestureBase&) = default;
+		/// @brief Explicitly defined default move assignment operator.
+		EventDollarGestureBase& operator=(EventDollarGestureBase&&) = default;
 	
 		//Public functions
 	
-		const char* GetName() const override;
-		EventType GetType() const override;
-	
+		std::string ToString() const override;
+
+		gesture_id_t GetGestureId() const;
 		float GetError() const;
 
 	private:
+		/// The ID of the gesture.
+		const gesture_id_t gesture_id_;
 		/// The error value of the gesture.
 		const float error_;
 	};
 
 	/// @brief	An event that is triggered when a gesture is recorded.
-	class EventDollarRecord : public EventGesture
+	class EventDollarGesture : public EventDollarGestureBase
 	{
 	public:
 		// Constructors and destructors
 	
-		EventDollarRecord(const GestureData &data, float error);
+		EventDollarGesture(const GestureData &data, gesture_id_t gesture_id, float error);
 	
 		//Public functions
 	
 		const char* GetName() const override;
 		EventType GetType() const override;
+	};
 
-		float GetError() const;
-
-	private:
-		/// The error value of the gesture.
-		const float error_;
+	/// @brief	An event that is triggered when a gesture is recorded.
+	class EventDollarRecord : public EventDollarGestureBase
+	{
+	public:
+		// Constructors and destructors
+	
+		EventDollarRecord(const GestureData &data, gesture_id_t gesture_id, float error);
+	
+		//Public functions
+	
+		const char* GetName() const override;
+		EventType GetType() const override;
 	};
 
 	/// @brief	Multi gesture event class.
