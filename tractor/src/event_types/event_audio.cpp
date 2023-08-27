@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_audio.hpp"
+#include "event_types/event_audio.hpp"
 
 // External libraries header includes
 #include <SDL_audio.h>

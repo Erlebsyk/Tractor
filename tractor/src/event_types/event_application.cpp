@@ -14,7 +14,7 @@
 #include "SDL_timer.h" // Used to get the timestamp of the event
 
 // Related header include
-#include "events/event_application.hpp"
+#include "event_types/event_application.hpp"
 
 namespace trac
 {

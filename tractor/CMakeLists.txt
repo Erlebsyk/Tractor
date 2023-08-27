@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.3.7 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.3.8 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -16,48 +16,50 @@ set(HeaderFiles
 )
 set(SourceFiles
 	src/tractor.cpp
+	src/events.cpp
 	src/application.cpp
 	src/logger.cpp
 	src/sdl_hook.cpp
 	src/tractor_pch.cpp
 	src/window.cpp
 
-	src/events/event.cpp
-	src/events/event_application.cpp
-	src/events/event_audio.cpp
-	src/events/event_controller.cpp
-	src/events/event_display.cpp
-	src/events/event_gesture.cpp
-	src/events/event_joystick.cpp
-	src/events/event_keyboard.cpp
-	src/events/event_mouse.cpp
-	src/events/event_render.cpp
-	src/events/event_system.cpp
-	src/events/event_touch.cpp
-	src/events/event_window.cpp
+	src/event_types/event_base.cpp
+	src/event_types/event_application.cpp
+	src/event_types/event_audio.cpp
+	src/event_types/event_controller.cpp
+	src/event_types/event_display.cpp
+	src/event_types/event_gesture.cpp
+	src/event_types/event_joystick.cpp
+	src/event_types/event_keyboard.cpp
+	src/event_types/event_mouse.cpp
+	src/event_types/event_render.cpp
+	src/event_types/event_system.cpp
+	src/event_types/event_touch.cpp
+	src/event_types/event_window.cpp
 )
 set(IncludeFiles
 	include/tractor.hpp
 
 	include/tractor/application.hpp
 	include/tractor/entry_point.hpp
+	include/tractor/events.hpp
 	include/tractor/logger.hpp
 	include/tractor/logger.inl
 	include/tractor/window.hpp
 
-	include/tractor/events/event.hpp
-	include/tractor/events/event_application.hpp
-	include/tractor/events/event_audio.hpp
-	include/tractor/events/event_controller.hpp
-	include/tractor/events/event_display.hpp
-	include/tractor/events/event_gesture.hpp
-	include/tractor/events/event_joystick.hpp
-	include/tractor/events/event_keyboard.hpp
-	include/tractor/events/event_mouse.hpp
-	include/tractor/events/event_render.hpp
-	include/tractor/events/event_system.hpp
-	include/tractor/events/event_touch.hpp
-	include/tractor/events/event_window.hpp
+	include/tractor/event_types/event_base.hpp
+	include/tractor/event_types/event_application.hpp
+	include/tractor/event_types/event_audio.hpp
+	include/tractor/event_types/event_controller.hpp
+	include/tractor/event_types/event_display.hpp
+	include/tractor/event_types/event_gesture.hpp
+	include/tractor/event_types/event_joystick.hpp
+	include/tractor/event_types/event_keyboard.hpp
+	include/tractor/event_types/event_mouse.hpp
+	include/tractor/event_types/event_render.hpp
+	include/tractor/event_types/event_system.hpp
+	include/tractor/event_types/event_touch.hpp
+	include/tractor/event_types/event_window.hpp
 )
 add_library(${PROJECT_NAME} ${SourceFiles} ${IncludeFiles})
 

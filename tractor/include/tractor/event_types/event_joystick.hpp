@@ -11,7 +11,7 @@
 #define EVENT_JOYSTICK_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 // External libraries header includes
 #include <SDL_joystick.h>

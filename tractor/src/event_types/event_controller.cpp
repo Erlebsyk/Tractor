@@ -11,7 +11,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_controller.hpp"
+#include "event_types/event_controller.hpp"
 
 // External libraries header includes
 #include <SDL_timer.h> // To get the timestamp of the event

@@ -11,7 +11,7 @@
 #define EVENT_DISPLAY_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 // External library includes
 #include <SDL_video.h>

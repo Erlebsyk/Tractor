@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_mouse.hpp"
+#include "event_types/event_mouse.hpp"
 
 // External libraries header includes
 #include <SDL_mouse.h>

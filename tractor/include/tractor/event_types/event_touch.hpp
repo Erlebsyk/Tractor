@@ -11,7 +11,7 @@
 #define EVENT_TOUCH_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 // Project header includes
 #include "event_window.hpp"

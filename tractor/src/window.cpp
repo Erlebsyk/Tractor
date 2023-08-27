@@ -17,7 +17,7 @@
 #include <SDL_events.h>
 
 // Project header includes
-#include "events/event.hpp"
+#include "events.hpp"
 #include "logger.hpp"
 
 namespace trac

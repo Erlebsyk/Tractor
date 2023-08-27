@@ -11,7 +11,7 @@
 #define EVENT_SYSTEM_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 // Standard library header includes
 #include <string>

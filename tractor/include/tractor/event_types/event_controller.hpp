@@ -11,7 +11,7 @@
 #define EVENT_CONTROLLER_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 // External libraries header includes
 #include <SDL_events.h>

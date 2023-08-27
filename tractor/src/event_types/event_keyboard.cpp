@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_keyboard.hpp"
+#include "event_types/event_keyboard.hpp"
 
 // External libraries header includes
 #include <SDL_keyboard.h>
@@ -181,10 +181,9 @@ namespace trac
 	 * 
 	 * @param key_sym	The key symbol of the key that was released.
 	 * @param window_id	The ID of the window that the event occurred in.
-	 * @param repeat	Whether the key press is a repeat key.
 	 */
-	EventKeyboardUp::EventKeyboardUp(const KeySym &key_sym, const window_id_t window_id, const bool repeat) :
-		EventKeyboard(key_sym, window_id, repeat)
+	EventKeyboardUp::EventKeyboardUp(const KeySym &key_sym, const window_id_t window_id) :
+		EventKeyboard(key_sym, window_id)
 	{}
 	
 	/**

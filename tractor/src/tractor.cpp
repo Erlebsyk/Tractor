@@ -19,7 +19,7 @@
 // Project header includes
 #include "logger.hpp"
 #include "sdl_hook.hpp"
-#include "events/event.hpp"
+#include "events.hpp"
 
 namespace trac
 {

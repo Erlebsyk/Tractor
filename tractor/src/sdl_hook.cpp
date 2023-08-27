@@ -17,11 +17,7 @@
 #include <SDL_events.h>
 
 // Project header includes
-#include "events/event_application.hpp"
-//#include "events/event_key.hpp"
-#include "events/event_mouse.hpp"
-//#include "events/event_sdl.hpp"
-#include "events/event.hpp"
+#include "events.hpp"
 
 namespace trac
 {
@@ -68,22 +64,16 @@ namespace trac
 		// Check for window and input events
 		if(event->type == SDL_WINDOWEVENT)
 			sdl_dispatch_window_event(event);
-		//else if(event->type == SDL_KEYDOWN)
-		//	event_dispatch(std::make_shared<EventKeyPressed>(event->key.keysym.sym, event->key.repeat));
-		//else if(event->type == SDL_KEYUP)
-		//	event_dispatch(std::make_shared<EventKeyReleased>(event->key.keysym.sym));
-		//else if(event->type == SDL_MOUSEBUTTONDOWN)
-		//	event_dispatch(std::make_shared<EventMouseButtonPress>(event->button.button));
-		//else if(event->type == SDL_MOUSEBUTTONUP)
-		//	event_dispatch(std::make_shared<EventMouseButtonRelease>(event->button.button));
-		//else if(event->type == SDL_MOUSEMOTION)
-		//	event_dispatch(std::make_shared<EventMouseMovement>((float)event->motion.x, (float)event->motion.y));
-		//else if(event->type == SDL_MOUSEWHEEL)
-		//	event_dispatch(std::make_shared<EventMouseScrolled>((float)event->wheel.x, (float)event->wheel.y));
+		else if(event->type == SDL_KEYDOWN)
+			event_dispatch(std::make_shared<EventKeyboardDown>(
+				KeySym(event->key.keysym.scancode, event->key.keysym.sym, event->key.keysym.mod), event->key.windowID, event->key.repeat
+			));
 
 		// Dispatch the SDL event
 		//std::shared_ptr<EventSdl> sdl_event = std::make_shared<EventSdl>(event);
 		//event_dispatch(sdl_event);
+
+		SDL_EventState(event->type, SDL_IGNORE);
 
 		return 0;
 	}

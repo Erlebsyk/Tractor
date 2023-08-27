@@ -11,7 +11,7 @@
 #define EVENT_KEYBOARD_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 // Standard library header includes
 #include <string>
@@ -108,7 +108,7 @@ namespace trac
 	public:
 		// Constructors and destructors
 	
-		EventKeyboardUp(const KeySym &key_sym, window_id_t window_id, bool repeat = false);
+		EventKeyboardUp(const KeySym &key_sym, window_id_t window_id);
 	
 		//Public functions
 	

@@ -11,7 +11,7 @@
 #define EVENT_APPLICATION_HPP_
 
 // Related header include
-#include "event.hpp"
+#include "event_base.hpp"
 
 namespace trac
 {

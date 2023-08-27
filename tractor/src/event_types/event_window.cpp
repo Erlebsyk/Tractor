@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_window.hpp"
+#include "event_types/event_window.hpp"
 
 // External libraries header includes
 #include <SDL_video.h>

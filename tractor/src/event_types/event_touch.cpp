@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_touch.hpp"
+#include "event_types/event_touch.hpp"
 
 // External libraries header includes
 #include <SDL_touch.h>

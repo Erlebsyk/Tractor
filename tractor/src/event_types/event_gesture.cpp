@@ -10,7 +10,7 @@
 #include "tractor_pch.hpp"
 
 // Related header include
-#include "events/event_gesture.hpp"
+#include "event_types/event_gesture.hpp"
 
 // External libraries header includes
 #include <SDL_timer.h>
