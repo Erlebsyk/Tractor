@@ -17,6 +17,10 @@
 #ifndef EVENTS_HPP_
 #define EVENTS_HPP_
 
+// Standard library header includes
+#include <functional>
+#include <memory>
+
 // External libraries header includes
 #include "eventpp/eventdispatcher.h"
 #include "eventpp/eventqueue.h"
@@ -40,6 +44,12 @@
 
 namespace trac
 {
+	/**
+	 * @brief	Macro for creating a wrapper function around a member function. Intended to be used with the event_listener_add_b and event_listener_add_nb
+	 * 			to enable processing of member functions as event callbacks, where the member functions are of the native type 'event_cb_b_fn' or 'event_cb_nb_fn'.
+	 */
+	#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
 	struct EventPolicyB;
 	struct EventPolicyNb;
 	class EventDispatcher;
@@ -58,6 +68,19 @@ namespace trac
 	/// Defines the listener id type.
 	typedef uint64_t listener_id_t;
 
+	/// Defines the type for blocking event handle, used for registering and unregistering blocking event listeners.
+	typedef eventpp::internal_::EventDispatcherBase<trac::EventType, trac::event_cb_b_fn, trac::EventPolicyB, void>::Handle handle_b_t;
+	/// Defines the type for non-blocking event handle, used for registering and unregistering non-blocking event listeners.
+	typedef eventpp::internal_::EventQueueBase<trac::EventType, trac::event_cb_nb_fn, trac::EventPolicyNb>::Handle handle_nb_t;
+
+	/// Documented in events.tpp
+	template<typename T> listener_id_t event_listener_add_b(const EventType type, T&& arg);
+	/// Documented in events.tpp
+	template<typename T> listener_id_t event_listener_add_nb(const EventType type, T&& callback);
+
+	listener_id_t add_listener_to_tracker_b(const EventType type, const handle_b_t &handle);
+	listener_id_t add_listener_to_tracker_nb(const EventType type, const handle_nb_t &handle);
+
 	void event_queue_process();
 	bool event_queue_process_one();
 	bool event_queue_empty();
@@ -67,8 +90,8 @@ namespace trac
 	void event_dispatch_b(Event& e);
 	void event_dispatch_nb(std::shared_ptr<Event> e);
 
-	listener_id_t event_listener_add_b(const EventType type, event_cb_b_fn callback);
-	listener_id_t event_listener_add_nb(const EventType type, event_cb_nb_fn callback);
+	listener_id_t event_listener_add_b(EventType type, event_cb_b_fn cb_fn);
+	listener_id_t event_listener_add_nb(EventType type, event_cb_nb_fn cb_fn);
 
 	void event_listener_remove_b(listener_id_t id);
 	void event_listener_remove_nb(listener_id_t id);
@@ -106,6 +129,10 @@ namespace trac
 		static std::shared_ptr<event_dispatcher_t> engine_dispatcher_s_;
 		static std::shared_ptr<event_queue_t> engine_queue_s_;
 	};
+
 } // Namespace trac
+
+// Include the inline implementations of the logger module.
+#include "events.tpp"
 
 #endif // EVENTS_HPP_ 

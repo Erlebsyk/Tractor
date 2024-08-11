@@ -26,13 +26,10 @@ namespace app
 
 		// Public functions
 		
-		int run() override;
+		int Run() override;
+		void Quit() override;
 
-		static void quit(trac::Event& e);
-
-	private:
-		/// Flag indicating if the application should quit.
-		static bool quit_;
+		void OnWindowClose(trac::Event& e);
 	};
 } // Namespace app
 

@@ -15,6 +15,15 @@
 
 namespace trac
 {
-	// Future code goes here
-
+	/**
+	 * @brief	Returns if the application is running or not.
+	 * 
+	 * @return bool	True if the application is running, false otherwise.
+	 * @retval True	The application is running.
+	 * @retval False	The application is not running.
+	 */
+	bool Application::IsRunning() const
+	{
+		return running_;
+	}
 } // Namespace trac

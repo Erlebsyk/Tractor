@@ -69,9 +69,9 @@ namespace trac
 	 * @param properties	The properties of the window.
 	 * @return std::unique_ptr<Window>	A unique pointer to the window.
 	 */
-	std::shared_ptr<Window> Window::Create(const WindowProperties& properties)
+	std::unique_ptr<Window> Window::Create(const WindowProperties& properties)
 	{
-		return std::make_shared<WindowBasic>(properties);
+		return std::make_unique<WindowBasic>(properties);
 	}
 
 	/**
@@ -89,6 +89,7 @@ namespace trac
 		windows_n_++;
 	}
 
+	/// @brief	Destructor for the window.
 	WindowBasic::~WindowBasic()
 	{
 		Shutdown();
@@ -168,12 +169,17 @@ namespace trac
 		return properties_.vsync;
 	}
 
-
+	/**
+	 * @brief Returns a pointer to the native window.
+	 * 
+	 * @return void*	A pointer to the native window.
+	 */
 	void* WindowBasic::GetNativeWindow() const
 	{
 		return window_;
 	}
 
+	/// @brief	Initializes the window.
 	void WindowBasic::Init()
 	{
 		window_ = SDL_CreateWindow(

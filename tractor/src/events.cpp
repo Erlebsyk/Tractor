@@ -18,11 +18,6 @@
 
 namespace trac
 {
-	/// Defines the type for blocking event handle, used for registering and unregistering blocking event listeners.
-	typedef eventpp::internal_::EventDispatcherBase<trac::EventType, trac::event_cb_b_fn, trac::EventPolicyB, void>::Handle handle_b_t;
-	/// Defines the type for non-blocking event handle, used for registering and unregistering non-blocking event listeners.
-	typedef eventpp::internal_::EventQueueBase<trac::EventType, trac::event_cb_nb_fn, trac::EventPolicyNb>::Handle handle_nb_t;
-
 	/**
 	 * @brief	The ListenerDataB struct defines the data needed to register and unregister a blocking event listener.
 	 */
@@ -61,6 +56,36 @@ namespace trac
 	/// The global engine event queue.
 	std::shared_ptr<event_queue_t> EventDispatcher::engine_queue_s_ = nullptr;
 	
+	/**
+	 * @brief Adds a single listener to the tracker of all blocking event listeners.
+	 * 
+	 * @param type	The type of event to listen for.
+	 * @param handle	The handle of the listener (lookup information and callback function).
+	 * @return listener_id_t	The unique identifier of the event listener.
+	 */
+	listener_id_t add_listener_to_tracker_b(const EventType type, const handle_b_t &handle)
+	{
+		event_id_b++;
+		listeners_b.emplace(event_id_b, ListenerDataB{type, handle});
+		listener_tracker.AddListener(type);
+		return event_id_b;
+	}
+
+	/**
+	 * @brief Adds a single listener to the tracker of all non-blocking event listeners.
+	 * 
+	 * @param type	The type of event to listen for.
+	 * @param handle	The handle of the listener (lookup information and callback function).
+	 * @return listener_id_t	The unique identifier of the event listener.
+	 */
+	listener_id_t add_listener_to_tracker_nb(const EventType type, const handle_nb_t &handle)
+	{
+		event_id_nb++;
+		listeners_nb.emplace(event_id_nb, ListenerDataNb{type, handle});
+		listener_tracker.AddListener(type);
+		return event_id_nb;
+	}
+
 	/// @brief	Processes all queued events submitted through the non-blocking event dispatcher (i.e event_dispatch or event_dispatch_nb).
 	void event_queue_process()
 	{
@@ -137,39 +162,34 @@ namespace trac
 
 	/**
 	 * @brief	Adds a blocking event listener to the event dispatcher. This function adds a blocking event listener to the global engine event dispatcher.
-	 * 			Use this for functions that must be processed immediately after an event is triggered.
+	 * 			Use this for functions that must be processed immediately after an event is triggered. Specialization of the event_listener_add_b
+	 * 			template function.
 	 * 
 	 * @param type	The type of event to listen for.
-	 * @param callback	The callback function to call when the event is triggered.
+	 * @param cb_fn	The callback function to call when the event is dispatched.
 	 * 
-	 * @return	The id of the event listener.
+	 * @return	The unique identifier of the event listener.
 	 */
-	listener_id_t event_listener_add_b(const EventType type, event_cb_b_fn callback)
+	listener_id_t event_listener_add_b(EventType type, event_cb_b_fn cb_fn)
 	{
-		const handle_b_t handle = EventDispatcher::GetEngineDispatcher()->appendListener(type, callback);
-		event_id_b++;
-		listeners_b.emplace(event_id_b, ListenerDataB{type, handle});
-		listener_tracker.AddListener(type);
-		return event_id_b;
+		const handle_b_t handle = EventDispatcher::GetEngineDispatcher()->appendListener(type, cb_fn);
+		const trac::listener_id_t id = add_listener_to_tracker_b(type, handle);
+		return id;
 	}
-
+	
 	/**
-	 * @brief	Adds a non-blocking event listener to the event dispatcher. This function adds a non-blocking event listener to the global engine event
-	 * 			dispatcher that will be processed in the next event queue processing step. Use this for functions that does not need to be processed
-	 * 			immediately.
+	 * @brief	Adds a non-blocking event listener to the event dispatcher. This function adds a non-blocking event listener to the global engine event dispatcher.
+	 * 			Specialization of the event_listener_add_nb template function.
 	 * 
 	 * @param type	The type of event to listen for.
-	 * @param callback	The callback function to call when the event is triggered.
-	 * 
-	 * @return	The id of the event listener.
+	 * @param cb_fn	The callback function to call when the event is triggered.
+	 * @return listener_id_t	The unique identifier of the event listener.
 	 */
-	listener_id_t event_listener_add_nb(const EventType type, event_cb_nb_fn callback)
+	listener_id_t event_listener_add_nb(EventType type, event_cb_nb_fn cb_fn)
 	{
-		const handle_nb_t handle = EventDispatcher::GetEngineQueue()->appendListener(type, callback);
-		event_id_nb++;
-		listeners_nb.emplace(event_id_nb, ListenerDataNb{type, handle});
-		listener_tracker.AddListener(type);
-		return event_id_nb;
+		const handle_nb_t handle = EventDispatcher::GetEngineQueue()->appendListener(type, cb_fn);
+		const trac::listener_id_t id = add_listener_to_tracker_nb(type, handle);
+		return id;
 	}
 
 	/**
@@ -183,8 +203,8 @@ namespace trac
 		if (it != listeners_b.end())
 		{
 			EventDispatcher::GetEngineDispatcher()->removeListener(it->second.type, it->second.handle);
-			listeners_b.erase(it);
 			listener_tracker.RemoveListener(it->second.type);
+			listeners_b.erase(it);
 		}
 		else
 		{

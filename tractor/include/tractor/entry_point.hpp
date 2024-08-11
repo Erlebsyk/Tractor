@@ -109,7 +109,7 @@ inline int32_t trac::run(int argc, char* argv[])
 	}
 	else
 	{
-		status = app->run();
+		status = app->Run();
 	}
 
 	return status;

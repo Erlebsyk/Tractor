@@ -107,7 +107,7 @@ namespace trac
 		/// @brief	Get the native window pointer.
 		virtual void* GetNativeWindow() const = 0;
 
-		static std::shared_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
+		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
 	};
 
 	/**

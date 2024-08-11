@@ -93,7 +93,7 @@ namespace trac
 	};
 } // Namespace trac
 
-#endif // LOGGER_HPP_ 
-
 // Include the inline implementations of the logger module.
 #include "logger.inl"
+
+#endif // LOGGER_HPP_ 

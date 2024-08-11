@@ -26,10 +26,18 @@ public:
 	 * 
 	 * @return int	The exit code for the application. 0 is returned if the application exits successfully.
 	 */
-	int run() override
+	int Run() override
 	{
 		value_++;
 		return 0;
+	}
+
+	/**
+	 * @brief	Quits the application.
+	 */
+	void Quit() override
+	{
+		running_ = false;
 	}
 
 	/// A simple variable that counts the number of times the run() function has been called.
@@ -56,7 +64,6 @@ namespace test
 		EXPECT_TRUE(trac::is_engine_initialized());
 	}
 
-
 	// Check that the test application can be created, and that it is not a nullptr.
 	GTEST_TEST(tractor, app_create)
 	{
@@ -73,14 +80,32 @@ namespace test
 		EXPECT_EQ(0, test_app->value_);
 
 		// Run the test application.
-		int32_t status = test_app->run();
+		int32_t status = test_app->Run();
 		EXPECT_EQ(0, status);
 		EXPECT_EQ(1, test_app->value_);
 
 		// Run the test application again, the value_ variable should now be 2.
-		status = test_app->run();
+		status = test_app->Run();
 		EXPECT_EQ(0, status);
 		EXPECT_EQ(2, test_app->value_);
+	}
+
+	// Check that the test application can be quit.
+	GTEST_TEST(tractor, app_quit)
+	{
+		// Create the test application.
+		std::shared_ptr<TestApp> test_app = std::make_shared<TestApp>();
+		EXPECT_EQ(0, test_app->value_);
+
+		// Run the test application.
+		int32_t status = test_app->Run();
+		EXPECT_EQ(0, status);
+		EXPECT_EQ(1, test_app->value_);
+
+		// Quit the test application.
+		test_app->Quit();
+		EXPECT_FALSE(test_app->IsRunning());
+		EXPECT_EQ(1, test_app->value_);
 	}
 
 	// The logging through the tractor logging module.
