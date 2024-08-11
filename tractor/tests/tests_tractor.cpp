@@ -1,7 +1,6 @@
 
 // Related header include
 #include <tractor.hpp>
-//#include <tractor/entry_point.hpp>
 
 
 #define ENTRY_POINT_TEST

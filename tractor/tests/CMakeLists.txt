@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor_tests VERSION 0.3.3 DESCRIPTION "Tests for the Tractor game engine" LANGUAGES CXX C)
+project(tractor_tests VERSION 0.3.4 DESCRIPTION "Tests for the Tractor game engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -17,9 +17,9 @@ set(HeaderFiles
 set(SourceFiles
 	tests_externals.cpp
     tests_tractor.cpp
+	tests_window.cpp
 
 	events/test_event_data.cpp
-
 	events/test_event.cpp
 	events/test_event_application.cpp
 	events/test_event_audio.cpp
@@ -33,6 +33,8 @@ set(SourceFiles
 	events/test_event_system.cpp
 	events/test_event_touch.cpp
 	events/test_event_window.cpp
+
+	utils/test_bits.cpp
 )
 add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
 
