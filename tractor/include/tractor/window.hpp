@@ -52,9 +52,9 @@ namespace trac
 		/// Whether or not the mouse should be grabbed by the window by default.
 		static constexpr bool kMouseGrabbed = false;
 		/// Whether or not the window should have input focus by default.
-		static constexpr bool kInputFocus = true;
+		static constexpr bool kInputFocus = false;
 		/// Whether or not the window should have mouse focus by default.
-		static constexpr bool kMouseFocus = true;
+		static constexpr bool kMouseFocus = false;
 		/// Whether or not the window should be high DPI by default.
 		static constexpr bool kHighDPI = false;
 		/// Whether or not the mouse should be captured by the window by default.

@@ -34,20 +34,20 @@ namespace trac
 	 * @param pos_x	The horizontal position of the window.
 	 * @param pos_y	The vertical position of the window.
 	 * @param vsync	Whether or not Vsync should be enabled for the window.
-	 * @param fullscreen	Whether or not the window should be in fullscreen mode.
 	 * @param resizable	Whether or not the window should be resizable.
 	 * @param borderless	Whether or not the window should be borderless.
+	 * @param fullscreen	Whether or not the window should be in fullscreen mode.
 	 * @param visible	Whether or not the window should be visible.
 	 * @param minimized	Whether or not the window should be minimized.
 	 * @param maximized	Whether or not the window should be maximized.
-	 * @param mouse_grabbed	Whether or not the mouse should be grabbed by the window.
+	 * @param mouse_grabbed	Whether or not the window should grab the mouse.
 	 * @param input_focus	Whether or not the window should have input focus.
-	 * @param mouse_focus	Whether or not the window should have mouse focus.
+	 * @param mouse_focus	Whether or not the mouse should have focus.
 	 * @param high_dpi	Whether or not the window should be in high DPI mode.
 	 * @param mouse_captured	Whether or not the mouse should be captured by the window.
-	 * @param always_on_top	Whether or not the window should always be on top.
-	 * @param keyboard_grabbed	Whether or not the keyboard should be grabbed by the window.
-	 * @param input_grabbed	Whether or not input should be grabbed by the window.
+	 * @param always_on_top	Whether or not the window should be always on top.
+	 * @param keyboard_grabbed	Whether or not the window should grab the keyboard.
+	 * @param input_grabbed	Whether or not the window should grab input.
 	 */
 	WindowProperties::WindowProperties(
 		const std::string& title,
@@ -56,9 +56,9 @@ namespace trac
 		const uint32_t pos_x,
 		const uint32_t pos_y,
 		const bool vsync,
-		const bool fullscreen,
 		const bool resizable,
 		const bool borderless,
+		const bool fullscreen,
 		const bool visible,
 		const bool minimized,
 		const bool maximized,
@@ -654,13 +654,29 @@ namespace trac
 	{
 		open_ = true;
 
+		uint32_t sdl_flags = SDL_WINDOW_OPENGL;
+		if(properties_.resizable) sdl_flags |= SDL_WINDOW_RESIZABLE;
+		if(properties_.borderless) sdl_flags |= SDL_WINDOW_BORDERLESS;
+		if(properties_.fullscreen) sdl_flags |= SDL_WINDOW_FULLSCREEN;
+		if(properties_.visible) sdl_flags |= SDL_WINDOW_SHOWN;
+		if(properties_.minimized) sdl_flags |= SDL_WINDOW_MINIMIZED;
+		if(properties_.maximized) sdl_flags |= SDL_WINDOW_MAXIMIZED;
+		if(properties_.mouse_grabbed) sdl_flags |= SDL_WINDOW_MOUSE_GRABBED;
+		if(properties_.input_focus) sdl_flags |= SDL_WINDOW_INPUT_FOCUS;
+		if(properties_.mouse_focus) sdl_flags |= SDL_WINDOW_MOUSE_FOCUS;
+		if(properties_.high_dpi) sdl_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+		if(properties_.mouse_captured) sdl_flags |= SDL_WINDOW_MOUSE_CAPTURE;
+		if(properties_.always_on_top) sdl_flags |= SDL_WINDOW_ALWAYS_ON_TOP;
+		if(properties_.keyboard_grabbed) sdl_flags |= SDL_WINDOW_KEYBOARD_GRABBED;
+		if(properties_.input_grabbed) sdl_flags |= SDL_WINDOW_INPUT_GRABBED;
+
 		window_ = SDL_CreateWindow(
 			properties_.title.c_str(),
 			properties_.pos_x,
 			properties_.pos_y,
 			properties_.width,
 			properties_.height,
-			SDL_WINDOW_OPENGL
+			sdl_flags
 		);
 		if (window_ == nullptr)
 			log_engine_error("SDL could not create window! SDL error: [%s]", SDL_GetError());
