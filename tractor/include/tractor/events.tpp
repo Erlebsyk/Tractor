@@ -21,11 +21,11 @@ namespace trac
 	 * @brief	Adds a blocking event listener to the event dispatcher. This function adds a blocking event listener to the global engine event dispatcher that
 	 * 			will be processed immediately. Use this for functions that need to be processed immediately. The function returns the id of the event listener.
 	 * @details Example:
-	 * 			trac::event_listener_add_b(trac::EventType::kQuit, BIND_EVENT_FN(App::OnWindowClose));
+	 * 			trac::event_listener_add_b(trac::EventType::kQuit, BIND_THIS_EVENT_FN(App::OnWindowClose));
 	 * 			where App::OnWindowClose is a member function of the App class of the native type: void OnWindowClose(trac::Event& e);
 	 * 
 	 * @tparam T	The type of the callback function. This is typically a lambda function, such as a wrapper around a member function of the native type
-	 * 				'event_cb_b_fn' (see example that uses the BIND_EVENT_FN macro to create a wrapper).
+	 * 				'event_cb_b_fn' (see example that uses the BIND_THIS_EVENT_FN macro to create a wrapper).
 	 * @param type	The type of event to listen for.
 	 * @param arg	The callback function to call when the event is triggered.
 	 * @return listener_id_t	The id of the event listener.
@@ -43,11 +43,11 @@ namespace trac
 	 * 			dispatcher that will be processed in the next event queue processing step. Use this for functions that does not need to be processed
 	 * 			immediately.
 	 * @details Example:
-	 * 			trac::event_listener_add_nb(trac::EventType::kQuit, BIND_EVENT_FN(App::OnWindowClose));
+	 * 			trac::event_listener_add_nb(trac::EventType::kQuit, BIND_THIS_EVENT_FN(App::OnWindowClose));
 	 * 			where App::OnWindowClose is a member function of the App class of the native type: void OnWindowClose(trac::Event& e);
 	 * 
 	 * @tparam T	The type of the callback function. This is typically a lambda function, such as a wrapper around a member function
-	 * 				of the native type 'event_cb_nb_fn' (see example that uses the BIND_EVENT_FN macro to create a wrapper).
+	 * 				of the native type 'event_cb_nb_fn' (see example that uses the BIND_THIS_EVENT_FN macro to create a wrapper).
 	 * @param type	The type of event to listen for.
 	 * @param callback	The callback function to call when the event is triggered.
 	 * 

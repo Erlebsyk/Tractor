@@ -45,10 +45,23 @@
 namespace trac
 {
 	/**
-	 * @brief	Macro for creating a wrapper function around a member function. Intended to be used with the event_listener_add_b and event_listener_add_nb
-	 * 			to enable processing of member functions as event callbacks, where the member functions are of the native type 'event_cb_b_fn' or 'event_cb_nb_fn'.
+	 * @brief	Macro for creating a wrapper function around a member function inside current class (this). Intended to be used
+	 * 			with the event_listener_add_b and event_listener_add_nb to enable processing of member functions as event
+	 * 			callbacks, where the member functions are of the native type 'event_cb_b_fn' or 'event_cb_nb_fn'.
+	 * 
+	 * @param x	The member function to create a wrapper for.
 	 */
-	#define BIND_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+	#define BIND_THIS_EVENT_FN(x) std::bind(&x, this, std::placeholders::_1)
+
+	/**
+	 * @brief	Macro for creating a wrapper function around a member function inside an object. Intended to be used with the
+	 * 			event_listener_add_b and event_listener_add_nb to enable processing of member functions as event callbacks, where
+	 * 			the member functions are of the native type 'event_cb_b_fn' or 'event_cb_nb_fn'.
+	 * 
+	 * @param x	The member function to create a wrapper for.
+	 * @param obj	The object containing the member function.
+	 */
+	#define BIND_EVENT_FN(x, obj) std::bind(&x, &obj, std::placeholders::_1)
 
 	struct EventPolicyB;
 	struct EventPolicyNb;

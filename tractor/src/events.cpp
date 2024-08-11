@@ -18,6 +18,18 @@
 
 namespace trac
 {
+
+#ifndef SKIP_NULLPTR_CHECKS_EVENTS
+/// @brief	Checks whether the provided event pointer is null or not, and shows file and line number if it is null.
+# define CHECK_EVENT_NULLPTR(e) \
+	if(e == nullptr) \
+		throw std::runtime_error(\
+			"Non-blocking event pointer is null. File: " + std::string(__FILE__) + ", Line: " + std::to_string(__LINE__) \
+		);
+#else
+/// @brief	Event check macro that does nothing since SKIP_NULLPTR_CHECKS_EVENTS is defined.
+# define CHECK_EVENT_NULLPTR(e)
+#endif
 	/**
 	 * @brief	The ListenerDataB struct defines the data needed to register and unregister a blocking event listener.
 	 */
@@ -132,6 +144,7 @@ namespace trac
 	 */
 	void event_dispatch(std::shared_ptr<Event> e)
 	{
+		CHECK_EVENT_NULLPTR(e);
 		EventDispatcher::GetEngineDispatcher()->dispatch(e->GetType(), *e);
 		EventDispatcher::GetEngineQueue()->enqueue(e->GetType(), e);
 	}
@@ -154,9 +167,12 @@ namespace trac
 	 * 			event could lead to unexpected behaviour. In the vast majority of cases, the generic event_dispatch function should be used instead.
 	 * 
 	 * @param e	The event to dispatch.
+	 * 
+	 * @throw std::runtime_error	Thrown if the provided event pointer is null.
 	 */
 	void event_dispatch_nb(std::shared_ptr<Event> e)
 	{
+		CHECK_EVENT_NULLPTR(e);
 		EventDispatcher::GetEngineQueue()->enqueue(e->GetType(), e);
 	}
 
@@ -281,6 +297,7 @@ namespace trac
 	 */
 	EventType EventPolicyNb::GetEventType(const std::shared_ptr<Event>& e)
 	{
+		CHECK_EVENT_NULLPTR(e);
 		return e->GetType();
 	}
 

@@ -25,14 +25,40 @@
 
 namespace test
 {
-	/// @brief	Simple "static" test class for testing the event system.
 	class EventData
+	{
+	private:
+		uint32_t ticks_n_;
+		uint32_t renders_n_;
+
+
+	public:
+		EventData() : ticks_n_{ 0 }, renders_n_{ 0 } {}
+		
+		uint32_t GetTicks() { return ticks_n_; }
+		uint32_t GetRenders() { return renders_n_; }
+
+		void reset()
+		{
+			ticks_n_ = 0;
+			renders_n_ = 0;
+		}
+
+		void AppTickCbB(trac::Event& e) { ticks_n_++; }
+		void AppTickCbNb(std::shared_ptr<trac::Event> e) { ticks_n_++; }
+
+		void AppRenderCbB(trac::Event& e) { renders_n_++; }
+		void AppRenderCbNb(std::shared_ptr<trac::Event> e) { renders_n_++; }
+	};
+
+	/// @brief	Simple "static" test class for testing the event system.
+	class EventDataStatic
 	{
 	private:
 		static uint32_t ticks_n_;
 		static uint32_t renders_n_;
 
-		EventData(){}
+		EventDataStatic(){}
 
 	public:
 
@@ -45,15 +71,274 @@ namespace test
 			renders_n_ = 0;
 		}
 
-		static void app_tick_cb_b(trac::Event& e) { ticks_n_++; }
-		static void app_tick_cb_nb(std::shared_ptr<trac::Event> e) { ticks_n_++; }
+		static void AppTickCbB(trac::Event& e) { ticks_n_++; }
+		static void AppTickCbNb(std::shared_ptr<trac::Event> e) { ticks_n_++; }
 
-		static void app_render_cb_b(trac::Event& e) { renders_n_++; }
-		static void app_render_cb_nb(std::shared_ptr<trac::Event> e) { renders_n_++; }
+		static void AppRenderCbB(trac::Event& e) { renders_n_++; }
+		static void AppRenderCbNb(std::shared_ptr<trac::Event> e) { renders_n_++; }
 	};
 
-	uint32_t EventData::ticks_n_ = 0;
-	uint32_t EventData::renders_n_ = 0;
+	uint32_t EventDataStatic::ticks_n_ = 0;
+	uint32_t EventDataStatic::renders_n_ = 0;
+
+	/// @brief	Test the event dispatcher with class member functions as callbacks, with blocking events.
+	GTEST_TEST(tractor, event_callback_member_blocking)
+	{
+		trac:: event_listener_remove_all();
+
+		// Initial values should be zero
+		EventData event_data;
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Create events
+		trac::EventAppTick e_tick;
+		trac::EventAppRendered e_rendered;
+
+		// Add listener for tick event
+		trac::listener_id_t listener_id_tick = trac::event_listener_add_b(
+			trac::EventType::kAppTick, BIND_EVENT_FN(EventData::AppTickCbB, event_data)
+		);
+		
+		// Dispatching events should call the listener
+		trac::event_dispatch_b(e_tick);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_b(e_rendered);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Remove tick event listener and add listener for rendered event
+		trac::event_listener_remove_b(listener_id_tick);
+		trac::listener_id_t listener_id_rendered = trac::event_listener_add_b(
+			trac::EventType::kAppRendered, BIND_EVENT_FN(EventData::AppRenderCbB, event_data)
+		);
+
+		// Dispatching events should call the listener
+		trac::event_dispatch_b(e_tick);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_b(e_rendered);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		// Adding the tick listener back
+		listener_id_tick = trac::event_listener_add_b(
+			trac::EventType::kAppTick, BIND_EVENT_FN(EventData::AppTickCbB, event_data)
+		);
+
+		// Dispatching events should call both listeners
+		trac::event_dispatch_b(e_tick);
+		EXPECT_EQ(2, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		trac::event_dispatch_b(e_rendered);
+		EXPECT_EQ(2, event_data.GetTicks());
+		EXPECT_EQ(2, event_data.GetRenders());
+
+		// Dispatching non-blocking events should not affect the event data
+		// Create events
+		std::shared_ptr<trac::EventAppTick> e_tick_nb = std::make_shared<trac::EventAppTick>();
+		std::shared_ptr<trac::EventAppRendered> e_rendered_nb = std::make_shared<trac::EventAppRendered>();
+
+		trac::event_dispatch_nb(e_tick_nb);
+		EXPECT_EQ(2, event_data.GetTicks());
+		EXPECT_EQ(2, event_data.GetRenders());
+
+		trac::event_dispatch_nb(e_rendered_nb);
+		EXPECT_EQ(2, event_data.GetTicks());
+		EXPECT_EQ(2, event_data.GetRenders());
+
+		// Removing all listeners and reseting the event data
+		trac::event_listener_remove_all();
+		event_data.reset();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Dispatching events should do nothing without listeners
+		trac::event_dispatch_b(e_tick);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_b(e_rendered);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Processing the event queue should not affect the event data
+		trac::event_queue_process();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Adding non-blocking listeners should not do anything when dispatching blocking events explicitly.
+		trac::event_queue_clear();
+		trac::event_listener_add_nb(
+			trac::EventType::kAppTick, BIND_EVENT_FN(EventData::AppTickCbNb, event_data)
+		);
+		trac::event_listener_add_nb(
+			trac::EventType::kAppRendered, BIND_EVENT_FN(EventData::AppRenderCbNb, event_data)
+		);
+
+		trac::event_dispatch_b(e_tick);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_b(e_rendered);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Processing the event queue should not affect the event data
+		trac::event_queue_process();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Removing all listeners and reseting the event data
+		trac::event_listener_remove_all();
+		event_data.reset();
+
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_queue_clear();
+	}
+
+	/// @brief	Test the event dispatcher with class member functions as callbacks, with non-blocking events.
+	GTEST_TEST(tractor, event_callback_member_non_blocking)
+	{
+		trac::event_listener_remove_all();
+
+		// Initial values should be zero
+		EventData event_data;
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Create events
+		std::shared_ptr<trac::EventAppTick> e_tick = std::make_shared<trac::EventAppTick>();
+		std::shared_ptr<trac::EventAppRendered> e_rendered = std::make_shared<trac::EventAppRendered>();
+
+		// Add listener for tick event
+		trac::listener_id_t listener_id_tick = trac::event_listener_add_nb(
+			trac::EventType::kAppTick, BIND_EVENT_FN(EventData::AppTickCbNb, event_data)
+		);
+
+		// Dispatching events should call the listener when processing the queue but not before.
+		trac::event_dispatch_nb(e_tick);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_nb(e_rendered);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// The event queue should contain both events, but only the tick event should be processed.
+		EXPECT_FALSE(trac::event_queue_empty());
+		trac::event_queue_process();
+		EXPECT_TRUE(trac::event_queue_empty());
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Remove tick event listener and add listener for rendered event
+		trac::event_listener_remove_nb(listener_id_tick);
+		trac::listener_id_t listener_id_rendered = trac::event_listener_add_nb(
+			trac::EventType::kAppRendered, BIND_EVENT_FN(EventData::AppRenderCbNb, event_data)
+		);
+
+		// Dispatching events should call the listener when processing the queue but not before.
+		trac::event_dispatch_nb(e_tick);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_nb(e_rendered);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// The event queue should contain both events, but only the rendered event should be processed.
+		EXPECT_FALSE(trac::event_queue_empty());
+		trac::event_queue_process();
+		EXPECT_TRUE(trac::event_queue_empty());
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		// Adding the tick listener back
+		listener_id_tick = trac::event_listener_add_nb(
+			trac::EventType::kAppTick, BIND_EVENT_FN(EventData::AppTickCbNb, event_data)
+		);
+
+		// Dispatching events should call both listeners when processing the queue but not before.
+		trac::event_dispatch_nb(e_tick);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		trac::event_dispatch_nb(e_rendered);
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		// Dispatching the events but clearing the queue before processing should not affect the event data.
+		trac::event_dispatch_nb(e_tick);
+		trac::event_dispatch_nb(e_rendered);
+
+		EXPECT_FALSE(trac::event_queue_empty());
+		trac::event_queue_clear();
+		EXPECT_TRUE(trac::event_queue_empty());
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		EXPECT_TRUE(trac::event_queue_empty());
+		trac::event_queue_process();
+		EXPECT_TRUE(trac::event_queue_empty());
+		EXPECT_EQ(1, event_data.GetTicks());
+		EXPECT_EQ(1, event_data.GetRenders());
+
+		// Clear the event data
+		event_data.reset();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Dispatching events should do nothing without listeners
+		trac::event_listener_remove_all();
+		trac::event_dispatch_nb(e_tick);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_nb(e_rendered);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_queue_process();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Adding blocking listeners should not do anything when dispatching non-blocking events explicitly.
+		trac::event_listener_add_b(
+			trac::EventType::kAppTick, BIND_EVENT_FN(EventData::AppTickCbB, event_data)
+		);
+		trac::event_listener_add_b(
+			trac::EventType::kAppRendered, BIND_EVENT_FN(EventData::AppRenderCbB, event_data)
+		);
+
+		trac::event_dispatch_nb(e_tick);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_dispatch_nb(e_rendered);
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Processing the event queue should not affect the event data
+		trac::event_queue_process();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		// Removing all listeners and reseting the event data
+		trac::event_listener_remove_all();
+		event_data.reset();
+		EXPECT_EQ(0, event_data.GetTicks());
+		EXPECT_EQ(0, event_data.GetRenders());
+
+		trac::event_queue_clear();
+	}
+
 
 	/**
 	 * @brief	Tests the event dispatcher with blocking events. This will test that the following functions work as expected:
@@ -67,9 +352,9 @@ namespace test
 		trac::event_listener_remove_all();
 
 		// Initial values should be zero
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Create events
 		trac::EventAppTick e_tick;
@@ -77,110 +362,110 @@ namespace test
 
 		// Dispatching blocking events should do nothing without listeners
 		trac::event_dispatch_b(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_b(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching blocking events should not affect the non-blocking event queue
 		EXPECT_TRUE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Add listener for tick event
-		trac::listener_id_t listener_id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, EventData::app_tick_cb_b);
+		trac::listener_id_t listener_id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, EventDataStatic::AppTickCbB);
 
 		// Dispatching blocking events should call the listener
 		trac::event_dispatch_b(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_b(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching blocking events should not affect the event queue
 		EXPECT_TRUE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Remove tick event listener and add listener for rendered event
 		trac::event_listener_remove_b(listener_id_tick);
-		trac::listener_id_t listener_id_rendered = trac::event_listener_add_b(trac::EventType::kAppRendered, EventData::app_render_cb_b);
+		trac::listener_id_t listener_id_rendered = trac::event_listener_add_b(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbB);
 
 		// Dispatching blocking events should call the listener
 		trac::event_dispatch_b(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_b(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// Dispatching blocking events should not affect the event queue
 		EXPECT_TRUE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// Adding the tick listener back
-		listener_id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, EventData::app_tick_cb_b);
+		listener_id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, EventDataStatic::AppTickCbB);
 
 		// Dispatching blocking events should call both listeners
 		trac::event_dispatch_b(e_tick);
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_b(e_rendered);
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		// Removing all blocking listeners and reseting the event data
 		trac::event_listener_remove_all_b();
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching blocking events should do nothing without listeners
 		trac::event_dispatch_b(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_b(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Adding non-blocking listeners should not do anything when dispatching blocking events explicitly.
-		trac::event_listener_add_nb(trac::EventType::kAppTick, EventData::app_tick_cb_nb);
-		trac::event_listener_add_nb(trac::EventType::kAppRendered, EventData::app_render_cb_nb);
+		trac::event_listener_add_nb(trac::EventType::kAppTick, EventDataStatic::AppTickCbNb);
+		trac::event_listener_add_nb(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbNb);
 
 		trac::event_dispatch_b(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_b(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching blocking events should not affect the event queue even if there are non-blocking listeners.
 		EXPECT_TRUE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Removing all listeners and reseting the event data
 		trac::event_listener_remove_all();
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 	}
 
 	/**
@@ -199,9 +484,9 @@ namespace test
 		trac::event_listener_remove_all();
 
 		// Initial values should be zero
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Create events
 		std::shared_ptr<trac::Event> e_tick = std::make_shared<trac::EventAppTick>();
@@ -209,77 +494,77 @@ namespace test
 
 		// Dispatching non-blocking events should do nothing without listeners
 		trac::event_dispatch_nb(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_nb(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain the events, but no callbacks should be called. Therefore, processing the queue should not affect the event data.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Add listener for tick event
-		trac::listener_id_t listener_id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, EventData::app_tick_cb_nb);
+		trac::listener_id_t listener_id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, EventDataStatic::AppTickCbNb);
 
 		// Dispatching non-blocking events should call the listener when processing the queue but not before.
 		trac::event_dispatch_nb(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_nb(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, but only the tick event should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Remove tick event listener and add listener for rendered event
 		trac::event_listener_remove_nb(listener_id_tick);
-		trac::listener_id_t listener_id_rendered = trac::event_listener_add_nb(trac::EventType::kAppRendered, EventData::app_render_cb_nb);
+		trac::listener_id_t listener_id_rendered = trac::event_listener_add_nb(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbNb);
 
 		// Dispatching non-blocking events should call the listener when processing the queue but not before.
 		trac::event_dispatch_nb(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_nb(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, but only the rendered event should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// Adding the tick listener back
-		listener_id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, EventData::app_tick_cb_nb);
+		listener_id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, EventDataStatic::AppTickCbNb);
 
 		// Dispatching non-blocking events should call both listeners when processing the queue but not before.
 		trac::event_dispatch_nb(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_nb(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and both should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		// Dispatching the events but clearing the queue before processing should not affect the event data.
 		trac::event_dispatch_nb(e_tick);
@@ -288,19 +573,19 @@ namespace test
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_clear();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		EXPECT_TRUE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		// Clear the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Events should be queued in the order they are dispatched when processed individually.
 		trac::event_dispatch_nb(e_tick);
@@ -310,83 +595,83 @@ namespace test
 		trac::event_dispatch_nb(e_rendered);
 
 		EXPECT_FALSE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process_one();
 		EXPECT_FALSE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process_one();
 		EXPECT_FALSE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process_one();
 		EXPECT_FALSE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process_one();
 		EXPECT_FALSE(trac::event_queue_empty());
-		EXPECT_EQ(3, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(3, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process_one();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(3, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(3, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		// Removing all non-blocking listeners and reseting the event data
 		trac::event_listener_remove_all_nb();
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching non-blocking events should do nothing without listeners
 		trac::event_dispatch_nb(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_nb(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Adding blocking listeners should not do anything when dispatching non-blocking events explicitly.
-		trac::event_listener_add_b(trac::EventType::kAppTick, EventData::app_tick_cb_b);
-		trac::event_listener_add_b(trac::EventType::kAppRendered, EventData::app_render_cb_b);
+		trac::event_listener_add_b(trac::EventType::kAppTick, EventDataStatic::AppTickCbB);
+		trac::event_listener_add_b(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbB);
 
 		trac::event_dispatch_nb(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch_nb(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Removing all listeners and reseting the event data
 		trac::event_listener_remove_all();
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 	}
 
 	/**
@@ -398,9 +683,9 @@ namespace test
 		trac::event_listener_remove_all();
 
 		// Initial values should be zero
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Create events
 		std::shared_ptr<trac::Event> e_tick = std::make_shared<trac::EventAppTick>();
@@ -408,204 +693,204 @@ namespace test
 
 		// Dispatching events should do nothing without listeners
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain the events, but no callbacks should be called. Therefore, processing the queue should not affect the event data.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Add blocking listener for tick event
-		trac::listener_id_t listener_b_id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, EventData::app_tick_cb_b);
+		trac::listener_id_t listener_b_id_tick = trac::event_listener_add_b(trac::EventType::kAppTick, EventDataStatic::AppTickCbB);
 
 		// Dispatching events should call the blocking listener immediately.
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and neither should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Reset the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Add blocking listener for rendered event
-		trac::listener_id_t listener_b_id_rendered = trac::event_listener_add_b(trac::EventType::kAppRendered, EventData::app_render_cb_b);
+		trac::listener_id_t listener_b_id_rendered = trac::event_listener_add_b(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbB);
 
 		// Dispatching events should call both blocking listeners immediately.
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and neither should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// Reset the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Add non-blocking listener for tick event
-		trac::listener_id_t listener_nb_id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, EventData::app_tick_cb_nb);
+		trac::listener_id_t listener_nb_id_tick = trac::event_listener_add_nb(trac::EventType::kAppTick, EventDataStatic::AppTickCbNb);
 
 		// Dispatching events should immidiately call the blocking listener, and the non-blocking tick event should be processed when the queue is processed.
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and the tick event should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// Reset the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Add non-blocking listener for rendered event
-		trac::listener_id_t listener_nb_id_rendered = trac::event_listener_add_nb(trac::EventType::kAppRendered, EventData::app_render_cb_nb);
+		trac::listener_id_t listener_nb_id_rendered = trac::event_listener_add_nb(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbNb);
 
 		// Dispatching events should immidiately call the blocking listener, and the non-blocking tick event should be processed when the queue is processed.
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and both should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		// Removing the blocking event listeners
 		trac::event_listener_remove_all_b();
 
 		// Reset the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching events should only apply to the non-blocking listeners
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and both should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// Removing the non-blocking event listeners
 		trac::event_listener_remove_all_nb();
 
 		// Reset the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching events should do nothing without listeners
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, but no callbacks should be called. Therefore, the event data should be zero.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 		
 		// Re-add all event listeners and remove all to ensure that 'event_listener_remove_all' works as expected.
-		trac::event_listener_add_b(trac::EventType::kAppTick, EventData::app_tick_cb_b);
-		trac::event_listener_add_b(trac::EventType::kAppRendered, EventData::app_render_cb_b);
-		trac::event_listener_add_nb(trac::EventType::kAppTick, EventData::app_tick_cb_nb);
-		trac::event_listener_add_nb(trac::EventType::kAppRendered, EventData::app_render_cb_nb);
+		trac::event_listener_add_b(trac::EventType::kAppTick, EventDataStatic::AppTickCbB);
+		trac::event_listener_add_b(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbB);
+		trac::event_listener_add_nb(trac::EventType::kAppTick, EventDataStatic::AppTickCbNb);
+		trac::event_listener_add_nb(trac::EventType::kAppRendered, EventDataStatic::AppRenderCbNb);
 
 		// Dispatching events should call all listeners
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(1, EventData::GetTicks());
-		EXPECT_EQ(1, EventData::GetRenders());
+		EXPECT_EQ(1, EventDataStatic::GetTicks());
+		EXPECT_EQ(1, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, and both should be processed.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(2, EventData::GetTicks());
-		EXPECT_EQ(2, EventData::GetRenders());
+		EXPECT_EQ(2, EventDataStatic::GetTicks());
+		EXPECT_EQ(2, EventDataStatic::GetRenders());
 
 		// Removing all event listeners
 		trac::event_listener_remove_all();
 
 		// Reset the event data
-		EventData::reset();
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EventDataStatic::reset();
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// Dispatching events should do nothing without listeners
 		trac::event_dispatch(e_tick);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		trac::event_dispatch(e_rendered);
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 
 		// The event queue should contain both events, but no callbacks should be called. Therefore, the event data should be zero.
 		EXPECT_FALSE(trac::event_queue_empty());
 		trac::event_queue_process();
 		EXPECT_TRUE(trac::event_queue_empty());
-		EXPECT_EQ(0, EventData::GetTicks());
-		EXPECT_EQ(0, EventData::GetRenders());
+		EXPECT_EQ(0, EventDataStatic::GetTicks());
+		EXPECT_EQ(0, EventDataStatic::GetRenders());
 	}
 
 	/// @brief Test that the insertion operator works as expected.

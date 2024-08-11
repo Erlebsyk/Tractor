@@ -32,7 +32,7 @@ namespace app
 		trac::log_client_info("Creating sandbox application: [{0}].", __FUNCTION__);
 
 		trac::log_client_debug("Adding window event listeners");
-		trac::listener_id_t quit_id = trac::event_listener_add_b(trac::EventType::kQuit, BIND_EVENT_FN(SandboxApp::OnWindowClose));
+		trac::listener_id_t quit_id = trac::event_listener_add_b(trac::EventType::kQuit, BIND_THIS_EVENT_FN(SandboxApp::OnWindowClose));
 	}
 
 	/// @brief	The main application function. This will be executed through the tractor game engine library's main function in "entry_point.hpp".
