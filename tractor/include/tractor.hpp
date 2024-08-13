@@ -22,6 +22,9 @@
 
 #include "tractor/events.hpp"
 
+#include "tractor/utils/bits.hpp"
+#include "tractor/utils/utils.hpp"
+
 namespace trac
 {
 	void initialize_engine();

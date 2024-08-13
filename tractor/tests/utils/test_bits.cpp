@@ -48,6 +48,48 @@ GTEST_TEST(tractor, bits_macros)
 	EXPECT_EQ(0b00000000000000000000000000001100, BIT(2) | BIT(3));
 }
 
+GTEST_TEST(tractor, bits_signed_max)
+{
+	EXPECT_EQ(INT8_MAX, trac::signed_max<int8_t>());
+	EXPECT_EQ(INT16_MAX, trac::signed_max<int16_t>());
+	EXPECT_EQ(INT32_MAX, trac::signed_max<int32_t>());
+	EXPECT_EQ(INT64_MAX, trac::signed_max<int64_t>());
+
+	EXPECT_NE(INT8_MIN, trac::signed_max<int8_t>());
+	EXPECT_NE(INT16_MAX, trac::signed_max<int32_t>());
+}
+
+GTEST_TEST(tractor, bits_downshift_mask)
+{
+	uint32_t value = 0b11111111111111111111111111111111;
+	// Expect downshift to remove top 7 bits (a signed int8_t has 7 data bits, 1 sign bit).
+	EXPECT_EQ(0b00000001111111111111111111111111, trac::downshift_mask<int8_t>(value));
+	// Expect downshift to remove top 15 bits (a signed int16_t has 15 data bits, 1 sign bit).
+	EXPECT_EQ(0b00000000000000011111111111111111, trac::downshift_mask<int16_t>(value));
+	// Expect downshift to remove top 31 bits (a signed int32_t has 31 data bits, 1 sign bit).
+	EXPECT_EQ(0b00000000000000000000000000000001, trac::downshift_mask<int32_t>(value));
+
+	value = 0b01111111111111111111111111111111;
+	// Expect downshift to remove top 7 bits (a signed int8_t has 7 data bits, 1 sign bit).
+	EXPECT_EQ(0b00000000111111111111111111111111, trac::downshift_mask<int8_t>(value));
+	// Expect downshift to remove top 15 bits (a signed int16_t has 15 data bits, 1 sign bit).
+	EXPECT_EQ(0b00000000000000001111111111111111, trac::downshift_mask<int16_t>(value));
+	// Expect downshift to remove top 31 bits (a signed int32_t has 31 data bits, 1 sign bit).
+	EXPECT_EQ(0b00000000000000000000000000000000, trac::downshift_mask<int32_t>(value));	
+
+	value = 0;
+	EXPECT_EQ(0, trac::downshift_mask<int8_t>(value));
+	EXPECT_EQ(0, trac::downshift_mask<int16_t>(value));
+	EXPECT_EQ(0, trac::downshift_mask<int32_t>(value));
+
+	value = INT8_MAX;
+	EXPECT_EQ(0, trac::downshift_mask<int8_t>(value));
+	value = INT8_MAX+1;
+	EXPECT_EQ(1, trac::downshift_mask<int8_t>(value));
+	value = INT32_MAX;
+	EXPECT_TRUE(1 <= trac::downshift_mask<int8_t>(value));
+}
+
 /// Test the bit checking function.
 GTEST_TEST(tractor, bits_check)
 {

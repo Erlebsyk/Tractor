@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.3.13 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.3.14 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -24,6 +24,8 @@ set(SourceFiles
 	src/sdl_hook.cpp
 	src/tractor_pch.cpp
 	src/window.cpp
+
+	src/utils/utils.cpp
 
 	src/event_types/event_base.cpp
 	src/event_types/event_application.cpp
@@ -51,6 +53,8 @@ set(IncludeFiles
 
 	include/tractor/utils/bits.hpp
 	include/tractor/utils/bits.inl
+	include/tractor/utils/utils.hpp
+	include/tractor/utils/utils.inl
 
 	include/tractor/event_types/event_base.hpp
 	include/tractor/event_types/event_application.hpp

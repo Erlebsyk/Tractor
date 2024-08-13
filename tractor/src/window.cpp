@@ -19,6 +19,7 @@
 // Project header includes
 #include "events.hpp"
 #include "logger.hpp"
+#include "utils/utils.hpp"
 
 namespace trac
 {
@@ -104,38 +105,16 @@ namespace trac
 		callback_non_blocking	{ callback_non_blocking	}
 	{}
 
+	
 	/**
-	 * @brief	Set the size of the window.
-	 * 
-	 * @param width	The width of the window.
-	 * @param height	The height of the window.
+	 * @brief	Check if vsync is enabled for the window.
+	 * @return bool	Whether or not vsync is enabled.
+	 * @retval true	Vsync is enabled.
+	 * @retval false	Vsync is not enabled.
 	 */
-	void Window::SetSize(const uint32_t width, const uint32_t height)
+	bool Window::IsVsyncEnabled() const
 	{
-		SetWidth(width);
-		SetHeight(height);
-	}
-
-	/**
-	 * @brief	Check if the window is in fullscreen mode.
-	 * @return bool	Whether or not the window is in fullscreen mode.
-	 * @retval true	The window is in fullscreen mode.
-	 * @retval false	The window is not in fullscreen mode.
-	 */
-	bool Window::IsFullscreen() const
-	{
-		return kWindowFullscreen & GetStatusFlags();
-	}
-
-	/**
-	 * @brief	Check if the window is currently visible.
-	 * @return bool	Whether or not the window is visible.
-	 * @retval true	The window is visible.
-	 * @retval false	The window is not visible.
-	 */
-	bool Window::IsVisible() const
-	{
-		return kWindowVisible & GetStatusFlags();
+		return kWindowVsync & GetStatusFlags();
 	}
 
 	/**
@@ -158,6 +137,28 @@ namespace trac
 	bool Window::IsBorderless() const
 	{
 		return kWindowBorderless & GetStatusFlags();
+	}	
+
+	/**
+	 * @brief	Check if the window is in fullscreen mode.
+	 * @return bool	Whether or not the window is in fullscreen mode.
+	 * @retval true	The window is in fullscreen mode.
+	 * @retval false	The window is not in fullscreen mode.
+	 */
+	bool Window::IsFullscreen() const
+	{
+		return kWindowFullscreen & GetStatusFlags();
+	}
+
+	/**
+	 * @brief	Check if the window is currently visible.
+	 * @return bool	Whether or not the window is visible.
+	 * @retval true	The window is visible.
+	 * @retval false	The window is not visible.
+	 */
+	bool Window::IsVisible() const
+	{
+		return kWindowVisible & GetStatusFlags();
 	}
 
 	/**
@@ -271,6 +272,59 @@ namespace trac
 	}
 
 	/**
+	 * @brief	Get the properties of the window.
+	 * @return WindowProperties	The window properties.
+	 */
+	WindowProperties Window::GetProperties() const
+	{
+		const WindowProperties properties(
+			GetTitle(),
+			GetWidth(),
+			GetHeight(),
+			GetX(),
+			GetY(),
+			IsVsyncEnabled(),
+			IsResizable(),
+			IsBorderless(),
+			IsFullscreen(),
+			IsVisible(),
+			IsMinimized(),
+			IsMaximized(),
+			IsMouseGrabbed(),
+			IsInputFocus(),
+			IsMouseFocus(),
+			IsHighDPI(),
+			IsMouseCaptured(),
+			IsAlwaysOnTop(),
+			IsKeyboardGrabbed(),
+			IsInputGrabbed()
+		);
+
+		return properties;
+	}
+
+	/**
+	 * @brief	Creates a shared pointer to the window properties.
+	 * @return std::shared_ptr<WindowProperties>	A shared pointer to the window properties.
+	 */
+	std::shared_ptr<WindowProperties> Window::GetPropertiesPtr() const
+	{
+		return std::make_shared<WindowProperties>(GetProperties());
+	}
+
+	/**
+	 * @brief	Set the size of the window.
+	 * 
+	 * @param width	The width of the window.
+	 * @param height	The height of the window.
+	 */
+	void Window::SetSize(const uint32_t width, const uint32_t height)
+	{
+		SetWidth(width);
+		SetHeight(height);
+	}
+
+	/**
 	 * @brief	Set the position of the window on the screen.
 	 * 
 	 * @param x	The horizontal position of the window.
@@ -280,6 +334,18 @@ namespace trac
 	{
 		SetX(x);
 		SetY(y);
+	}
+
+	/**
+	 * @brief	Set the visibility of the window.
+	 * @param visible	Whether or not the window should be visible.
+	 */
+	void Window::SetVisibility(const bool visible)
+	{
+		if(visible)
+			Show();
+		else
+			Hide();
 	}
 
 	/**
@@ -300,13 +366,13 @@ namespace trac
 	 * @param properties	The properties of the window.
 	 */
 	WindowBasic::WindowBasic(const WindowProperties& properties) : 
-		properties_		{ properties		},
-		callbacks_		{ WindowCallbacks()	},
-		window_			{ nullptr			},
-		context_		{ nullptr			},
-		open_			{ false				}
+		callbacks_			{ WindowCallbacks()	},
+		closed_properties_	{ nullptr			},
+		window_				{ nullptr			},
+		context_			{ nullptr			},
+		open_				{ false				}
 	{
-		Init();
+		Init(properties);
 		windows_n_++;
 	}
 
@@ -320,88 +386,77 @@ namespace trac
 	/// @brief	Function called whenever the window is updated.
 	void WindowBasic::OnUpdate()
 	{
-
+		/// @todo Implement window update function.
 	}
 
-	/**
-	 * @brief	Get the width of the window.
-	 * 
-	 * @return uint32_t	The width of the window.
-	 */
-	uint32_t WindowBasic::GetWidth() const
-	{
-		return properties_.width;
-	}
-
-	/**
-	 * @brief	Get the height of the window.
-	 * 
-	 * @return uint32_t	The height of the window.
-	 */
-	uint32_t WindowBasic::GetHeight() const
-	{
-		return properties_.height;
-	}
-
-	/**
-	 * @brief	Set the width and height of the window.
-	 * 
-	 * @param width	The width of the window.
-	 * @param height	The height of the window.
-	 */
-	void WindowBasic::SetSize(const uint32_t width, const uint32_t height)
-	{
-		SDL_SetWindowSize(window_, width, height);
-		properties_.width = width;
-		properties_.height = height;
-	}
-
-	/**
-	 * @brief	Set the width of the window.
-	 * 
-	 * @param width	The width of the window.
-	 */
-	void WindowBasic::SetWidth(const uint32_t width)
-	{
-		SetSize(width, properties_.height);
-	}
-
-	/**
-	 * @brief	Set the height of the window.
-	 * 
-	 * @param height	The height of the window.
-	 */
-	void WindowBasic::SetHeight(const uint32_t height)
-	{
-		SetSize(properties_.width, height);
-	}
-	
 	/// @brief  Opens the window if it is closed.
 	void WindowBasic::Open()
 	{
 		if(!open_)
-			Init();
+		{
+			if(closed_properties_ != nullptr)
+			{
+				Init(*closed_properties_);
+				closed_properties_ = nullptr;
+			}
+			else
+			{
+				Init(WindowProperties());
+			}
+		}
 	}
 
-	/// @brief	Close the window.
-	void WindowBasic::Close()
+	/**
+	 * @brief	Close the window.
+	 * @param store_properties	Whether or not to store the window properties before closing. This will allow
+	 * 							the window to be reopened with the same properties next time it is opened.
+	 */
+	void WindowBasic::Close(const bool store_properties)
 	{
 		if(open_)
+		{
 			Shutdown();
+			if(store_properties)
+				closed_properties_ = GetPropertiesPtr();
+		}
 	}
 
-	/// @brief	Show the window.
-	void WindowBasic::Show()
+	/**
+	 * @brief Returns a pointer to the native window.
+	 * 
+	 * @return void*	A pointer to the native window.
+	 */
+	void* WindowBasic::GetNativeWindow() const
 	{
-		SDL_ShowWindow(window_);
-		properties_.visible = true;
+		return window_;
 	}
 
-	/// @brief	Hide the window.
-	void WindowBasic::Hide()
+	/**
+	 * @brief	Get the status flags of the window as a 32-bit bitfield.
+	 * @return uint32_t	The status flags of the window.
+	 */
+	uint32_t WindowBasic::GetStatusFlags() const
 	{
-		SDL_HideWindow(window_);
-		properties_.visible = false;
+		const uint32_t sdl_flags = SDL_GetWindowFlags(window_);
+		uint32_t status_flags = 0;
+
+		status_flags |= (sdl_flags & SDL_WINDOW_FULLSCREEN)			? kWindowFullscreen : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_SHOWN)				? kWindowVisible : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_RESIZABLE)			? kWindowResizable : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_BORDERLESS)			? kWindowBorderless : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_MINIMIZED)			? kWindowMinimized : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_MAXIMIZED)			? kWindowMaximized : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_MOUSE_GRABBED)		? kWindowMouseGrabbed : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_INPUT_FOCUS)		? kWindowInputFocus : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_MOUSE_FOCUS)		? kWindowMouseFocus : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_ALLOW_HIGHDPI)		? kWindowHighDPI : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_MOUSE_CAPTURE)		? kWindowMouseCaptured : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_ALWAYS_ON_TOP)		? kWindowAlwaysOnTop : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_KEYBOARD_GRABBED)	? kWindowKeyboardGrabbed : 0;
+		status_flags |= (sdl_flags & SDL_WINDOW_INPUT_GRABBED)		? kWindowInputGrabbed : 0;
+		status_flags |= (SDL_GL_GetSwapInterval() != 0)				? kWindowVsync : 0;
+		
+		return status_flags;
 	}
 
 	/**
@@ -417,32 +472,66 @@ namespace trac
 	}
 
 	/**
-	 * @brief	Get the status flags of the window as a 32-bit bitfield.
-	 * 
-	 * @return uint32_t	The status flags of the window.
+	 * @brief	Get the title of the window.
+	 * @return std::string	The window title.
 	 */
-	uint32_t WindowBasic::GetStatusFlags() const
+	std::string WindowBasic::GetTitle() const
 	{
-		const uint32_t sdl_flags = SDL_GetWindowFlags(window_);
-		uint32_t status_flags = 0;
-
-		status_flags |= (sdl_flags & SDL_WINDOW_FULLSCREEN) ? kWindowFullscreen : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_SHOWN) ? kWindowVisible : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_RESIZABLE) ? kWindowResizable : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_BORDERLESS) ? kWindowBorderless : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_MINIMIZED) ? kWindowMinimized : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_MAXIMIZED) ? kWindowMaximized : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_MOUSE_GRABBED) ? kWindowMouseGrabbed : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_INPUT_FOCUS) ? kWindowInputFocus : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_MOUSE_FOCUS) ? kWindowMouseFocus : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_ALLOW_HIGHDPI) ? kWindowHighDPI : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_MOUSE_CAPTURE) ? kWindowMouseCaptured : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_ALWAYS_ON_TOP) ? kWindowAlwaysOnTop : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_KEYBOARD_GRABBED) ? kWindowKeyboardGrabbed : 0;
-		status_flags |= (sdl_flags & SDL_WINDOW_INPUT_GRABBED) ? kWindowInputGrabbed : 0;
-
-		return status_flags;
+		const char* title = SDL_GetWindowTitle(window_);
+		return title;
 	}
+
+	/**
+	 * @brief	Get the width of the window.
+	 * @return uint32_t	The width of the window.
+	 */
+	uint32_t WindowBasic::GetWidth() const
+	{
+		int width;
+		SDL_GetWindowSize(window_, &width, NULL);
+		width = clamp_int_to_positive(width);
+		return (uint32_t)width;
+	}
+
+	/**
+	 * @brief	Get the height of the window.
+	 * @return uint32_t	The height of the window.
+	 */
+	uint32_t WindowBasic::GetHeight() const
+	{
+		int height;
+		SDL_GetWindowSize(window_, NULL, &height);
+		height = clamp_int_to_positive(height);
+		return (uint32_t)height;
+	}
+
+	/**
+	 * @brief	Get the horizontal position of the window.
+	 * @return uint32_t	The horizontal position of the window.
+	 */
+	uint32_t WindowBasic::GetX() const
+	{
+		int x;
+		SDL_GetWindowPosition(window_, &x, NULL);
+		x = clamp_int_to_positive(x);
+
+		return (uint32_t)x;
+	}
+
+	/**
+	 * @brief	Get the vertical position of the window.
+	 * @return uint32_t	The vertical position of the window.
+	 */
+	uint32_t WindowBasic::GetY() const
+	{
+		int y;
+		SDL_GetWindowPosition(window_, NULL, &y);
+
+		y = clamp_int_to_positive(y);
+
+		return (uint32_t)y;
+	}
+	
 
 	/**
 	 * @brief	Set a blocking callback function for window events.
@@ -465,31 +554,49 @@ namespace trac
 	}
 
 	/**
-	 * @brief	Set whether or not vsync should be enabled for the window.
-	 * 
-	 * @param enabled	Whether or not vsync should be enabled.
-	 */
-	void WindowBasic::SetVsync(const bool enabled)
-	{
-		const int sdl_enable_val = (enabled) ? -1 : 0;
-		int vsync_status = SDL_GL_SetSwapInterval(enabled);
-		if(vsync_status < 0 && enabled) // Adaptive VSync failed.
-			vsync_status = SDL_GL_SetSwapInterval(1); // Try regular VSync.
-		
-		if(vsync_status == 0)
-			properties_.vsync = enabled;
-		else
-			log_engine_error("SDL could not [%s] vsync! SDL error: [%s]", (enabled ? "enable" : "disable"), SDL_GetError());
-	}
-
-	/**
 	 * @brief	Set the title of the window.
 	 * @param title	The title of the window.
 	 */
 	void WindowBasic::SetTitle(const std::string title)
 	{
 		SDL_SetWindowTitle(window_, title.c_str());
-		properties_.title = title;
+	}
+
+	/**
+	 * @brief	Set the width and height of the window.
+	 * 
+	 * @param width	The width of the window. Must be less than INT_MAX for generic window.
+	 * @param height	The height of the window. Must be less than INT_MAX for generic window.
+	 */
+	void WindowBasic::SetSize(const uint32_t width, const uint32_t height)
+	{
+		const int width_int = clamp_uint_to_int<int32_t, uint32_t>(width);
+		const int height_int = clamp_uint_to_int<int32_t, uint32_t>(height);
+		SDL_SetWindowSize(window_, width_int, height_int);
+	}
+
+	/**
+	 * @brief	Set the width of the window.
+	 * 
+	 * @param width	The width of the window.
+	 */
+	void WindowBasic::SetWidth(const uint32_t width)
+	{
+		int height;
+		SDL_GetWindowSize(window_, NULL, &height);
+		SetSize(width, height);
+	}
+
+	/**
+	 * @brief	Set the height of the window.
+	 * 
+	 * @param height	The height of the window.
+	 */
+	void WindowBasic::SetHeight(const uint32_t height)
+	{
+		int width;
+		SDL_GetWindowSize(window_, &width, NULL);
+		SetSize(width, height);
 	}
 
 	/**
@@ -529,18 +636,22 @@ namespace trac
 		}
 			
 		SDL_SetWindowPosition(window_, (int)x, (int)y);
-		properties_.pos_x = x;
-		properties_.pos_y = y;
 	}
 
 	/**
-	 * @brief	Set whether or not the window should be in fullscreen mode.
-	 * @param enabled	Whether or not the window should be in fullscreen mode.
+	 * @brief	Set whether or not vsync should be enabled for the window.
+	 * 
+	 * @param enabled	Whether or not vsync should be enabled.
 	 */
-	void WindowBasic::SetFullscreen(const bool enabled)
+	void WindowBasic::SetVsync(const bool enabled)
 	{
-		SDL_SetWindowFullscreen(window_, enabled ? SDL_WINDOW_FULLSCREEN : 0);
-		properties_.fullscreen = enabled;
+		const int sdl_enable_val = (enabled) ? -1 : 0;
+		int vsync_status = SDL_GL_SetSwapInterval(enabled);
+		if(vsync_status < 0 && enabled) // Adaptive VSync failed.
+			vsync_status = SDL_GL_SetSwapInterval(1); // Try regular VSync.
+
+		if(vsync_status != 0)
+			log_engine_error("SDL could not [%s] vsync! SDL error: [%s]", (enabled ? "enable" : "disable"), SDL_GetError());
 	}
 
 	/**
@@ -550,7 +661,6 @@ namespace trac
 	void WindowBasic::SetResizable(const bool enabled)
 	{
 		SDL_SetWindowResizable(window_, enabled ? SDL_TRUE : SDL_FALSE);
-		properties_.resizable = enabled;
 	}
 
 	/**
@@ -560,7 +670,27 @@ namespace trac
 	void WindowBasic::SetBorderless(const bool enabled)
 	{
 		SDL_SetWindowBordered(window_, enabled ? SDL_FALSE : SDL_TRUE);
-		properties_.borderless = enabled;
+	}
+
+	/**
+	 * @brief	Set whether or not the window should be in fullscreen mode.
+	 * @param enabled	Whether or not the window should be in fullscreen mode.
+	 */
+	void WindowBasic::SetFullscreen(const bool enabled)
+	{
+		SDL_SetWindowFullscreen(window_, enabled ? SDL_WINDOW_FULLSCREEN : 0);
+	}
+
+	/// @brief	Show the window.
+	void WindowBasic::Show()
+	{
+		SDL_ShowWindow(window_);
+	}
+
+	/// @brief	Hide the window.
+	void WindowBasic::Hide()
+	{
+		SDL_HideWindow(window_);
 	}
 
 	/**
@@ -570,7 +700,6 @@ namespace trac
 	void WindowBasic::SetMinimized(const bool enabled)
 	{
 		SDL_MinimizeWindow(window_);
-		properties_.minimized = enabled;
 	}
 
 	/**
@@ -580,7 +709,6 @@ namespace trac
 	void WindowBasic::SetMaximized(const bool enabled)
 	{
 		SDL_MaximizeWindow(window_);
-		properties_.maximized = enabled;
 	}
 
 	/**
@@ -590,14 +718,12 @@ namespace trac
 	void WindowBasic::SetMouseGrabbed(const bool enabled)
 	{
 		SDL_SetWindowMouseGrab(window_, enabled ? SDL_TRUE : SDL_FALSE);
-		properties_.mouse_grabbed = enabled;
 	}
 
 	/// @brief	Request the window to have input focus.
 	void WindowBasic::SetInputFocus()
 	{
 		SDL_SetWindowInputFocus(window_);
-		properties_.input_focus = true;
 	}
 
 	/**
@@ -607,7 +733,6 @@ namespace trac
 	void WindowBasic::SetAlwaysOnTop(const bool enabled)
 	{
 		SDL_SetWindowAlwaysOnTop(window_, enabled ? SDL_TRUE : SDL_FALSE);
-		properties_.always_on_top = enabled;
 	}
 
 	/**
@@ -617,7 +742,6 @@ namespace trac
 	void WindowBasic::SetKeyboardGrabbed(const bool enabled)
 	{
 		SDL_SetWindowKeyboardGrab(window_, enabled ? SDL_TRUE : SDL_FALSE);
-		properties_.keyboard_grabbed = enabled;
 	}
 
 	/**
@@ -629,53 +753,33 @@ namespace trac
 		SDL_SetWindowGrab(window_, enabled ? SDL_TRUE : SDL_FALSE);
 	}
 
-	/**
-	 * @brief	Check if vsync is enabled for the window.
-	 * 
-	 * @return bool	Whether or not vsync is enabled.
-	 */
-	bool WindowBasic::IsVsyncEnabled() const
-	{
-		return properties_.vsync;
-	}
-
-	/**
-	 * @brief Returns a pointer to the native window.
-	 * 
-	 * @return void*	A pointer to the native window.
-	 */
-	void* WindowBasic::GetNativeWindow() const
-	{
-		return window_;
-	}
-
 	/// @brief	Initializes the window.
-	void WindowBasic::Init()
+	void WindowBasic::Init(const WindowProperties& properties)
 	{
 		open_ = true;
 
 		uint32_t sdl_flags = SDL_WINDOW_OPENGL;
-		if(properties_.resizable) sdl_flags |= SDL_WINDOW_RESIZABLE;
-		if(properties_.borderless) sdl_flags |= SDL_WINDOW_BORDERLESS;
-		if(properties_.fullscreen) sdl_flags |= SDL_WINDOW_FULLSCREEN;
-		if(properties_.visible) sdl_flags |= SDL_WINDOW_SHOWN;
-		if(properties_.minimized) sdl_flags |= SDL_WINDOW_MINIMIZED;
-		if(properties_.maximized) sdl_flags |= SDL_WINDOW_MAXIMIZED;
-		if(properties_.mouse_grabbed) sdl_flags |= SDL_WINDOW_MOUSE_GRABBED;
-		if(properties_.input_focus) sdl_flags |= SDL_WINDOW_INPUT_FOCUS;
-		if(properties_.mouse_focus) sdl_flags |= SDL_WINDOW_MOUSE_FOCUS;
-		if(properties_.high_dpi) sdl_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-		if(properties_.mouse_captured) sdl_flags |= SDL_WINDOW_MOUSE_CAPTURE;
-		if(properties_.always_on_top) sdl_flags |= SDL_WINDOW_ALWAYS_ON_TOP;
-		if(properties_.keyboard_grabbed) sdl_flags |= SDL_WINDOW_KEYBOARD_GRABBED;
-		if(properties_.input_grabbed) sdl_flags |= SDL_WINDOW_INPUT_GRABBED;
+		if(properties.resizable) sdl_flags |= SDL_WINDOW_RESIZABLE;
+		if(properties.borderless) sdl_flags |= SDL_WINDOW_BORDERLESS;
+		if(properties.fullscreen) sdl_flags |= SDL_WINDOW_FULLSCREEN;
+		if(properties.visible) sdl_flags |= SDL_WINDOW_SHOWN;
+		if(properties.minimized) sdl_flags |= SDL_WINDOW_MINIMIZED;
+		if(properties.maximized) sdl_flags |= SDL_WINDOW_MAXIMIZED;
+		if(properties.mouse_grabbed) sdl_flags |= SDL_WINDOW_MOUSE_GRABBED;
+		if(properties.input_focus) sdl_flags |= SDL_WINDOW_INPUT_FOCUS;
+		if(properties.mouse_focus) sdl_flags |= SDL_WINDOW_MOUSE_FOCUS;
+		if(properties.high_dpi) sdl_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
+		if(properties.mouse_captured) sdl_flags |= SDL_WINDOW_MOUSE_CAPTURE;
+		if(properties.always_on_top) sdl_flags |= SDL_WINDOW_ALWAYS_ON_TOP;
+		if(properties.keyboard_grabbed) sdl_flags |= SDL_WINDOW_KEYBOARD_GRABBED;
+		if(properties.input_grabbed) sdl_flags |= SDL_WINDOW_INPUT_GRABBED;
 
 		window_ = SDL_CreateWindow(
-			properties_.title.c_str(),
-			properties_.pos_x,
-			properties_.pos_y,
-			properties_.width,
-			properties_.height,
+			properties.title.c_str(),
+			properties.pos_x,
+			properties.pos_y,
+			properties.width,
+			properties.height,
 			sdl_flags
 		);
 		if (window_ == nullptr)
@@ -685,7 +789,7 @@ namespace trac
 		if (context_ == nullptr)
 			log_engine_error("SDL could not create OpenGL context! SDL error: [%s]", SDL_GetError());
 
-		SetVsync(properties_.vsync);
+		SetVsync(properties.vsync);
 
 		//Get window surface
 		SDL_Surface* screenSurface = SDL_GetWindowSurface( window_ );

@@ -8,8 +8,12 @@
  * */
 
 #ifndef BITS_HPP_
-#error "Do not include this file directly. Include logger.hpp instead, through which this file is included indirectly."
+#error "Do not include this file directly. Include bits.hpp instead, through which this file is included indirectly."
 #endif // BITS_HPP_
+
+#ifndef BITS_INL_
+/// @brief Header guard.
+#define BITS_INL_
 
 namespace trac
 {
@@ -70,12 +74,35 @@ namespace trac
 		value ^= (1 << bit);
 	}
 
+	/**
+	 * @brief	Returns the (positive) maximum signed of provided (signed) type.
+	 * 
+	 * @tparam INT The signed type to get the max value of (for example int32_t).
+	 */
+	template <typename INT_T>
+	INT_T signed_max()
+	{
+		return (INT_T)(((INT_T)(-1) << (sizeof(INT_T) * 8 - 1))-1);
+	}
 
+	/**
+	 * @brief	Removed all bits from the 'value' that are "invisible" to a signed integer of type INT_T. If they are the same size, this is the MSB.
+	 * 			If the signed integer is smaller, it is all the bits from the signed MSB and up.
+	 * 
+	 * @tparam INT_T	The signed integer type to bitshift for (i.e. number of bytes to shift).
+	 * @tparam UINT_T	The unsigned integer type to modify.
+	 * @param value	The variable to modify with the bitshift.
+	 */
+	template <typename INT_T, typename UINT_T>
+	UINT_T downshift_mask(UINT_T value)
+	{
+		static_assert(
+			sizeof(INT_T) <= sizeof(UINT_T),
+			"The signed integer type must be smaller or equal in size to the unsigned integer type to safely downshift the mask."
+		);
+		return value >> (sizeof(INT_T) * 8 - 1);
+	}
 
 } // namespace trac
-
-
-#ifndef BITS_INL_
-#define BITS_INL_
 
 #endif /* BITS_INL_ */

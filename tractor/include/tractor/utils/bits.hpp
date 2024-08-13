@@ -26,6 +26,13 @@ namespace trac
 	inline void bit_clear(uint32_t& value, uint32_t bit);
 	inline void bit_toggle(uint32_t& value, uint32_t bit);
 
+	template <typename INT_T>
+	inline INT_T signed_max();
+
+	template <typename INT_T, typename UINT_T>
+	inline UINT_T downshift_mask(UINT_T value);
+	
+
 } // namespace trac
 
 

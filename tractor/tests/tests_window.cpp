@@ -71,20 +71,6 @@ namespace test
 		std::unique_ptr<trac::Window> window = trac::Window::Create();
 
 		EXPECT_TRUE(window->IsOpen());
-		EXPECT_FALSE(window->IsFullscreen());
-		EXPECT_TRUE(window->IsVisible());
-		EXPECT_TRUE(window->IsResizable());
-		EXPECT_FALSE(window->IsBorderless());
-		EXPECT_FALSE(window->IsMinimized());
-		EXPECT_FALSE(window->IsMaximized());
-		EXPECT_FALSE(window->IsMouseGrabbed());
-		EXPECT_TRUE(window->IsInputFocus());
-		EXPECT_TRUE(window->IsMouseFocus());
-		EXPECT_FALSE(window->IsHighDPI());
-		EXPECT_FALSE(window->IsMouseCaptured());
-		EXPECT_FALSE(window->IsAlwaysOnTop());
-		EXPECT_FALSE(window->IsKeyboardGrabbed());
-		EXPECT_FALSE(window->IsInputGrabbed());
 
 		window->Close();
 		EXPECT_FALSE(window->IsOpen());

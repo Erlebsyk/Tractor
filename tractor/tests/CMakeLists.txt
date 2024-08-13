@@ -35,6 +35,7 @@ set(SourceFiles
 	events/test_event_window.cpp
 
 	utils/test_bits.cpp
+	utils/test_utils.cpp
 )
 add_executable(${PROJECT_NAME} ${SourceFiles} ${HeaderFiles})
 

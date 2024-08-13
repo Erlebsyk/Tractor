@@ -83,7 +83,8 @@ namespace trac
 		kWindowMouseCaptured = BIT(10),
 		kWindowAlwaysOnTop = BIT(11),
 		kWindowKeyboardGrabbed = BIT(12),
-		kWindowInputGrabbed = BIT(13)
+		kWindowInputGrabbed = BIT(13),
+		kWindowVsync = BIT(14)
 	} WindowStatus;
 
 	/// @brief	Window properties struct.
@@ -183,18 +184,83 @@ namespace trac
 		/// @brief	Runs whenever the window is updated.
 		virtual void OnUpdate() = 0;
 
+		/// @brief  Close the window.
+		virtual void Open() = 0;
+		/// @brief  Close the window.
+		virtual void Close(bool store_properties = true) = 0;
+
+		/// @brief	Get the native window pointer.
+		virtual void* GetNativeWindow() const = 0;
+
+		/**
+		 * @brief	Get the status flags of the window.
+		 * @return uint32_t	The status of the window, as a bitfield of WindowStatus flags.
+		 */
+		virtual uint32_t GetStatusFlags() const = 0;
+		
+		/**
+		 * @brief	Check if the window is open.
+		 * @return bool	True if the window is open, false otherwise.
+		 */
+		virtual bool IsOpen() const = 0;
+		/**
+		 * @brief	Get the title of the window.
+		 * @return std::string	The title of the window.
+		 */
+		virtual std::string GetTitle() const = 0;
 		/**
 		 * @brief	Get the width of the window.
 		 * @return uint32_t	The width of the window in pixels.
 		 */
 		virtual uint32_t GetWidth() const = 0;
-		
 		/**
 		 * @brief	Get the height of the window.
 		 * @return uint32_t	The height of the window in pixels.
 		 */
 		virtual uint32_t GetHeight() const = 0;
+		/**
+		 * @brief	Get the x position of the window.
+		 * @return uint32_t	The x-position of the window.
+		 */
+		virtual uint32_t GetX() const = 0;
+		/**
+		 * @brief	Get the y position of the window.
+		 * @return uint32_t	The y-position of the window.
+		 */
+		virtual uint32_t GetY() const = 0;
+		bool IsVsyncEnabled() const;
+		bool IsResizable() const;
+		bool IsBorderless() const;
+		bool IsFullscreen() const;
+		bool IsVisible() const;
+		bool IsMinimized() const;
+		bool IsMaximized() const;
+		bool IsMouseGrabbed() const;
+		bool IsInputFocus() const;
+		bool IsMouseFocus() const;
+		bool IsHighDPI() const;
+		bool IsMouseCaptured() const;
+		bool IsAlwaysOnTop() const;
+		bool IsKeyboardGrabbed() const;
+		bool IsInputGrabbed() const;
+		WindowProperties GetProperties() const;
+		std::shared_ptr<WindowProperties> GetPropertiesPtr() const;
 
+		/**
+		 * @brief	Set a blocking callback function for when a window event is triggered.
+		 * @param callback_blocking	The callback function to be called when a window event is triggered.
+		 */
+		virtual void SetEventCallbackB(event_cb_b_fn* callback_blocking) = 0;
+		/**
+		 * @brief	Set a non-blocking callback function for when a window event is triggered.
+		 * @param callback_non_blocking	The callback function to be called when a window event is triggered.
+		 */
+		virtual void SetEventCallbackNb(event_cb_nb_fn* callback_non_blocking) = 0;
+		/**
+		 * @brief	Set the window title.
+		 * @param title	The title of the window.
+		 */
+		virtual void SetTitle(std::string title) = 0;
 		virtual void SetSize(uint32_t width, uint32_t height);
 		/**
 		 * @brief	Set the width of the window.
@@ -206,144 +272,75 @@ namespace trac
 		 * @param height	The height of the window in pixels.
 		 */
 		virtual void SetHeight(uint32_t height) = 0;
-
-		/// @brief  Close the window.
-		virtual void Open() = 0;
-		/// @brief  Close the window.
-		virtual void Close() = 0;
-		/// @brief  Show the window.
-		virtual void Show() = 0;
-		/// @brief  Hide the window.
-		virtual void Hide() = 0;
-
-		/**
-		 * @brief	Check if the window is open.
-		 * @return bool	True if the window is open, false otherwise.
-		 */
-		virtual bool IsOpen() const = 0;
-
-		/**
-		 * @brief	Get the status flags of the window.
-		 * @return uint32_t	The status of the window, as a bitfield of WindowStatus flags.
-		 */
-		virtual uint32_t GetStatusFlags() const = 0;
-		
-		bool IsFullscreen() const;
-		bool IsVisible() const;
-		bool IsResizable() const;
-		bool IsBorderless() const;
-		bool IsMinimized() const;
-		bool IsMaximized() const;
-		bool IsMouseGrabbed() const;
-		bool IsInputFocus() const;
-		bool IsMouseFocus() const;
-		bool IsHighDPI() const;
-		bool IsMouseCaptured() const;
-		bool IsAlwaysOnTop() const;
-		bool IsKeyboardGrabbed() const;
-		bool IsInputGrabbed() const;
-
-		/**
-		 * @brief	Set a blocking callback function for when a window event is triggered.
-		 * @param callback_blocking	The callback function to be called when a window event is triggered.
-		 */
-		virtual void SetEventCallbackB(event_cb_b_fn* callback_blocking) = 0;
-
-		/**
-		 * @brief	Set a non-blocking callback function for when a window event is triggered.
-		 * @param callback_non_blocking	The callback function to be called when a window event is triggered.
-		 */
-		virtual void SetEventCallbackNb(event_cb_nb_fn* callback_non_blocking) = 0;
-	
-		/**
-		 * @brief	Set whether or not Vsync should be enabled for the window.
-		 * @param enabled	Whether or not Vsync should be enabled.
-		 */
-		virtual void SetVsync(bool enabled) = 0;
-
-		/**
-		 * @brief	Set the title of the window.
-		 * @param title	The title of the window.
-		 */
-		virtual void SetTitle(std::string title) = 0;
-
 		/**
 		 * @brief	Set the x position of the window.
 		 * @param x	The x-position of the window.
 		 */
 		virtual void SetX(uint32_t x) = 0;
-
 		/**
 		 * @brief	Set the y position of the window.
 		 * 
 		 * @param y	The y-position of the window.
 		 */
 		virtual void SetY(uint32_t y) = 0;
-
 		virtual void SetPosition(uint32_t x, uint32_t y);
-
 		/**
-		 * @brief	Set whether or not the window should be fullscreen.
-		 * @param enabled	Whether or not the window should be fullscreen.
+		 * @brief	Set whether or not Vsync should be enabled for the window.
+		 * @param enabled	Whether or not Vsync should be enabled.
 		 */
-		virtual void SetFullscreen(bool enabled) = 0;
-
+		virtual void SetVsync(bool enabled) = 0;
 		/**
 		 * @brief	Set whether or not the window should be resizable.
 		 * @param enabled	Whether or not the window should be resizable.
 		 */
 		virtual void SetResizable(bool enabled) = 0;
-
 		/**
 		 * @brief	Set whether or not the window should be borderless.
 		 * @param enabled	Whether or not the window should be borderless.
 		 */
 		virtual void SetBorderless(bool enabled) = 0;
-
+		/**
+		 * @brief	Set whether or not the window should be fullscreen.
+		 * @param enabled	Whether or not the window should be fullscreen.
+		 */
+		virtual void SetFullscreen(bool enabled) = 0;
+		/// @brief  Show the window.
+		virtual void Show() = 0;
+		/// @brief  Hide the window.
+		virtual void Hide() = 0;
+		virtual void SetVisibility(bool visible);
 		/**
 		 * @brief	Set whether or not the window should be minimized.
 		 * @param enabled	Whether or not the window should be minimized.
 		 */
 		virtual void SetMinimized(bool enabled) = 0;
-
 		/**
 		 * @brief	Set whether or not the window should be maximized.
 		 * @param enabled	Whether or not the window should be maximized.
 		 */
 		virtual void SetMaximized(bool enabled) = 0;
-
 		/**
 		 * @brief	Set whether or not the mouse should be grabbed by the window.
 		 * @param enabled	Whether or not the mouse should be grabbed by the window.
 		 */
 		virtual void SetMouseGrabbed(bool enabled) = 0;
-
 		/// @brief Set whether or not the window should have input focus.
 		virtual void SetInputFocus() = 0;
-
 		/**
 		 * @brief	Set whether or not the window should always be on top.
 		 * @param enabled	Whether or not the window should always be on top.
 		 */
 		virtual void SetAlwaysOnTop(bool enabled) = 0;
-
 		/**
 		 * @brief	Set whether or not the keyboard should be grabbed by the window.
 		 * @param enabled	Whether or not the keyboard should be grabbed by the window.
 		 */
 		virtual void SetKeyboardGrabbed(bool enabled) = 0;
-
 		/**
 		 * @brief	Set whether or not input should be grabbed by the window.
 		 * @param enabled	Whether or not input should be grabbed by the window.
 		 */
 		virtual void SetInputGrabbed(bool enabled) = 0;
-
-		/// @brief	Check if Vsync is enabled for the window.
-		virtual bool IsVsyncEnabled() const = 0;
-
-		/// @brief	Get the native window pointer.
-		virtual void* GetNativeWindow() const = 0;
 
 		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
 	};
@@ -362,56 +359,57 @@ namespace trac
 	
 		void OnUpdate() override;
 
-		uint32_t GetWidth() const override;
-		uint32_t GetHeight() const override;
-
-		void SetSize(uint32_t width, uint32_t height) override;
-		void SetWidth(uint32_t width) override;
-		void SetHeight(uint32_t height) override;
-
 		void Open() override;
-		void Close() override;
-		void Show() override;
-		void Hide() override;
+		void Close(bool store_properties = true) override;
 
-		bool IsOpen() const override;
+		void* GetNativeWindow() const override;
 
 		uint32_t GetStatusFlags() const override;
 
+		bool IsOpen() const override;
+		std::string GetTitle() const override;
+
+		uint32_t GetWidth() const override;
+		uint32_t GetHeight() const override;
+
+		uint32_t GetX() const override;
+		uint32_t GetY() const override;
+
 		void SetEventCallbackB(event_cb_b_fn* callback_blocking) override;
 		void SetEventCallbackNb(event_cb_nb_fn* callback_non_blocking) override;
-
+		
 		void SetTitle(std::string title) override;
+		void SetSize(uint32_t width, uint32_t height) override;
+		void SetWidth(uint32_t width) override;
+		void SetHeight(uint32_t height) override;
 		void SetX(uint32_t x) override;
 		void SetY(uint32_t y) override;
 		void SetPosition(uint32_t x, uint32_t y) override;
 		void SetVsync(bool enabled) override;
-		void SetFullscreen(bool enabled) override;
 		void SetResizable(bool enabled) override;
 		void SetBorderless(bool enabled) override;
+		void SetFullscreen(bool enabled) override;
+		void Show() override;
+		void Hide() override;
 		void SetMinimized(bool enabled) override;
 		void SetMaximized(bool enabled) override;
 		void SetMouseGrabbed(bool enabled) override;
 		void SetInputFocus() override;
 		void SetAlwaysOnTop(bool enabled) override;
 		void SetKeyboardGrabbed(bool enabled) override;
-		void SetInputGrabbed(bool enabled) override;
-		
-		bool IsVsyncEnabled() const override;
-
-		void* GetNativeWindow() const override;
+		void SetInputGrabbed(bool enabled) override;	
 
 	private:
 		// Private functions
 
-		void Init();
+		void Init(const WindowProperties& properties);
 		void Shutdown();
 
 		// Private variables
 		static uint32_t windows_n_;
 
-		WindowProperties properties_;
 		WindowCallbacks callbacks_;
+		std::shared_ptr<WindowProperties> closed_properties_;
 
 		SDL_Window* window_;
 		SDL_GLContext context_;
