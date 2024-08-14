@@ -41,11 +41,8 @@ namespace trac
 	 * @param visible	Whether or not the window should be visible.
 	 * @param minimized	Whether or not the window should be minimized.
 	 * @param maximized	Whether or not the window should be maximized.
-	 * @param mouse_grabbed	Whether or not the window should grab the mouse.
 	 * @param input_focus	Whether or not the window should have input focus.
-	 * @param mouse_focus	Whether or not the mouse should have focus.
 	 * @param high_dpi	Whether or not the window should be in high DPI mode.
-	 * @param mouse_captured	Whether or not the mouse should be captured by the window.
 	 * @param always_on_top	Whether or not the window should be always on top.
 	 * @param keyboard_grabbed	Whether or not the window should grab the keyboard.
 	 * @param input_grabbed	Whether or not the window should grab input.
@@ -63,11 +60,8 @@ namespace trac
 		const bool visible,
 		const bool minimized,
 		const bool maximized,
-		const bool mouse_grabbed,
 		const bool input_focus,
-		const bool mouse_focus,
 		const bool high_dpi,
-		const bool mouse_captured,
 		const bool always_on_top,
 		const bool keyboard_grabbed,
 		const bool input_grabbed
@@ -84,11 +78,8 @@ namespace trac
 		visible			{ visible			},
 		minimized		{ minimized			},
 		maximized		{ maximized			},
-		mouse_grabbed	{ mouse_grabbed		},
 		input_focus		{ input_focus		},
-		mouse_focus		{ mouse_focus		},
 		high_dpi		{ high_dpi			},
-		mouse_captured	{ mouse_captured	},
 		always_on_top	{ always_on_top		},
 		keyboard_grabbed{ keyboard_grabbed	},
 		input_grabbed	{ input_grabbed		}
@@ -290,11 +281,8 @@ namespace trac
 			IsVisible(),
 			IsMinimized(),
 			IsMaximized(),
-			IsMouseGrabbed(),
 			IsInputFocus(),
-			IsMouseFocus(),
 			IsHighDPI(),
-			IsMouseCaptured(),
 			IsAlwaysOnTop(),
 			IsKeyboardGrabbed(),
 			IsInputGrabbed()
@@ -415,9 +403,9 @@ namespace trac
 	{
 		if(open_)
 		{
-			Shutdown();
 			if(store_properties)
 				closed_properties_ = GetPropertiesPtr();
+			Shutdown();
 		}
 	}
 
@@ -699,7 +687,10 @@ namespace trac
 	 */
 	void WindowBasic::SetMinimized(const bool enabled)
 	{
-		SDL_MinimizeWindow(window_);
+		if(enabled)
+			SDL_MinimizeWindow(window_);
+		else
+			SDL_RestoreWindow(window_);
 	}
 
 	/**
@@ -708,7 +699,10 @@ namespace trac
 	 */
 	void WindowBasic::SetMaximized(const bool enabled)
 	{
-		SDL_MaximizeWindow(window_);
+		if(enabled)
+			SDL_MaximizeWindow(window_);
+		else
+			SDL_RestoreWindow(window_);
 	}
 
 	/**
@@ -723,7 +717,7 @@ namespace trac
 	/// @brief	Request the window to have input focus.
 	void WindowBasic::SetInputFocus()
 	{
-		SDL_SetWindowInputFocus(window_);
+		SDL_RaiseWindow(window_);
 	}
 
 	/**
@@ -765,11 +759,8 @@ namespace trac
 		if(properties.visible) sdl_flags |= SDL_WINDOW_SHOWN;
 		if(properties.minimized) sdl_flags |= SDL_WINDOW_MINIMIZED;
 		if(properties.maximized) sdl_flags |= SDL_WINDOW_MAXIMIZED;
-		if(properties.mouse_grabbed) sdl_flags |= SDL_WINDOW_MOUSE_GRABBED;
 		if(properties.input_focus) sdl_flags |= SDL_WINDOW_INPUT_FOCUS;
-		if(properties.mouse_focus) sdl_flags |= SDL_WINDOW_MOUSE_FOCUS;
 		if(properties.high_dpi) sdl_flags |= SDL_WINDOW_ALLOW_HIGHDPI;
-		if(properties.mouse_captured) sdl_flags |= SDL_WINDOW_MOUSE_CAPTURE;
 		if(properties.always_on_top) sdl_flags |= SDL_WINDOW_ALWAYS_ON_TOP;
 		if(properties.keyboard_grabbed) sdl_flags |= SDL_WINDOW_KEYBOARD_GRABBED;
 		if(properties.input_grabbed) sdl_flags |= SDL_WINDOW_INPUT_GRABBED;
@@ -794,6 +785,18 @@ namespace trac
 		//Get window surface
 		SDL_Surface* screenSurface = SDL_GetWindowSurface( window_ );
 		
+		// Check that all properties are set according to the configuration. This also gives priority control over conflicting properties.
+		if(properties.resizable != IsResizable()) SetResizable(properties.resizable);
+		if(properties.borderless != IsBorderless()) SetBorderless(properties.borderless);
+		if(properties.vsync != IsVsyncEnabled()) SetVsync(properties.vsync);
+		if(properties.minimized != IsMinimized()) SetMinimized(properties.minimized);
+		if(properties.maximized != IsMaximized()) SetMaximized(properties.maximized);
+		if(properties.fullscreen != IsFullscreen()) SetFullscreen(properties.fullscreen);
+		if(properties.always_on_top != IsAlwaysOnTop()) SetAlwaysOnTop(properties.always_on_top);
+		if(properties.input_focus != IsInputFocus()) SetInputFocus();
+		if(properties.visible != IsVisible()) SetVisibility(properties.visible);
+		if(properties.keyboard_grabbed != IsKeyboardGrabbed()) SetKeyboardGrabbed(properties.keyboard_grabbed);
+
 		//Update the surface
 		SDL_UpdateWindowSurface( window_ );
 		

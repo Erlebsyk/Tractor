@@ -32,9 +32,9 @@ namespace trac
 		/// The default height of the window.
 		static constexpr uint32_t kHeight = 720;
 		/// The default x-position of the window.
-		static constexpr uint32_t kPosX = SDL_WINDOWPOS_UNDEFINED;
+		static constexpr uint32_t kPosX = 100;
 		/// The default y-position of the window.
-		static constexpr uint32_t kPosY = SDL_WINDOWPOS_UNDEFINED;
+		static constexpr uint32_t kPosY = 100;
 		/// Whether or not Vsync should be enabled for the window by default.
 		static constexpr bool kVsync = true;
 		/// Whether or not the window should be resizable by default.
@@ -49,16 +49,10 @@ namespace trac
 		static constexpr bool kMinimized = false;
 		/// Whether or not the window should be maximized by default.
 		static constexpr bool kMaximized = false;
-		/// Whether or not the mouse should be grabbed by the window by default.
-		static constexpr bool kMouseGrabbed = false;
 		/// Whether or not the window should have input focus by default.
-		static constexpr bool kInputFocus = false;
-		/// Whether or not the window should have mouse focus by default.
-		static constexpr bool kMouseFocus = false;
+		static constexpr bool kInputFocus = true;
 		/// Whether or not the window should be high DPI by default.
 		static constexpr bool kHighDPI = false;
-		/// Whether or not the mouse should be captured by the window by default.
-		static constexpr bool kMouseCaptured = false;
 		/// Whether or not the window should always be on top by default.
 		static constexpr bool kAlwaysOnTop = false;
 		/// Whether or not the keyboard should be grabbed by the window by default.
@@ -114,16 +108,10 @@ namespace trac
 		bool minimized;
 		/// Whether or not the window should be maximized.
 		bool maximized;
-		/// Whether or not the mouse should be grabbed by the window.
-		bool mouse_grabbed;
 		/// Whether or not the window should have input focus.
 		bool input_focus;
-		/// Whether or not the window should have mouse focus.
-		bool mouse_focus;
 		/// Whether or not the window should be high DPI.
 		bool high_dpi;
-		/// Whether or not the mouse should be captured by the window.
-		bool mouse_captured;
 		/// Whether or not the window should always be on top.
 		bool always_on_top;
 		/// Whether or not the keyboard should be grabbed by the window.
@@ -144,11 +132,8 @@ namespace trac
 			bool visible = WindowPropertiesDefault::kVisible,
 			bool minimized = WindowPropertiesDefault::kMinimized,
 			bool maximized = WindowPropertiesDefault::kMaximized,
-			bool mouse_grabbed = WindowPropertiesDefault::kMouseGrabbed,
 			bool input_focus = WindowPropertiesDefault::kInputFocus,
-			bool mouse_focus = WindowPropertiesDefault::kMouseFocus,
 			bool high_dpi = WindowPropertiesDefault::kHighDPI,
-			bool mouse_captured = WindowPropertiesDefault::kMouseCaptured,
 			bool always_on_top = WindowPropertiesDefault::kAlwaysOnTop,
 			bool keyboard_grabbed = WindowPropertiesDefault::kKeyboardGrabbed,
 			bool input_grabbed = WindowPropertiesDefault::kInputGrabbed
@@ -187,7 +172,7 @@ namespace trac
 		/// @brief  Close the window.
 		virtual void Open() = 0;
 		/// @brief  Close the window.
-		virtual void Close(bool store_properties = true) = 0;
+		virtual void Close(bool store_properties = false) = 0;
 
 		/// @brief	Get the native window pointer.
 		virtual void* GetNativeWindow() const = 0;
@@ -360,7 +345,7 @@ namespace trac
 		void OnUpdate() override;
 
 		void Open() override;
-		void Close(bool store_properties = true) override;
+		void Close(bool store_properties = false) override;
 
 		void* GetNativeWindow() const override;
 

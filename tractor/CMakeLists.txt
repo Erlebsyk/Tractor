@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.3.14 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.3.15 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
