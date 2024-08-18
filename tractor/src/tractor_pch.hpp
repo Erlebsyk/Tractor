@@ -10,6 +10,12 @@
 #ifndef TRACTOR_PCH_HPP_
 #define TRACTOR_PCH_HPP_
 
+#if CMAKE_BUILD_TYPE == Debug
+#define TRAC_DEBUG
+#else
+#define TRAC_RELEASE
+#endif
+
 // Standard library header includes
 #include <stdio.h>
 #include <iostream>

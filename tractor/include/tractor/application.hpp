@@ -10,6 +10,13 @@
 #ifndef APPLICATION_HPP_
 #define APPLICATION_HPP_
 
+#include <string>
+#include <memory>
+
+#include "window.hpp"
+#include "layer_stack.hpp"
+#include "events.hpp"
+
 namespace trac
 {
 	/**
@@ -25,46 +32,45 @@ namespace trac
 		// Constructors and destructors
 
 		/// @brief Default constructor.
-		Application() = default;
+		Application();
+		/// @brief Default constructor.
+		Application(
+			std::string name,
+			WindowProperties window_properties = WindowProperties()
+		);
 		/// @brief Virtual default destructor.
-		virtual ~Application() = default;
-
-		/// @brief Explicitly defined default copy constructor.
-		Application(const Application& other) = default;
-		/// @brief Explicitly defined default move constructor.
-		Application(Application&& other) = default;
-		/// @brief Explicitly defined default copy assignment operator.
-		Application& operator=(const Application& other) = default;
-		/// @brief Explicitly defined default move assignment operator.
-		Application& operator=(Application&& other) = default;
+		~Application() = default;
 
 		// Public functions
+		virtual int Run();
+		virtual void Quit();
 
-		/**
-		 * @brief	The Run() function is the entry point for the application. This function must be overridden by the application and implemented according
-		 * 			to the application's functionality.
-		 * 
-		 * @return int	The exit code for the application. 0 is returned if the application exits successfully, and a negative value is returned if the
-		 * 				application exits with an error.
-		 */
-		virtual int Run() = 0;
+		bool IsRunning() const;
+		std::string GetName();
 
-		/**
-		 * @brief	The Quit() function is called to quit the application. This function must be overridden by the application and implemented
-		 * 			according to the application's functionality.
-		 */
-		virtual void Quit() = 0;
+		void PushLayer(std::shared_ptr<Layer> layer);
+		void PopLayer(std::shared_ptr<Layer> layer);
+		void PushOverlay(std::shared_ptr<Layer> overlay);
+		void PopOverlay(std::shared_ptr<Layer> overlay);
 
-		/**
-		 * @brief	Returns if the application is running or not.
-		 * 
-		 * @return bool	True if the application is running, false otherwise.
-		 */
-		virtual bool IsRunning() const;
+		void OnEvent(trac::Event& e);
 
 	protected:
+		virtual void BindEventListeners();
+		virtual int RunInit();
+		virtual int RunLoop();
+		virtual void OnWindowClose(trac::Event& e);
+
 		/// Marks if the application is running or not
 		bool running_ = false;
+		/// The name of the application
+		std::string name_;
+		/// The window properties for the application
+		std::unique_ptr<WindowProperties> window_properties_;
+		/// The Application window
+		std::unique_ptr<trac::Window> window_;
+		/// The application layer stack
+		LayerStack layer_stack_;
 	};
 } // Namespace trac
 

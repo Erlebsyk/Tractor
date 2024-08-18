@@ -21,15 +21,12 @@ namespace app
 	{
 	public:
 		// Constructors and destructors
-
 		SandboxApp();
 
+#if 0
 		// Public functions
-		
 		int Run() override;
-		void Quit() override;
-
-		void OnWindowClose(trac::Event& e);
+#endif
 	};
 } // Namespace app
 

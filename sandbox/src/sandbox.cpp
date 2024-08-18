@@ -27,14 +27,10 @@ namespace app
 {
 	/// @brief	Constructs a sandbox application instance.
 	SandboxApp::SandboxApp() : 
-		trac::Application()
-	{
-		trac::log_client_info("Creating sandbox application: [{0}].", __FUNCTION__);
+		trac::Application("Sandbox", trac::WindowProperties())
+	{}
 
-		trac::log_client_debug("Adding window event listeners");
-		trac::listener_id_t quit_id = trac::event_listener_add_b(trac::EventType::kQuit, BIND_THIS_EVENT_FN(SandboxApp::OnWindowClose));
-	}
-
+#if 0
 	/// @brief	The main application function. This will be executed through the tractor game engine library's main function in "entry_point.hpp".
 	int SandboxApp::Run()
 	{
@@ -53,21 +49,5 @@ namespace app
 
 		return 0;
 	}
-
-	/// @brief	Quits the sandbox application.
-	void SandboxApp::Quit()
-	{
-		trac::log_client_info("Quitting sandbox application...");
-		running_ = false;
-	}
-
-	/**
-	 * @brief 	Handles the event when the window is closed.
-	 * 
-	 * @param e	The event that was triggered.
-	 */
-	void SandboxApp::OnWindowClose(trac::Event& e)
-	{
-		Quit();
-	}
+#endif
 } // Namespace app

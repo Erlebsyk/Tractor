@@ -36,6 +36,7 @@
 #include "event_types/event_gesture.hpp"
 #include "event_types/event_joystick.hpp"
 #include "event_types/event_keyboard.hpp"
+#include "event_types/event_layer.hpp"
 #include "event_types/event_mouse.hpp"
 #include "event_types/event_render.hpp"
 #include "event_types/event_system.hpp"

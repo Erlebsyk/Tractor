@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.3.15 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.4.0 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -19,6 +19,8 @@ set(SourceFiles
 	src/tractor.cpp
 	src/events.cpp
 	src/application.cpp
+	src/layer_stack.cpp
+	src/layer.cpp
 	src/logger.cpp
 	src/sdl_hook_events.cpp
 	src/sdl_hook.cpp
@@ -35,6 +37,7 @@ set(SourceFiles
 	src/event_types/event_gesture.cpp
 	src/event_types/event_joystick.cpp
 	src/event_types/event_keyboard.cpp
+	src/event_types/event_layer.cpp
 	src/event_types/event_mouse.cpp
 	src/event_types/event_render.cpp
 	src/event_types/event_system.cpp
@@ -47,6 +50,8 @@ set(IncludeFiles
 	include/tractor/application.hpp
 	include/tractor/entry_point.hpp
 	include/tractor/events.hpp
+	include/tractor/layer_stack.hpp
+	include/tractor/layer.hpp
 	include/tractor/logger.hpp
 	include/tractor/logger.inl
 	include/tractor/window.hpp
@@ -64,6 +69,7 @@ set(IncludeFiles
 	include/tractor/event_types/event_gesture.hpp
 	include/tractor/event_types/event_joystick.hpp
 	include/tractor/event_types/event_keyboard.hpp
+	include/tractor/event_types/event_layer.hpp
 	include/tractor/event_types/event_mouse.hpp
 	include/tractor/event_types/event_render.hpp
 	include/tractor/event_types/event_system.hpp

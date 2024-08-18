@@ -85,6 +85,13 @@ namespace trac
 		kWindowIccProfileChanged, // Window has had its ICC profile changed.
 		kWindowDisplayChanged, // Window display data has changed.
 		kWindowClosed, // The window manager requests that the window be closed.
+
+		// Layer events
+		kLayerPushed, // A layer has been pushed onto the layer stack.
+		kLayerPopped, // A layer has been popped from the layer stack.
+		kLayerUpdated, // A layer has been updated.
+		kLayerAttached, // A layer has been attached to the application.
+		kLayerDetached, // A layer has been detached from the application.
 		
 		// Keyboard events
 		kKeyDown, // Key pressed event.

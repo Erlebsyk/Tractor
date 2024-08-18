@@ -43,18 +43,6 @@ public:
 	int8_t value_;
 };
 
-/**
- * @brief	Create the simplest possible application class for testing. When constructed, the value_ variable is set to 0. When run, the value_ variable is
- * 			incremented by 1.
- * 
- * @return std::shared_ptr<trac::Application>	A shared pointer to the test application.
- */
-std::shared_ptr<trac::Application> trac::create_application()
-{
-	return std::make_shared<TestApp>();
-}
-
-
 namespace test
 {
 
@@ -106,6 +94,37 @@ namespace test
 		EXPECT_FALSE(test_app->IsRunning());
 		EXPECT_EQ(1, test_app->value_);
 	}
+
+	// Test class for the default (more complicated than TestApp) application.
+	class TestApp2 : public trac::Application
+	{
+	public:
+		TestApp2() : trac::Application("TestApp2") {}
+
+		/// @brief Runloop must be overridden to not be stuck in main loop.
+		int RunLoop() override { return 0; }
+	};
+
+	// Check that the default application and behaved as expected.
+	GTEST_TEST(tractor, app_default)
+	{
+		// Create the application.
+		std::shared_ptr<TestApp2> test_app = std::make_shared<TestApp2>();
+		EXPECT_TRUE(test_app != nullptr);
+
+		// Run the application.
+		EXPECT_FALSE(test_app->IsRunning());
+		int status = test_app->Run();
+		EXPECT_EQ(0, status);
+		EXPECT_FALSE(test_app->IsRunning());
+
+		// Check the name of the application.
+		EXPECT_EQ("TestApp2", test_app->GetName());
+
+		// Quit the application.
+		test_app->Quit();
+	}
+
 
 	// The logging through the tractor logging module.
 	GTEST_TEST(tractor, logging_level)
@@ -206,10 +225,5 @@ namespace test
 		trac::log_client_error("THIS SHOULD NOT BE VISIBLE!");
 		trac::log_client_critical("THIS SHOULD NOT BE VISIBLE!");
 	}
-
-	//GTEST_TEST(tractor, window)
-	//{
-	//	std::shared_ptr<trac::Window> window = trac::Window::Create();
-	//}
 
 } // namespace test

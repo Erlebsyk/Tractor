@@ -28,6 +28,7 @@ set(SourceFiles
 	events/test_event_gesture.cpp
 	events/test_event_joystick.cpp
 	events/test_event_keyboard.cpp
+	events/test_event_layer.cpp
 	events/test_event_mouse.cpp
 	events/test_event_render.cpp
 	events/test_event_system.cpp
