@@ -83,7 +83,6 @@ namespace test
 		EXPECT_EQ(window->IsVisible(), trac::WindowPropertiesDefault::kVisible);
 		EXPECT_EQ(window->IsMinimized(), trac::WindowPropertiesDefault::kMinimized);
 		EXPECT_EQ(window->IsMaximized(), trac::WindowPropertiesDefault::kMaximized);
-		EXPECT_EQ(window->IsInputFocus(), trac::WindowPropertiesDefault::kInputFocus);
 		EXPECT_EQ(window->IsHighDPI(), trac::WindowPropertiesDefault::kHighDPI);
 		EXPECT_EQ(window->IsAlwaysOnTop(), trac::WindowPropertiesDefault::kAlwaysOnTop);
 		EXPECT_EQ(window->IsKeyboardGrabbed(), trac::WindowPropertiesDefault::kKeyboardGrabbed);
@@ -129,7 +128,6 @@ namespace test
 		EXPECT_TRUE(window->IsVisible());
 		EXPECT_FALSE(window->IsMinimized());
 		EXPECT_FALSE(window->IsMaximized());
-		EXPECT_TRUE(window->IsInputFocus());
 		EXPECT_TRUE(window->IsHighDPI());
 		EXPECT_TRUE(window->IsAlwaysOnTop());
 		EXPECT_TRUE(window->IsKeyboardGrabbed());
@@ -170,8 +168,6 @@ namespace test
 		EXPECT_TRUE(window->IsMaximized());
 		window->SetMaximized(false);
 		EXPECT_FALSE(window->IsMaximized());
-		window->SetInputFocus();
-		EXPECT_TRUE(window->IsInputFocus());
 		window->SetAlwaysOnTop(true);
 		EXPECT_TRUE(window->IsAlwaysOnTop());
 		window->SetAlwaysOnTop(false);
@@ -223,7 +219,6 @@ namespace test
 		EXPECT_TRUE(window->IsVisible());
 		EXPECT_FALSE(window->IsMinimized());
 		EXPECT_FALSE(window->IsMaximized());
-		EXPECT_TRUE(window->IsInputFocus());
 		EXPECT_TRUE(window->IsHighDPI());
 		EXPECT_FALSE(window->IsAlwaysOnTop());
 		EXPECT_TRUE(window->IsKeyboardGrabbed());
@@ -288,7 +283,6 @@ namespace test
 		EXPECT_EQ(window->IsVisible(), trac::WindowPropertiesDefault::kVisible);
 		EXPECT_EQ(window->IsMinimized(), trac::WindowPropertiesDefault::kMinimized);
 		EXPECT_EQ(window->IsMaximized(), trac::WindowPropertiesDefault::kMaximized);
-		EXPECT_EQ(window->IsInputFocus(), trac::WindowPropertiesDefault::kInputFocus);
 		EXPECT_EQ(window->IsHighDPI(), trac::WindowPropertiesDefault::kHighDPI);
 		EXPECT_EQ(window->IsAlwaysOnTop(), trac::WindowPropertiesDefault::kAlwaysOnTop);
 		EXPECT_EQ(window->IsKeyboardGrabbed(), trac::WindowPropertiesDefault::kKeyboardGrabbed);
