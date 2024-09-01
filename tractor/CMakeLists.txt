@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.26.0)
-project(tractor VERSION 0.4.0 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
+project(tractor VERSION 0.4.1 DESCRIPTION "Simple Game Engine" LANGUAGES CXX C)
 
 set(DEFAULT_BUILD_TYPE "Release")
 if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
@@ -107,6 +107,7 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glm)
 target_link_libraries(${PROJECT_NAME} PUBLIC spdlog)
 target_link_libraries(${PROJECT_NAME} PUBLIC eventpp)
 target_link_libraries(${PROJECT_NAME} PUBLIC SDL3::SDL3 SDL3::SDL3main)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad)
 
 configure_file(${PROJECT_NAME}.pc.in ${PROJECT_NAME}.pc @ONLY)
 
@@ -115,6 +116,7 @@ add_subdirectory(externals/glm)
 add_subdirectory(externals/spdlog)
 add_subdirectory(externals/SDL EXCLUDE_FROM_ALL)
 add_subdirectory(externals/googletest)
+add_subdirectory(externals/glad)
 add_subdirectory(tests)
 
 install(TARGETS ${PROJECT_NAME}

@@ -15,6 +15,7 @@
 
 // External library header includes
 #include <SDL_events.h>
+#include <glad/glad.h>
 
 // Project header includes
 #include "events.hpp"
@@ -25,6 +26,9 @@ namespace trac
 {
 	/// The number of existing windows.
 	uint32_t WindowBasic::windows_n_ = 0;
+
+	/// Glad success status.
+	static constexpr int kGladSuccess = 1;
 
 	/**
 	 * @brief	Construct a new Window Properties object.
@@ -781,6 +785,11 @@ namespace trac
 			log_engine_error("SDL could not create OpenGL context! SDL error: [%s]", SDL_GetError());
 
 		SetVsync(properties.vsync);
+
+		// Setup Glad
+		const int glad_status = gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress);
+		if (glad_status != kGladSuccess)
+			log_engine_error("Failed to initialize GLAD!");
 
 		//Get window surface
 		SDL_Surface* screenSurface = SDL_GetWindowSurface( window_ );

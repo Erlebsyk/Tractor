@@ -14,7 +14,6 @@
 
 // External libraries header includes
 #include <SDL_video.h>
-#include <SDL_opengl.h>
 
 // Project header includes
 #include "events.hpp"
