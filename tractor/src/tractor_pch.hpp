@@ -35,5 +35,6 @@
 
 // Project header includes
 #include "tractor/events.hpp"
+#include "logger.hpp"
 
 #endif // TRACTOR_PCH_HPP_ 

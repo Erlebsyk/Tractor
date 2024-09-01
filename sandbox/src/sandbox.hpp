@@ -23,10 +23,8 @@ namespace app
 		// Constructors and destructors
 		SandboxApp();
 
-#if 0
 		// Public functions
-		int Run() override;
-#endif
+		int RunInit() override;
 	};
 } // Namespace app
 

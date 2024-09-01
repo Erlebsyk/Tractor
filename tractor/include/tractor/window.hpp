@@ -14,6 +14,7 @@
 
 // External libraries header includes
 #include <SDL_video.h>
+#include <SDL_render.h>
 
 // Project header includes
 #include "events.hpp"
@@ -326,6 +327,15 @@ namespace trac
 		 */
 		virtual void SetInputGrabbed(bool enabled) = 0;
 
+		/**
+		 * @brief Returns a pointer to the renderer.
+		 * 
+		 * @note This is a quick-fix to get the renderer currently used. In the future, it might be better to have a trac::Renderer class that handles multiple renderers.
+		 * 
+		 * @return SDL_Renderer*	The renderer.
+		 */
+		virtual SDL_Renderer* GetRenderer() = 0;
+
 		static std::unique_ptr<Window> Create(const WindowProperties& properties = WindowProperties());
 	};
 
@@ -383,6 +393,8 @@ namespace trac
 		void SetKeyboardGrabbed(bool enabled) override;
 		void SetInputGrabbed(bool enabled) override;	
 
+		SDL_Renderer* GetRenderer() override;
+
 	private:
 		// Private functions
 
@@ -390,14 +402,22 @@ namespace trac
 		void Shutdown();
 
 		// Private variables
-		static uint32_t windows_n_;
+		/// The number of windows created.
+		static uint32_t s_windows_n;
 
+		/// Window callbacks.
 		WindowCallbacks callbacks_;
+		/// The properties of the window when it was closed. Stored when the window is closed and can be used to restore the window with the same properties.
 		std::shared_ptr<WindowProperties> closed_properties_;
 
+		/// Pointer to the native SDL window.
 		SDL_Window* window_;
+		/// The SDL OpenGL context.
 		SDL_GLContext context_;
+		/// The SDL renderer.
+		SDL_Renderer* renderer_;
 
+		/// Whether or not the window is open.
 		bool open_;
 	};
 

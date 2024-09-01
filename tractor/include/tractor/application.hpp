@@ -31,15 +31,12 @@ namespace trac
 	public:
 		// Constructors and destructors
 
-		/// @brief Default constructor.
 		Application();
-		/// @brief Default constructor.
 		Application(
 			std::string name,
 			WindowProperties window_properties = WindowProperties()
 		);
-		/// @brief Virtual default destructor.
-		~Application() = default;
+		virtual ~Application();
 
 		// Public functions
 		virtual int Run();
@@ -54,6 +51,10 @@ namespace trac
 		void PopOverlay(std::shared_ptr<Layer> overlay);
 
 		void OnEvent(trac::Event& e);
+
+		Window& GetWindow();
+
+		static Application& Get();
 
 	protected:
 		virtual void BindEventListeners();
@@ -71,6 +72,9 @@ namespace trac
 		std::unique_ptr<trac::Window> window_;
 		/// The application layer stack
 		LayerStack layer_stack_;
+
+		/// Static application instance
+		static Application *s_instance;
 	};
 } // Namespace trac
 

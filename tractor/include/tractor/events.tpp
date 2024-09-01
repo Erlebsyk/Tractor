@@ -1,7 +1,7 @@
 /**
  * @file	events.tpp
- * @brief   Template implementation file for the events module. This file contains the template implementations for the events module, which is used to create
- *          and dispatch events to event listeners. Please see 'events.hpp' for more information.
+ * @brief	Template implementation file for the events module. This file contains the template implementations for the events module, which is used to create
+ *			and dispatch events to event listeners. Please see 'events.hpp' for more information.
  * 
  * @author	Erlend Elias Isachsen
  * @date	11.08.2024

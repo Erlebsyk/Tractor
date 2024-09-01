@@ -18,12 +18,19 @@
 
 namespace trac
 {
+	Application *Application::s_instance = nullptr;
+	
 	/// @brief Default application constructor. Events are bound at construction.
 	Application::Application() : 
 		Application("Tractor App", WindowProperties())
 	{}
 
-	/// @brief Constructs an application instance with the given name and window properties. Events are bound at construction.
+	/**
+	 * \brief Constructs an application instance with the given name and window properties. Events are bound at construction.
+	 * 
+	 * \param name	The name of the application.
+	 * \param window_properties	The window properties for the application.
+	 */
 	Application::Application(const std::string name, const WindowProperties window_properties) :
 		running_			{ false													},
 		name_				{ name													},
@@ -31,8 +38,21 @@ namespace trac
 		window_				{ nullptr												},
 		layer_stack_		{}
 	{
+		if(s_instance != nullptr)
+		{
+			log_engine_error("An application instance already exists! Only one application instance can be created.");
+			return;
+		}
+		s_instance = this;
+
 		log_engine_debug("Creating \"{0}\" application: [{1}].", name_, __FUNCTION__);
 		BindEventListeners();
+	}
+
+	/// @brief Destroys the application instance.
+	Application::~Application()
+	{
+		s_instance = nullptr;
 	}
 
 	/**
@@ -105,6 +125,7 @@ namespace trac
 	void Application::PushLayer(std::shared_ptr<Layer> layer)
 	{
 		layer_stack_.PushLayer(layer);
+		layer->OnAttach();
 	}
 
 	/**
@@ -125,6 +146,7 @@ namespace trac
 	void Application::PushOverlay(std::shared_ptr<Layer> overlay)
 	{
 		layer_stack_.PushOverlay(overlay);
+		overlay->OnAttach();
 	}
 
 	/**
@@ -150,6 +172,30 @@ namespace trac
 			(*it)->OnEvent(e);
 		}
 	}
+
+	/**
+	 * \brief Get the static instance of the application.
+	 * 
+	 * \return Application&	The static instance of the application.
+	 */
+	Application& Application::Get()
+	{
+		if(s_instance == nullptr)
+			log_engine_error("Application instance is nullptr! Returning nullptr.");
+
+		return *s_instance;
+	}
+
+	/**
+	 * @brief Get the window of the application.
+	 * 
+	 * @return Window&	The window of the application.
+	 */
+	Window& Application::GetWindow()
+	{
+		return *window_;
+	}
+
 
 	/**
 	 * @brief	Main loop that should run while the application is running. This function can be overridden by the application and implemented according

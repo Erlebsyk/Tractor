@@ -12,6 +12,7 @@
 
 // External libraries header includes
 #include <tractor/entry_point.hpp>
+#include <tractor.hpp>
 
 /**
  * @brief	Creates a sandbox application instance. This function is called automatically by the tractor game engine library's main() function.
@@ -30,24 +31,13 @@ namespace app
 		trac::Application("Sandbox", trac::WindowProperties())
 	{}
 
-#if 0
-	/// @brief	The main application function. This will be executed through the tractor game engine library's main function in "entry_point.hpp".
-	int SandboxApp::Run()
+	/// @brief	Sets up the sandbox application.
+	int SandboxApp::RunInit()
 	{
-		running_ = true;
-
-		trac::log_client_info("Hello from the sandbox application!");
-
-		trac::log_client_debug("Creating a window...");
-		trac::WindowProperties window_properties("Sandbox", 1280, 720);
-		std::unique_ptr<trac::Window> window = trac::Window::Create(window_properties);
-
-		while(running_)
-		{
-			trac::event_queue_process();
-		}
+		Application::RunInit();
+		std::shared_ptr<trac::Layer> gui_layer = std::make_shared<trac::GuiLayer>();
+		PushOverlay(gui_layer);
 
 		return 0;
 	}
-#endif
 } // Namespace app

@@ -16,7 +16,7 @@ set(HeaderFiles
 )
 set(SourceFiles
 	tests_externals.cpp
-    tests_tractor.cpp
+	tests_tractor.cpp
 	tests_window.cpp
 
 	events/test_event_data.cpp

@@ -25,7 +25,7 @@
 namespace trac
 {
 	/// The number of existing windows.
-	uint32_t WindowBasic::windows_n_ = 0;
+	uint32_t WindowBasic::s_windows_n = 0;
 
 	/// Glad success status.
 	static constexpr int kGladSuccess = 1;
@@ -362,17 +362,18 @@ namespace trac
 		closed_properties_	{ nullptr			},
 		window_				{ nullptr			},
 		context_			{ nullptr			},
+		renderer_			{ nullptr			},
 		open_				{ false				}
 	{
 		Init(properties);
-		windows_n_++;
+		s_windows_n++;
 	}
 
 	/// @brief	Destructor for the window.
 	WindowBasic::~WindowBasic()
 	{
 		Shutdown();
-		windows_n_--;
+		s_windows_n--;
 	}
 
 	/// @brief	Function called whenever the window is updated.
@@ -751,6 +752,18 @@ namespace trac
 		SDL_SetWindowGrab(window_, enabled ? SDL_TRUE : SDL_FALSE);
 	}
 
+	/**
+	 * @brief	Returns a pointer to the renderer.
+	 * 
+	 * @note	This is a quick-fix to get the renderer currently used. In the future, it might be better to have a trac::Renderer class that handles multiple renderers.
+	 * 
+	 * @return SDL_Renderer*	The renderer.
+	 */
+	SDL_Renderer* WindowBasic::GetRenderer() 
+	{
+		return renderer_;
+	}
+
 	/// @brief	Initializes the window.
 	void WindowBasic::Init(const WindowProperties& properties)
 	{
@@ -806,6 +819,11 @@ namespace trac
 		if(properties.visible != IsVisible()) SetVisibility(properties.visible);
 		if(properties.keyboard_grabbed != IsKeyboardGrabbed()) SetKeyboardGrabbed(properties.keyboard_grabbed);
 
+		// Create renderer
+		renderer_ = SDL_CreateRenderer(window_, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+		if (renderer_ == nullptr)
+			log_engine_error("Error: SDL_CreateRenderer(): {0}", SDL_GetError());
+		
 		//Update the surface
 		SDL_UpdateWindowSurface( window_ );
 		
